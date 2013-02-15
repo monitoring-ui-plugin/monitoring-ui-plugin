@@ -1,0 +1,49 @@
+[%#
+# This file is part of ovirt-Monitoring UI-Plugin.
+#
+# ovirt-Monitoring UI-Plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, either version 3 of the i
+# License, or (at your option) any later version.
+#
+# ovirt-Monitoring UI-Plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ovirt-Monitoring UI-Plugin.
+# If not, see <http://www.gnu.org/licenses/>.
+%]
+
+
+[% INCLUDE header.tt %]
+
+[%# Table header for vm and host check commands %]
+
+<div class="mon-res-action" align="left">
+  <div>
+    <div class="mon-res-action-tbl" id="mon-res-action-tbl-ack" tabindex="0" role="button" title="Acknowledge">Acknowledge</div>
+    <div class="mon-res-action-tbl" id="mon-res-action-tbl-com" tabindex="0" role="button" title="Comment">Comment</div>
+    <div class="mon-res-action-tbl" id="mon-res-action-tbl-down" tabindex="0" role="button" title="Downtime">Downtime</div>
+    <div class="mon-res-action-tbl" id="mon-res-action-tbl-not" tabindex="0" role="button" title="Notifications">Notifications</div>
+    <div class="mon-res-action-tbl" id="mon-res-action-tbl-sched" tabindex="0" role="button" title="Schedule">Schedule</div>
+  </div>
+</div>
+<div></div>
+
+
+[%# Table header for vm and host check results %]
+
+<div class="mon-res-head-top">
+  <table class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
+    <thead>
+      <tr>
+        <th class="mon-res-head-th mon-res-head-small" colspan="1" width="25"></th>
+        <th class="mon-res-head-th" colspan="1">Service</th>
+        <th class="mon-res-head-th" colspan="1" width="120">Status</th>
+        <th class="mon-res-head-th" colspan="1" width="130">Last check</th>
+        <th class="mon-res-head-th" colspan="1" width="130">Duration</th>
+        <th class="mon-res-head-th" colspan="1">Output</th>
+      </tr>
+    </thead>

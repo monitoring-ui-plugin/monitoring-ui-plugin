@@ -1,0 +1,274 @@
+# This file is part of ovirt-Monitoring UI-Plugin.
+#
+# ovirt-Monitoring UI-Plugin is free software: you can redistribute it 
+# and/or modify it under the terms of the GNU General Public License 
+# as published by the Free Software Foundation, either version 3 of the i
+# License, or (at your option) any later version.
+#
+# ovirt-Monitoring UI-Plugin is distributed in the hope that it will be 
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ovirt-Monitoring UI-Plugin.  
+# If not, see <http://www.gnu.org/licenses/>.
+
+
+body, table td, select {
+    font-family: Arial Unicode MS,Arial,sans-serif;
+    font-size: small;
+}
+
+body {
+    color: black;
+    direction: ltr;
+    margin-top:1px;
+    margin-left:1px;
+}
+
+.mon-res-action {
+    height: 24px;
+    padding-top: 7px;
+}
+
+.mon-res-action-tbl {
+    background: none repeat scroll 0 0 transparent;
+    border: 1px solid transparent;
+    color: #333333;
+    float: left;
+    font-family: Arial,sans-serif;
+    font-size: 11px;
+    margin-left: 10px;
+    padding: 1px;
+    opacity: 0.5;
+}
+
+.mon-res-action-tbl-selected {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.mon-res-head-top {
+    background-color: #F0F2FF;
+    bottom: 0;
+    height: 28px;
+    left: 0;
+    padding-right: 17px;
+    position: absolute;
+    right: 0;
+    top: 34px;
+}
+
+.mon-res-head-small {
+    border-bottom: 2px solid #6F7277;
+    color: #4B4A4A;
+    overflow: hidden;
+    padding: 3px 15px;
+    text-align: left;
+    text-shadow: 1px 1px 0 #DDDDFF;
+}
+
+.mon-res-head-th {
+    background-color: #F0F2FF;
+    border-bottom: 1px solid #E3EDF6;
+    border-left: 1px solid #D7D7E1;
+    border-top: 1px solid #E3EDF6;
+    color: #111111;
+    font-family: Arial,sans-serif;
+    font-size: 11px;
+    height: 28px;
+    padding: 0 0 0 3px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.mon-res-head-tbl {
+    left: 0;
+    position: relative;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.mon-res-body-tr {
+    background-color: #FFFFFF;
+}
+
+.mon-res-body-tr2 {
+    background-color: #F3F7FB;
+}
+
+.mon-res-body-tr:hover, .mon-res-body-tr2:hover {
+    cursor: pointer;
+}
+
+.mon-res-body-tr-hover {
+    background-color: #EEEEEE;
+}
+
+.mon-res-body-tr-selected {
+    background-color: #C3D0E0;
+}
+
+.mon-res-body-hl {
+    background-color: #C3D0E0;
+}
+
+.mon-res-body-td {
+    border-color: -moz-use-text-color -moz-use-text-color #EDEEF0;
+    border-style: none none solid;
+    border-width: 0 0 1px;
+#    cursor: pointer;
+    height: 26px !important;
+    padding: 0 3px;
+    white-space: nowrap;
+}
+
+div.icinga-status-ok, div.servicechart-0 {
+    background-color: #00CC00;
+}
+
+div.icinga-status-warning, div.servicechart-1, td.icinga-status-warning {
+    background-color: #FFFF00;
+}
+
+td.icinga-status-critical, div.icinga-status-critical, div.servicechart-2 {
+    background-color: #FF0000;
+    color: #FFFFFF;
+}
+
+div.icinga-status-unknown, div.servicechart-3 {
+    background-color: #FF8000;
+}
+
+div.icinga-status {
+    border-radius: 5px 5px 5px 5px;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding: 4px;
+    text-align: center;
+}
+
+.x-btn-icon {
+    height: 16px;
+    width: 16px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.x-btn {
+    color: #333333;
+    font: 11px arial,tahoma,verdana,helvetica;
+    background-color: transparent;
+    border: 0 none;
+    cursor: pointer;
+    margin: 0;
+    outline: 0 none;
+    overflow: visible;
+    padding-left: 3px;
+    padding-right: 3px;
+    width: auto;
+    white-space: nowrap;
+}
+
+.icinga-icon-image-arrow {
+    background-image: url("../images/icons/image--arrow.png") !important;
+    background-repeat: no-repeat;
+}
+
+.mon_res_pnp {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	background-color:#ededed;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family:arial;
+	font-size:11px;
+	font-weight:bold;
+	padding:2px 2px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #ffffff;
+}
+
+.mon_res_pnp:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+}
+
+.mon_res_pnp:active {
+	position:relative;
+	top:1px;
+}
+
+.pnp_dialog {
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 62.5%;
+}
+
+.mon-res-ack-main {
+    border: 1px solid #CED8DF;
+    bottom: 35px;
+    left: 6px;
+    padding: 0;
+#    position: absolute;
+    position: relative;
+    right: 6px;
+    top: 6px;
+#    top: 34px;
+    vertical-align: top;
+}
+
+.mon-res-ack-header {
+    height: 5%;
+    margin-top: 3px;
+}
+
+.mon-res-ack-footer {
+    bottom: 9px;
+    position: absolute;
+    right: 16px;
+    width: 95%;
+    align: right;
+}
+
+.ui-icon {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABiklEQVR42pWTyU4CQRCGeQq2IwmQcJwz2yMQeA0eYo4EcMEFcMMRVCQBwtElIXPxoBeFuHDxbowTH6H8C6YnlUY0dvJlJj3zVXdVV/t82iAiA5jABo6L7c4Zvt8Gfih+Taf0XK3SuFCgYSJBA3CTz9MEcw6+8T+r5NJbp0NX2Sz1wmG6AF1wFgpRB7TBKJOhWbvNQUpLK7M8isc9+RycCvkYHAWDZEWj9LIIUvRy5m1fipWVzOKJkA/APuilUvSxSMfgAOYT8pMyj1m57Mn8zoPlZiBAdXBfqfCUyQFsLphcWQn8lO8s74IdMMjleNrmAA5XW9+2EpXcEPIWaMZi/MmZB+gjgJ6zHkDKm34/NUQA+xrn/JOsp6DkDdATKZiPKKIFsYUiHQJ92yqIktfA7WJuXkTjE0cyTKfnMh/VHtBzlnIrmaT3yYS81uameEVzcJNIeRvUIEi5FonQg2UttzS3J3dYF00iZRbXxcquXFp5mbjD7tAkfRSJK10HXDDO2d128a8b+a/r/A2eOyZ5ArULHgAAAABJRU5ErkJggg==") no-repeat scroll 0 0 transparent;
+    height: 16px;
+    width: 16px;
+}
+
+.dialog_grey_select {
+    background-color: #D3D3D3;
+    margin-bottom: 8px;
+    margin-right: 3px;
+    margin-top: 4px;
+    padding-bottom: 6px;
+    padding-top: 6px;
+
+    font-family: Verdana,sans-serif;
+    font-size: 13px;
+    line-height: 30px;
+ #   padding: 0 5px;
+    color: #333333;
+}
+
+select {
+    background-color: white;
+}
+
+.ui-button {
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAUCAIAAADDbMD2AAAAM0lEQVQIHQXBQRECARAEsan2A+55nIfTtCHpfd8+n2+s0dHIlpPJCdly2nTkxNp09Dy/P4LOKw/0r/+8AAAAAElFTkSuQmCC") repeat-x scroll 0 0 transparent;
+    height: 25px;
+    cursor: pointer;
+}
+

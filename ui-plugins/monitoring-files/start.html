@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+
+var api = parent.pluginApi('monitoring');
+var conf = api.configObject();
+
+// Register an event handler, for the UI Plugin init
+api.register({
+    UiInit: function() {
+//        // Dashboard Main Tab
+//        api.addMainTab(conf.icingaDashboardLabel, 'ovirt-monitoring', 'https://www.icinga.org');
+
+	// Host Sub Tab
+	api.addSubTab('Host', conf.monitoringDetailsLabel, 'hosts-monitoring', conf.url + '?subtab=hosts');
+
+	// VirtualMachine Sub Tab
+	api.addSubTab('VirtualMachine', conf.monitoringDetailsLabel, 'vms-monitoring', conf.url + '?subtab=vms');
+    },
+    // When the VM selection is changed, we need the new VM name
+    HostSelectionChange: function() {
+      if (arguments.length == 1) {
+        var hostName = arguments[0].name;
+	// Reload Host Sub Tab
+	api.setTabContentUrl('hosts-monitoring', conf.url + '?subtab=hosts&name=' + encodeURIComponent(hostName));
+      }
+    },
+    VirtualMachineSelectionChange: function() {
+      if (arguments.length == 1) {
+	var vmName = arguments[0].name;
+	// Reload VM Sub Tab
+	api.setTabContentUrl('vms-monitoring', conf.url + '?subtab=vms&name=' + encodeURIComponent(vmName));
+      }
+    }
+});
+
+// Calling api.ready - the plugin is now ready to be initialized
+api.ready();
+
+</script>
+</head>
+<body>
+</body>
+</html>
+

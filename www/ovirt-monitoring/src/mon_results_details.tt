@@ -1,0 +1,107 @@
+[%#
+# This file is part of ovirt-Monitoring UI-Plugin.
+#
+# ovirt-Monitoring UI-Plugin is free software: you can redistribute it
+# and/or modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, either version 3 of the i
+# License, or (at your option) any later version.
+#
+# ovirt-Monitoring UI-Plugin is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ovirt-Monitoring UI-Plugin.
+# If not, see <http://www.gnu.org/licenses/>.
+%]
+
+
+[% INCLUDE mon_results_header.tt %]
+
+    <tbody style="">
+
+[% FOREACH service IN hosts.keys.sort %]
+
+  [% IF loop.index % 2 %]
+      <tr class="mon-res-body-tr2" onClick="">
+  [% ELSE %]
+      <tr class="mon-res-body-tr" onClick="">
+  [% END %]
+        <td class="mon-res-body-td">
+          <div style="outline:none;" id="mon-res-action-srv" status="[% hosts.$service.status %]" service="[% hosts.$service.service %]" host="[% name %]">
+            <div>
+
+[% # Config File !!! %]
+
+              <a href="" onclick="return showPnpImage('http://10.0.100.195/pnp4nagios/image?host=[% hosts.$service.hostname %]&srv=[% hosts.$service.pnpservice %]&view=0')" class="mon_res_pnp">
+                <em class="" unselectable="on">
+[%#                  <button id="ext-gen402" class="icinga-icon-image-arrow" type="button">&nbsp;</button> %]
+		     <img src="../static/images/icons/image--arrow.png" />
+                </em>
+              </a>
+            </div>
+          </div>
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+            <div>[% hosts.$service.service %]</div>
+          </div>
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+
+  [% IF hosts.$service.status == 0 %]
+
+            <div class="icinga-status icinga-status-ok">
+              <span>OK</span>
+            </div>
+
+  [% ELSIF hosts.$service.status == 1 %]
+
+            <div class="icinga-status icinga-status-warning">
+              <span>WARNING</span>
+            </div>
+
+  [% ELSIF hosts.$service.status == 2 %]
+
+            <div class="icinga-status icinga-status-critical">
+              <span>CRITICAL</span>
+            </div>
+
+
+  [% ELSIF hosts.$service.status == 3 %]
+
+            <div class="icinga-status icinga-status-unknown">
+              <span>UNKNOWN</span>
+            </div>
+
+
+  [% END %]
+
+          </div>
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+            <div>[% hosts.$service.lastcheck %]</div>
+          </div>
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+            <div>[% hosts.$service.duration %]</div>
+          </div>
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+            <div>[% hosts.$service.output %]</div>
+          </div>
+        </td>
+      </tr>
+
+[% END %]
+
+    </tbody>
+  </table>
+</div>
+
+[% INCLUDE footer.tt %]

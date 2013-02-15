@@ -1,0 +1,38 @@
+[%#
+# This file is part of ovirt-Monitoring UI-Plugin.
+#
+# ovirt-Monitoring UI-Plugin is free software: you can redistribute it 
+# and/or modify it under the terms of the GNU General Public License 
+# as published by the Free Software Foundation, either version 3 of the i
+# License, or (at your option) any later version.
+#
+# ovirt-Monitoring UI-Plugin is distributed in the hope that it will be 
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ovirt-Monitoring UI-Plugin.  
+# If not, see <http://www.gnu.org/licenses/>.
+%]
+
+[% INCLUDE header.tt %]
+
+<div class="GE2Q1TJMUB" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;">
+  <table class="GE2Q1TJGKC" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr>
+        <td align="left" style="vertical-align: top;" width="20px">
+        </td>
+        <td align="left" style="vertical-align: top;">
+          <div class="gwt-Label GE2Q1TJAKC">
+            <img border="0" style="width: 20px; height: 15px; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAAq0lEQVR42q3UsQ2EMAwFUFpaVmEAGORqNqCGOhvQsMINgdIxDBt8MMJRFMA2iEhfShGeYsciywwLQM3RD88NMJR75qbEFTblOSjOuUpFLSBBy7YlFEUBEb0D4zIZZVC86RW4He7jEj8D+eMdoFKPvAFr730XepbkMZi+LseESq/MveOYUELiSENtRq3LhGqDLaLjH/i1oKEP6FMwRU+zqfVQQ8Ocvu2j9hdaAQ5KltpH8xk+AAAAAElFTkSuQmCC) no-repeat 0px 0px" src="/webadmin/webadmin/clear.cache.gif">
+              An Error occured: [% error_msg %]
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+[% INCLUDE footer.tt %]

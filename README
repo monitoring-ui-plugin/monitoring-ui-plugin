@@ -1,0 +1,62 @@
+#*********************************************************#
+#                                                         #
+#         README for oVirt Monitoring UI plugin           #
+#                                                         #
+#*********************************************************#
+
+What is oVirt Monitoring UI plugin?
+===================================
+
+...............
+
+
+Contributions / Help
+====================
+
+Send email to r.koch@ovido.at if you have questions regarding use
+of this software. Please include the following information in your email:
+* OS type and version
+* Perl version
+* oVirt version
+
+To submit patches of suggest improvements, send email to r.koch@ovido.at.
+
+
+Installation
+============
+
+Make sure that the following requirements are met:
+Perl
+Perl-Modules:
+  perl-CGI
+  perl-Template-Toolkit
+Icinga or Nagios
+mk-livestatus
+
+optional: PNP4Nagios (at the moment only local  on ovirt-engine)
+
+- install Icinga/Nagios
+- define Hosts and Services
+- install mk-livestatus
+- configure xinetd for use with mk-livestatus
+- copy files
+  * ui-plugins/* to /usr/share/ovirt-engine/ui-plugins
+  * httpd.conf/* to /etc/httpd/conf.d
+  * www/* to /data/www/
+- edit /etc/httpd/conf.d/ovirt-engine.conf
+
+ProxyPass /ovirt-monitoring !
+ProxyPass /pnp4nagios !
+ProxyPass / ajp://localhost:8702/ retry=5 timeout=3600
+
+
+Documentation
+=============
+
+Short documentation on how to use this plugin.
+
+Detailed documentation can be found on the project website
+https://labs.ovido.at/monitoring/wiki/ovirt-monitoring
+
+...
+
