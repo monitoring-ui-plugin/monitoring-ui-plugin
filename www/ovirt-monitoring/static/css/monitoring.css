@@ -118,10 +118,11 @@ body {
     border-color: -moz-use-text-color -moz-use-text-color #EDEEF0;
     border-style: none none solid;
     border-width: 0 0 1px;
-#    cursor: pointer;
+/*    cursor: pointer; */
     height: 26px !important;
     padding: 0 3px;
     white-space: nowrap;
+    font-size: small;
 }
 
 div.icinga-status-ok, div.servicechart-0 {
@@ -220,11 +221,11 @@ div.icinga-status {
     bottom: 35px;
     left: 6px;
     padding: 0;
-#    position: absolute;
+/*    position: absolute; */
     position: relative;
     right: 6px;
     top: 6px;
-#    top: 34px;
+/*    top: 34px; */
     vertical-align: top;
 }
 
@@ -258,7 +259,7 @@ div.icinga-status {
     font-family: Verdana,sans-serif;
     font-size: 13px;
     line-height: 30px;
- #   padding: 0 5px;
+/*    padding: 0 5px; */
     color: #333333;
 }
 
@@ -270,5 +271,10 @@ select {
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAUCAIAAADDbMD2AAAAM0lEQVQIHQXBQRECARAEsan2A+55nIfTtCHpfd8+n2+s0dHIlpPJCdly2nTkxNp09Dy/P4LOKw/0r/+8AAAAAElFTkSuQmCC") repeat-x scroll 0 0 transparent;
     height: 25px;
     cursor: pointer;
+}
+
+.subtab-sep {
+    background-color: #888888;
+    cursor: col-resize;
 }
 
