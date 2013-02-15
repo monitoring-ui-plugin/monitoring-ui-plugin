@@ -32,63 +32,22 @@
           <div style="outline:none;" id="mon-res-action-srv" status="[% hosts.$service.status %]" service="[% hosts.$service.service %]" host="[% name %]">
             <div>
 
-[% # Config File !!! %]
+        [% IF hosts.$service.status == 0 %]
+	<img src="../static/images/icons/arrow-ok.png" />
+        [% ELSIF hosts.$service.status == 1 %]
+	<img src="../static/images/icons/arrow-warning.png" />
+        [% ELSIF hosts.$service.status == 2 %]
+	<img src="../static/images/icons/arrow-critical.png" />
+        [% ELSIF hosts.$service.status == 3 %]
+	<img src="../static/images/icons/arrow-unknown.png" />
+        [% END %]
 
-              <a href="" onclick="return showPnpImage('http://10.0.100.195/pnp4nagios/image?host=[% hosts.$service.hostname %]&srv=[% hosts.$service.pnpservice %]&view=0')" class="mon_res_pnp">
-                <em class="" unselectable="on">
-[%#                  <button id="ext-gen402" class="icinga-icon-image-arrow" type="button">&nbsp;</button> %]
-		     <img src="../static/images/icons/image--arrow.png" />
-                </em>
-              </a>
             </div>
           </div>
         </td>
         <td class="mon-res-body-td">
           <div style="outline:none;">
             <div>[% hosts.$service.service %]</div>
-          </div>
-        </td>
-        <td class="mon-res-body-td">
-          <div style="outline:none;">
-
-  [% IF hosts.$service.status == 0 %]
-
-            <div class="icinga-status icinga-status-ok">
-              <span>OK</span>
-            </div>
-
-  [% ELSIF hosts.$service.status == 1 %]
-
-            <div class="icinga-status icinga-status-warning">
-              <span>WARNING</span>
-            </div>
-
-  [% ELSIF hosts.$service.status == 2 %]
-
-            <div class="icinga-status icinga-status-critical">
-              <span>CRITICAL</span>
-            </div>
-
-
-  [% ELSIF hosts.$service.status == 3 %]
-
-            <div class="icinga-status icinga-status-unknown">
-              <span>UNKNOWN</span>
-            </div>
-
-
-  [% END %]
-
-          </div>
-        </td>
-        <td class="mon-res-body-td">
-          <div style="outline:none;">
-            <div>[% hosts.$service.lastcheck %]</div>
-          </div>
-        </td>
-        <td class="mon-res-body-td">
-          <div style="outline:none;">
-            <div>[% hosts.$service.duration %]</div>
           </div>
         </td>
         <td class="mon-res-body-td">
@@ -102,6 +61,8 @@
 
     </tbody>
   </table>
+</div>
+
 </div>
 
 [% INCLUDE footer.tt %]

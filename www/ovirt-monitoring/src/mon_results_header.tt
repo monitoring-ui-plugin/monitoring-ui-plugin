@@ -19,6 +19,20 @@
 
 [% INCLUDE header.tt %]
 
+[%# Split tab into 2 subtabs %]
+[%# right subtab with details and graphs %]
+<div style="position: absolute; overflow: hidden; top: 0px; right: 0px; bottom: 0px; width: 600px;">
+  BLA
+</div>
+
+[%# subtab deliminator %]
+<div style="position: absolute; overflow: hidden; top: 0px; right: 600px; bottom: 0px; width: 8px;">
+  <div class="subtab-del" style="width: 8px; position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;"></div>
+</div>
+
+[%# left subtab with monitoring results %]
+<div style="position: absolute; overflow: hidden; left: 0px; top: 0px; right: 608px; bottom: 0px; overflow-y: scroll">
+
 [%# Table header for vm and host check commands %]
 
 <div class="mon-res-action" align="left">
@@ -40,10 +54,7 @@
     <thead>
       <tr>
         <th class="mon-res-head-th mon-res-head-small" colspan="1" width="25"></th>
-        <th class="mon-res-head-th" colspan="1">Service</th>
-        <th class="mon-res-head-th" colspan="1" width="120">Status</th>
-        <th class="mon-res-head-th" colspan="1" width="130">Last check</th>
-        <th class="mon-res-head-th" colspan="1" width="130">Duration</th>
+        <th class="mon-res-head-th" colspan="1" width="170">Service</th>
         <th class="mon-res-head-th" colspan="1">Output</th>
       </tr>
     </thead>
