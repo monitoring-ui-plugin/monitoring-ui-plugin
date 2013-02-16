@@ -1,0 +1,34 @@
+<div class="mon-res-head-top">
+  <table class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
+    <thead>
+      <tr>
+        <th class="mon-res-head-th" width="170">Name</th>
+        <th class="mon-res-head-th">Value</th>
+      </tr>
+    </thead>
+    <tbody style="">
+      </tr>
+[% FOREACH service IN hosts.keys.sort %]
+  [% IF loop.index % 2 %]
+      <tr class="mon-res-body-tr2">
+  [% ELSE %]
+      <tr class="mon-res-body-tr">
+  [% END %]
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+            <div id="mon-res-body-trim">[% hosts.$service.is_flapping %]</div>
+          </div>
+        </td>
+        <td class="mon-res-body-td">
+          <div style="outline:none;">
+            <div id="mon-res-body-trim">[% hosts.$service.output %]</div>
+          </div>
+        </td>
+      </tr>
+[% END %]
+
+    </tbody>
+  </table>
+</div>
+
