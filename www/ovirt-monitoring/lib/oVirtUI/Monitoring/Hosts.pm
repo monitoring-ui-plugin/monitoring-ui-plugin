@@ -37,12 +37,23 @@ sub get_hostresults{
     next unless defined $hostresult[0][0][$i][0];	# skip empty results
     $rethash{$hostresult[0][0][$i][0]}{'service'}	= $hostresult[0][0][$i][0];
     $rethash{$hostresult[0][0][$i][0]}{'status'}	= $hostresult[0][0][$i][1];
-    $rethash{$hostresult[0][0][$i][0]}{'lastcheck'}	= strftime ("%Y-%m-%d %H:%M:%S", localtime( $hostresult[0][0][$i][2] ) );
-    $rethash{$hostresult[0][0][$i][0]}{'duration'}	= strftime ("%Y-%m-%d %H:%M:%S", localtime( $hostresult[0][0][$i][3] ) );
-    $rethash{$hostresult[0][0][$i][0]}{'output'}	= $hostresult[0][0][$i][4];
+#    $rethash{$hostresult[0][0][$i][0]}{'lastcheck'}	= strftime ("%Y-%m-%d %H:%M:%S", localtime( $hostresult[0][0][$i][2] ) );
+#    $rethash{$hostresult[0][0][$i][0]}{'duration'}	= strftime ("%Y-%m-%d %H:%M:%S", localtime( $hostresult[0][0][$i][3] ) );
+#    $rethash{$hostresult[0][0][$i][0]}{'output'}	= $hostresult[0][0][$i][4];
+    $rethash{$hostresult[0][0][$i][0]}{'output'}	= $hostresult[0][0][$i][2];
     $rethash{$hostresult[0][0][$i][0]}{'hostname'}	= $host;
     $rethash{$hostresult[0][0][$i][0]}{'pnpservice'}	= $hostresult[0][0][$i][0];
     $rethash{$hostresult[0][0][$i][0]}{'pnpservice'}	=~ s/ /_/g;
+#    $rethash{$hostresult[0][0][$i][0]}{'long_plugin_output'} = $hostresult[0][0][$i][5];
+#    $rethash{$hostresult[0][0][$i][0]}{'perf_data'}	= $hostresult[0][0][$i][6];
+#    $rethash{$hostresult[0][0][$i][0]}{'last_notification'}	= $hostresult[0][0][$i][7];
+#    $rethash{$hostresult[0][0][$i][0]}{'last_state_change'}	= $hostresult[0][0][$i][8];
+#    $rethash{$hostresult[0][0][$i][0]}{'latency'}	= $hostresult[0][0][$i][9];
+#    $rethash{$hostresult[0][0][$i][0]}{'next_check'}	= $hostresult[0][0][$i][10];
+#    $rethash{$hostresult[0][0][$i][0]}{'notifications_enabled'}	= $hostresult[0][0][$i][11];
+#    $rethash{$hostresult[0][0][$i][0]}{'acknowledged'}	= $hostresult[0][0][$i][12];
+#    $rethash{$hostresult[0][0][$i][0]}{'comments'}	= $hostresult[0][0][$i][13];
+#    $rethash{$hostresult[0][0][$i][0]}{'is_flapping'}	= $hostresult[0][0][$i][14];
   }
   return \%rethash;
 }

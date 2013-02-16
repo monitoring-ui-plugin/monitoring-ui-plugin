@@ -47,12 +47,12 @@
         </td>
         <td class="mon-res-body-td">
           <div style="outline:none;">
-            <div>[% hosts.$service.service %]</div>
+            <div id="mon-res-body-trim">[% hosts.$service.service %]</div>
           </div>
         </td>
         <td class="mon-res-body-td">
           <div style="outline:none;">
-            <div>[% hosts.$service.output %]</div>
+            <div id="mon-res-body-trim">[% hosts.$service.output %]</div>
           </div>
         </td>
       </tr>

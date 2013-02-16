@@ -31,11 +31,14 @@ sub selectall {
   my $host = $_[0];
   # TODO: use config for port or socket
 #  my $ml = Monitoring::Livestatus->new( socket => '/usr/local/icinga/var/rw/live' );
-  my $ml = Monitoring::Livestatus->new( server => '10.0.100.195:6557' );
+  my $ml = Monitoring::Livestatus->new( server => '127.0.0.1:6557' );
   $ml->errors_are_fatal(0);
 
+#  my @select = $ml->selectall_arrayref("GET services\n
+#Columns: display_name state last_check last_state_change plugin_output long_plugin_output perf_data last_notification last_state_change latency next_check notifications_enabled acknowledged comments is_flapping\n
+#Filter: host_name =~ $host");
   my @select = $ml->selectall_arrayref("GET services\n
-Columns: display_name state last_check last_state_change plugin_output\n
+Columns: display_name state plugin_output\n
 Filter: host_name =~ $host");
 
   if($Monitoring::Livestatus::ErrorCode) {

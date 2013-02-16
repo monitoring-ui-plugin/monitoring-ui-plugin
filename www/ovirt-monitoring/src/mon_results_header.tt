@@ -22,7 +22,10 @@
 [%# Split tab into 2 subtabs %]
 [%# right subtab with details and graphs %]
 <div style="position: absolute; overflow: hidden; top: 0px; right: 0px; bottom: 0px; width: 600px;">
-  BLA
+
+[%# Table header for service statistics %]
+[% INCLUDE mon_results_details_tab.tt %]
+
 </div>
 
 [%# subtab deliminator %]
