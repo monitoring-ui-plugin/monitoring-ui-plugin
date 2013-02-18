@@ -19,6 +19,8 @@
 
 [% INCLUDE mon_results_header.tt %]
 
+<div class="td-mon-res-details-scroll">
+  <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
     <tbody style="">
 
 [% FOREACH service IN hosts.keys.sort %]
@@ -28,7 +30,7 @@
   [% ELSE %]
       <tr class="mon-res-body-tr" onClick="">
   [% END %]
-        <td class="mon-res-body-td">
+        <td class="mon-res-body-td" colspan="1" width="25">
           <div style="outline:none;" id="mon-res-action-srv" status="[% hosts.$service.status %]" service="[% hosts.$service.service %]" host="[% name %]">
             <div>
 
@@ -45,14 +47,14 @@
             </div>
           </div>
         </td>
-        <td class="mon-res-body-td">
+        <td class="mon-res-body-td" width="170">
           <div style="outline:none;">
-            <div id="mon-res-body-trim">[% hosts.$service.service %]</div>
+            <div id="mon-res-body-trim" style="overflow:hidden;">[% hosts.$service.service %]</div>
           </div>
         </td>
         <td class="mon-res-body-td">
           <div style="outline:none;">
-            <div id="mon-res-body-trim">[% hosts.$service.output %]</div>
+            <div id="mon-res-body-trim" style="overflow:hidden;">[% hosts.$service.output %]</div>
           </div>
         </td>
       </tr>
@@ -61,6 +63,7 @@
 
     </tbody>
   </table>
+  </div>
 </div>
 
 </div>

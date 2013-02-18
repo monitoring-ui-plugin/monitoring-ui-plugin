@@ -54,7 +54,7 @@ if (! defined param){
 
     $tt_vars = {
       'name'  => $name,
-      'hosts' => get_hostresults($name)
+      'hosts' => get_results($name)
     };
 
     my %tt_vars_hash = %{ $tt_vars };

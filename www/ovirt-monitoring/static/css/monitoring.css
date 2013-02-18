@@ -54,7 +54,7 @@ body {
     bottom: 0;
     height: 28px;
     left: 0;
-    padding-right: 17px;
+/*    padding-right: 17px; */
     position: absolute;
     right: 0;
     top: 34px;
@@ -273,8 +273,49 @@ select {
     cursor: pointer;
 }
 
-.subtab-sep {
+.subtab-del {
     background-color: #888888;
     cursor: col-resize;
 }
 
+.mon-res-details-tabs li {
+/*    font-size: 10pt; */
+    font-size:62.5%;
+}
+
+.mon-res-graph {
+    font-family: Arial,sans-serif;
+    font-size: 11px;
+    font-weight:bold;
+}
+
+.mon-res-subtab {
+    position: absolute;
+    top: 29px;
+    right: 1px;
+    left: 0px;
+}
+
+.mon-res-subtab-td {
+    white-space:pre;
+}
+
+.td-mon-res-details-scroll {
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
+    position: fixed !important;
+    right: 618px;
+    top: 62px;
+}
+
+.td-mon-res-subdetails-scroll {
+    bottom: 0;
+/*    left: 0; */
+    width: 610px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: fixed !important;
+    right: 0px;
+    top: 57px;
+}

@@ -24,36 +24,51 @@ use POSIX qw(strftime);
 use oVirtUI::Monitoring::Livestatus;
 
 our @ISA	= qw(Exporter);
-our @EXPORT	= qw(get_hostresults);
+our @EXPORT	= qw(get_results get_servicedetails);
 our $VERSION	= 0.01;
 
 # ARG1: Hostname
-sub get_hostresults{
+sub get_results{
   my $host = $_[0];
-  my @hostresult = selectall($host);
+  my @result = GetServices($host,"");
   # construct return hash
   my %rethash;
-  for (my $i=0;$i<=$#{$hostresult[0][0]};$i++){
-    next unless defined $hostresult[0][0][$i][0];	# skip empty results
-    $rethash{$hostresult[0][0][$i][0]}{'service'}	= $hostresult[0][0][$i][0];
-    $rethash{$hostresult[0][0][$i][0]}{'status'}	= $hostresult[0][0][$i][1];
-#    $rethash{$hostresult[0][0][$i][0]}{'lastcheck'}	= strftime ("%Y-%m-%d %H:%M:%S", localtime( $hostresult[0][0][$i][2] ) );
-#    $rethash{$hostresult[0][0][$i][0]}{'duration'}	= strftime ("%Y-%m-%d %H:%M:%S", localtime( $hostresult[0][0][$i][3] ) );
-#    $rethash{$hostresult[0][0][$i][0]}{'output'}	= $hostresult[0][0][$i][4];
-    $rethash{$hostresult[0][0][$i][0]}{'output'}	= $hostresult[0][0][$i][2];
-    $rethash{$hostresult[0][0][$i][0]}{'hostname'}	= $host;
-    $rethash{$hostresult[0][0][$i][0]}{'pnpservice'}	= $hostresult[0][0][$i][0];
-    $rethash{$hostresult[0][0][$i][0]}{'pnpservice'}	=~ s/ /_/g;
-#    $rethash{$hostresult[0][0][$i][0]}{'long_plugin_output'} = $hostresult[0][0][$i][5];
-#    $rethash{$hostresult[0][0][$i][0]}{'perf_data'}	= $hostresult[0][0][$i][6];
-#    $rethash{$hostresult[0][0][$i][0]}{'last_notification'}	= $hostresult[0][0][$i][7];
-#    $rethash{$hostresult[0][0][$i][0]}{'last_state_change'}	= $hostresult[0][0][$i][8];
-#    $rethash{$hostresult[0][0][$i][0]}{'latency'}	= $hostresult[0][0][$i][9];
-#    $rethash{$hostresult[0][0][$i][0]}{'next_check'}	= $hostresult[0][0][$i][10];
-#    $rethash{$hostresult[0][0][$i][0]}{'notifications_enabled'}	= $hostresult[0][0][$i][11];
-#    $rethash{$hostresult[0][0][$i][0]}{'acknowledged'}	= $hostresult[0][0][$i][12];
-#    $rethash{$hostresult[0][0][$i][0]}{'comments'}	= $hostresult[0][0][$i][13];
-#    $rethash{$hostresult[0][0][$i][0]}{'is_flapping'}	= $hostresult[0][0][$i][14];
+  for (my $i=0;$i<=$#{$result[0][0]};$i++){
+    next unless defined $result[0][0][$i][0];	# skip empty results
+    $rethash{$result[0][0][$i][0]}{'service'}	= $result[0][0][$i][0];
+    $rethash{$result[0][0][$i][0]}{'status'}	= $result[0][0][$i][1];
+    $rethash{$result[0][0][$i][0]}{'output'}	= $result[0][0][$i][2];
+    $rethash{$result[0][0][$i][0]}{'hostname'}	= $host;
+    $rethash{$result[0][0][$i][0]}{'pnpservice'}	= $result[0][0][$i][0];
+    $rethash{$result[0][0][$i][0]}{'pnpservice'}	=~ s/ /_/g;
+  }
+  return \%rethash;
+}
+
+sub get_servicedetails{
+  my $host = $_[0];
+  my $service = $_[1];
+  my @result =  GetServices($host,$service);
+  # construct return hash
+  my %rethash;
+  for (my $i=0;$i<=$#{$result[0][0]};$i++){
+    next unless defined $result[0][0][$i][0];       # skip empty results
+    $rethash{$result[0][0][$i][0]}{'service'}       = $result[0][0][$i][0];
+    $rethash{$result[0][0][$i][0]}{'status'}        = $result[0][0][$i][1];
+    $rethash{$result[0][0][$i][0]}{'lastcheck'}    = strftime ("%Y-%m-%d %H:%M:%S", localtime( $result[0][0][$i][2] ));
+    $rethash{$result[0][0][$i][0]}{'duration'}     = strftime ("%Y-%m-%d %H:%M:%S", localtime( $result[0][0][$i][3] ));
+    $rethash{$result[0][0][$i][0]}{'output'}       = $result[0][0][$i][4];
+    $rethash{$result[0][0][$i][0]}{'hostname'}      = $host;
+    $rethash{$result[0][0][$i][0]}{'long_plugin_output'} = $result[0][0][$i][5];
+    $rethash{$result[0][0][$i][0]}{'perf_data'}    = $result[0][0][$i][6];
+    $rethash{$result[0][0][$i][0]}{'last_notification'}    = $result[0][0][$i][7];
+    $rethash{$result[0][0][$i][0]}{'last_state_change'}    = strftime ("%Y-%m-%d %H:%M:%S", localtime( $result[0][0][$i][8] ));
+    $rethash{$result[0][0][$i][0]}{'latency'}      = $result[0][0][$i][9];
+    $rethash{$result[0][0][$i][0]}{'next_check'}   = strftime ("%Y-%m-%d %H:%M:%S", localtime( $result[0][0][$i][10] ));
+    $rethash{$result[0][0][$i][0]}{'notifications_enabled'}        = $result[0][0][$i][11];
+    $rethash{$result[0][0][$i][0]}{'acknowledged'} = $result[0][0][$i][12];
+    $rethash{$result[0][0][$i][0]}{'comments'}     = $result[0][0][$i][13];
+    $rethash{$result[0][0][$i][0]}{'is_flapping'}  = $result[0][0][$i][14];
   }
   return \%rethash;
 }
