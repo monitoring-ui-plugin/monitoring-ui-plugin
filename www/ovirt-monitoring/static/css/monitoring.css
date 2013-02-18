@@ -122,7 +122,8 @@ body {
     height: 26px !important;
     padding: 0 3px;
     white-space: nowrap;
-    font-size: small;
+    font-size: 75%;
+    font-family: Verdana,Arial,sans-serif;
 }
 
 div.icinga-status-ok, div.servicechart-0 {
