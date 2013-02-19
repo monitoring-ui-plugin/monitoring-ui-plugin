@@ -48,6 +48,7 @@ Installation
 * Icinga or Nagios
 * mk-livestatus
 * PNP4Nagios (optional)
+* oVirt 3.2
 
 
 1. Install Perl Modules on Fedora 18:
