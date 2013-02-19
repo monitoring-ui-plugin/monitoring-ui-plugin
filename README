@@ -7,7 +7,7 @@
 What is oVirt Monitoring UI-Plugin?
 ===================================
 
-This UI-Plugin for oVirt integrates an existing Nagios or Icinga monitoring
+This UI-Plugin for oVirt integrates a existing Nagios or Icinga monitoring
 solution into oVirt and displays detailed service status information for
 hosts and virtual machines including performance graphs.
 
