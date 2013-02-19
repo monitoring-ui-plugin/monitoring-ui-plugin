@@ -1,13 +1,15 @@
 #*********************************************************#
 #                                                         #
-#         README for oVirt Monitoring UI plugin           #
+#         README for oVirt Monitoring UI-Plugin           #
 #                                                         #
 #*********************************************************#
 
-What is oVirt Monitoring UI plugin?
+What is oVirt Monitoring UI-Plugin?
 ===================================
 
-...............
+This UI-Plugin for oVirt integrates an existing Nagios or Icinga monitoring
+solution into oVirt and displays detailed service status information for
+hosts and virtual machines including performance graphs.
 
 
 Contributions / Help
@@ -16,7 +18,10 @@ Contributions / Help
 Send email to r.koch@ovido.at if you have questions regarding use
 of this software. Please include the following information in your email:
 * OS type and version
+* Browser type and version
 * Perl version
+* Nagios or Icinga version
+* mk-livestatus version
 * oVirt version
 
 To submit patches of suggest improvements, send email to r.koch@ovido.at.
@@ -25,29 +30,58 @@ To submit patches of suggest improvements, send email to r.koch@ovido.at.
 Installation
 ============
 
-Make sure that the following requirements are met:
-Perl
-Perl-Modules:
-  perl-CGI
-  perl-Template-Toolkit
-Icinga or Nagios
-mk-livestatus
+0. Make sure that the following requirements are met:
+* Perl
+* Perl-Modules:
+    CGI
+    Template
+    Data::Dumper
+    JSON::XS
+    JSON::PP
+    Digest::MD5
+    Carp
+    Encode
+    IO::Socket::INET
+    IO::Socket::UNIX
+    Time::HiRes
+    Scalar::Util
+* Icinga or Nagios
+* mk-livestatus
+* PNP4Nagios (optional)
 
-optional: PNP4Nagios (at the moment only local  on ovirt-engine)
 
-- install Icinga/Nagios
-- define Hosts and Services
-- install mk-livestatus
-- configure xinetd for use with mk-livestatus
-- copy files
-  * ui-plugins/* to /usr/share/ovirt-engine/ui-plugins
-  * httpd.conf/* to /etc/httpd/conf.d
-  * www/* to /data/www/
-- edit /etc/httpd/conf.d/ovirt-engine.conf
+1. Install Perl Modules on Fedora 18:
+# yum install perl perl-CGI perl-Template-Toolkit perl-Data-Dumper perl-JSON-XS \
+              perl-JSON-PP perl-Digest-MD5 perl-Carp perl-Scalar-List-Utils
+
+2. Install Icinga/Nagios
+See Icinga documentation: http://docs.icinga.org/latest/en/
+See Nagios documentation: http://nagios.sourceforge.net/docs/nagioscore/3/en/toc.html
+
+3. Define Hosts and Services
+As described in Nagios and/or Icinga documentation
+
+4. Install mk-livestatus and integrate it into Nagios/Icinga
+See mk-livestatus documentation: http://mathias-kettner.de/checkmk_livestatus.html
+
+5. Configure xinetd for use with mk-livestatus
+See mk-livestatus documentation: http://mathias-kettner.de/checkmk_livestatus.html#H1:Remote%20access%20to%20Livestatus%20via%20SSH%20or%20xinetd
+
+6. Install oVirt Monitoring UI-Plugin
+# cp -r ui-plugins/* /usr/share/ovirt-engine/ui-plugins/
+# cp -r httpd.conf/* /etc/httpd/conf.d/
+# mkdir -p /data/www
+# cp -r www/* to /data/www/
+
+7. Edit /etc/httpd/conf.d/ovirt-engine.conf
 
 ProxyPass /ovirt-monitoring !
 ProxyPass /pnp4nagios !
 ProxyPass / ajp://localhost:8702/ retry=5 timeout=3600
+
+8. Adapt URL of Nagios/Icinga Host with mk-livestatus if not running on ovirt-engine
+# vi /data/www/ovirt-monitoring/lib/oVirtUI/Monitoring/Livestatus.pm
+  my $ml = Monitoring::Livestatus->new( server => '127.0.0.1:6557' );
 
 
 Documentation
@@ -56,7 +90,16 @@ Documentation
 Short documentation on how to use this plugin.
 
 Detailed documentation can be found on the project website
-https://labs.ovido.at/monitoring/wiki/ovirt-monitoring
+https://labs.ovido.at/monitoring/wiki/ovirt-monitoring-ui-plugin
 
-...
+Log into oVirt Webadmin Portal and select a host or virtual machine.
+A new subtab labeled "Monitoring Details" appears. In this new subtab 
+you can see all service checks for this virtual machine or host with 
+service output and status information.
+
+On the right side detailed information and performance graphs (if PNP4nagios
+is installed) are provided.
+
+
+
 
