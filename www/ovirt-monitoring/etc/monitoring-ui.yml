@@ -1,0 +1,36 @@
+refresh:
+  interval: 5
+
+#auth:
+#  provider: ldap
+  
+ui-plugin:
+  src_dir: /data/www/ovirt-monitoring/src
+  data_dir: /data/www/ovirt-monitoring/share
+  site_url: /ovirt-monitoring
+  template: default
+  
+  
+############################################################
+# Provider
+# Source: Connect via IDO or mk_livestatus or custom module
+# type: Database backend (DBD connection)
+############################################################
+
+provider:
+  source: mk-livestatus
+
+ido:
+  host: localhost
+  port: 3306
+  type: mysql
+  database: icinga
+  username: user
+  password: password
+  prefix: icinga_
+  
+mk-livestatus:
+#  socket: /var/spool/icinga/rw/live
+  server: 127.0.0.1
+  port: 6557  
+  
