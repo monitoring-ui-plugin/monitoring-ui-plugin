@@ -19,17 +19,55 @@
 
 use strict;
 use warnings;
+
 use Template;
 use CGI qw(param);
-use CGI::Carp qw(fatalsToBrowser);
+use CGI::Session;
+
+# for debugging only
+#use CGI::Carp qw(fatalsToBrowser);
 #use Data::Dumper;
 
-# oVirtUI Monitoring Libs
-use lib "../lib/";
+# define default paths required to read config files
+my $lib_path	= "../lib";
+my $cfg_path	= "../etc";
+
+# load custom Perl modules
+use lib "../lib";
+use oVirtUI::Config;
 use oVirtUI::Monitoring::Hosts;
+
+# global variables
+my $session_cache	= 3600;	# 1 hour
+my $config;
+
+
+### The main script starts here
+
 
 # HTML code
 print "Content-type: text/html\n\n";
+
+# CGI sessions
+my $post	= CGI->new;
+my $sid		= $post->cookie("CGISESSID") || undef;
+my $session	= new CGI::Session(undef, $sid, {Directory=>File::Spec->tmpdir});
+   $session->expire('config', $session_cache);
+my $cookie	= $post->cookie(CGISESSID => $session->id);
+# for debugging only
+#print $post->header( -cookie=>$cookie );
+
+# open config files if not cached
+my $conf	= oVirtUI::Config->new;
+if (! $session->param('config')){
+  $config	= $conf->read_dir( $cfg_path );
+  exit 1 unless ( $conf->validate($config) == 0);
+  $session->param('config', $config);
+}else{
+  $config	= $session->param('config');
+}
+
+
 
 # Process URL
 if (! defined param){
