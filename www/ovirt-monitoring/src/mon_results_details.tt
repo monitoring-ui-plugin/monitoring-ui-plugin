@@ -35,13 +35,13 @@
             <div>
 
         [% IF hosts.$service.status == 0 %]
-	<img src="../static/images/icons/arrow-ok.png" />
+	<img src="../share/images/icons/arrow-ok.png" />
         [% ELSIF hosts.$service.status == 1 %]
-	<img src="../static/images/icons/arrow-warning.png" />
+	<img src="../share/images/icons/arrow-warning.png" />
         [% ELSIF hosts.$service.status == 2 %]
-	<img src="../static/images/icons/arrow-critical.png" />
+	<img src="../share/images/icons/arrow-critical.png" />
         [% ELSIF hosts.$service.status == 3 %]
-	<img src="../static/images/icons/arrow-unknown.png" />
+	<img src="../share/images/icons/arrow-unknown.png" />
         [% END %]
 
             </div>
