@@ -22,7 +22,7 @@
 	<script src="[% site_url %]/share/javascript/templates/results_footer.html" id="resultTemplateFooter" type="text/x-jquery-tmpl"></script>
 
 	<!-- oVirt Monitoring -->
-	<script src="[% site_url %]/share/javascript/monitoring.js"></script>
+	<script src="[% site_url %]/share/javascript/monitoring-ui.js"></script>
 
   </head>
   <body>
