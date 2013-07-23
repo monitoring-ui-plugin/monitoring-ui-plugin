@@ -29,13 +29,18 @@ use CGI::Session;
 #use Data::Dumper;
 
 # define default paths required to read config files
-my $lib_path	= "../lib";
-my $cfg_path	= "../etc";
+my ($lib_path, $cfg_path);
+BEGIN {
+  $lib_path = "../lib";		# path to BPView lib directory
+  $cfg_path = "../etc";		# path to BPView etc directory
+}
+
 
 # load custom Perl modules
-use lib "../lib";
+use lib "$lib_path";
 use oVirtUI::Config;
 use oVirtUI::Monitoring::Hosts;
+
 
 # global variables
 my $session_cache	= 3600;	# 1 hour
@@ -46,7 +51,7 @@ my $config;
 
 
 # HTML code
-print "Content-type: text/html\n\n";
+print "Content-type: text/html\n\n" unless defined param;
 
 # CGI sessions
 my $post	= CGI->new;
@@ -58,13 +63,21 @@ my $cookie	= $post->cookie(CGISESSID => $session->id);
 #print $post->header( -cookie=>$cookie );
 
 # open config files if not cached
-my $conf	= oVirtUI::Config->new;
+my $conf	= oVirtUI::Config->new();
+
 if (! $session->param('config')){
-  $config	= $conf->read_dir( $cfg_path );
-  exit 1 unless ( $conf->validate($config) == 0);
+
+  # open config file directory and push configs into hash
+  $config	= $conf->read_dir( 'dir' => $cfg_path );
+  # validate config
+  exit 1 unless ( $conf->validate( 'config' => $config ) == 0);
+  # cache config
   $session->param('config', $config);
+  
 }else{
+	
   $config	= $session->param('config');
+  
 }
 
 
