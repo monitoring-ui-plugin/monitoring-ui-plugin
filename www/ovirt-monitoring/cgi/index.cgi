@@ -23,9 +23,9 @@ use warnings;
 use Template;
 use CGI qw(param);
 use CGI::Session;
+use CGI::Carp qw(fatalsToBrowser);
 
 # for debugging only
-#use CGI::Carp qw(fatalsToBrowser);
 #use Data::Dumper;
 
 # define default paths required to read config files
@@ -39,7 +39,8 @@ BEGIN {
 # load custom Perl modules
 use lib "$lib_path";
 use oVirtUI::Config;
-use oVirtUI::Monitoring::Hosts;
+use oVirtUI::Web;
+#use oVirtUI::Monitoring::Hosts;
 
 
 # global variables
@@ -81,79 +82,40 @@ if (! $session->param('config')){
 }
 
 
+# process URL
+if (defined param){
 
-# Process URL
-if (! defined param){
+  if (defined param("results")){	
+  	
+    print "Content-type: text/html\n\n";
 
-  print "Parameter needed!";
-  exit 1;
+    # display web page
+    my $page = oVirtUI::Web->new(
+ 		data_dir	=> $config->{ 'ui-plugin' }{ 'data_dir' },
+ 		site_url	=> $config->{ 'ui-plugin' }{ 'site_url' },
+ 		template	=> $config->{ 'ui-plugin' }{ 'template' },
+	);
+   $page->display_page(
+    	page	=> "results",
+    	content	=> param("host"),		# get name of vm/host
+    	refresh	=> $config->{ 'refresh' }{ 'interval' },
+	);
 
-}else{
-
-  # global variables
-  my $tt_template = undef;
-  my $tt_vars     = undef;
-
-  # Search host and service statistics
-  if (defined param("subtab")){
-
-    my $subtab = param("subtab");
-    my $name = param("name");
-    # rename subtab
-    chop $subtab;
-    $subtab = ucfirst $subtab;
-
-    $tt_vars = {
-      'name'  => $name,
-      'hosts' => get_results($name)
-    };
-
-    my %tt_vars_hash = %{ $tt_vars };
-
-    # Host not found
-    if (keys( %{ $tt_vars_hash{'hosts'} } ) == 0){
-      $tt_vars = {
-        'name' => $name,
-        'host' => $subtab
-      };
-      $tt_template = "../src/mon_results_notfound.tt";
-    }else{
-      $tt_template = "../src/mon_results_details.tt";
-    }
-
-  # Acknowledge service problem
-  }elsif (defined param("ack")){
-
-    my $host = param("host");
-    my $service = param("service");
-    my $user = param("user");
-
-    $tt_vars = {
-	'host'    => $host,
-	'service' => $service,
-	'user'    => $user
-    };
-
-    $tt_template = "../src/mon_results_ack.tt";
-
-  # Comment service problem
-  }elsif (defined param("comm")){
-
+  }else{
+  	
+  	die "Unknown parameter: " . param;
+  	
   }
-
-  # create new template
-  my $template = Template->new({
-    RELATIVE => 1,
-    # where to find template files
-    # TODO: Config file!!!
-    INCLUDE_PATH => ['/data/www/ovirt-monitoring/src'],
-    # pre-process lib/config to define any extra values
-    PRE_PROCESS  => 'config',
-  });
-
-  # display page with template
-  $template->process($tt_template, $tt_vars) || die "Template process failed: " . $template->error() . "\n";
-
+	
+  
+}else{
+	
+  die "Parameter needed!";
+	
 }
 
-exit 0
+
+
+
+exit 0;
+
