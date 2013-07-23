@@ -1,12 +1,9 @@
 refresh:
   interval: 5
 
-#auth:
-#  provider: ldap
-  
 ui-plugin:
-  src_dir: /data/www/ovirt-monitoring/src
   data_dir: /data/www/ovirt-monitoring/share
+  lib_dir: /data/www/ovirt-monitoring/lib
   site_url: /ovirt-monitoring
   template: default
   
