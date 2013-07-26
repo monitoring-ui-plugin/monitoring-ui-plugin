@@ -1,12 +1,9 @@
 refresh:
   interval: 5
 
-#auth:
-#  provider: ldap
-  
 ui-plugin:
-  src_dir: /data/www/ovirt-monitoring/src
   data_dir: /data/www/ovirt-monitoring/share
+  lib_dir: /data/www/ovirt-monitoring/lib
   site_url: /ovirt-monitoring
   template: default
   
@@ -18,15 +15,15 @@ ui-plugin:
 ############################################################
 
 provider:
-  source: mk-livestatus
+  source: ido
 
 ido:
   host: localhost
-  port: 3306
-  type: mysql
+  port: 5432
+  type: pgsql
   database: icinga
-  username: user
-  password: password
+  username: icinga
+  password: icinga
   prefix: icinga_
   
 mk-livestatus:

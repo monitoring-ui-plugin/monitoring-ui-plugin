@@ -23,19 +23,26 @@ use warnings;
 use Template;
 use CGI qw(param);
 use CGI::Session;
+use CGI::Carp qw(fatalsToBrowser);
 
 # for debugging only
-#use CGI::Carp qw(fatalsToBrowser);
 #use Data::Dumper;
 
 # define default paths required to read config files
-my $lib_path	= "../lib";
-my $cfg_path	= "../etc";
+my ($lib_path, $cfg_path);
+BEGIN {
+  $lib_path = "../lib";		# path to BPView lib directory
+  $cfg_path = "../etc";		# path to BPView etc directory
+}
+
 
 # load custom Perl modules
-use lib "../lib";
+use lib "$lib_path";
 use oVirtUI::Config;
-use oVirtUI::Monitoring::Hosts;
+use oVirtUI::Web;
+use oVirtUI::Data;
+#use oVirtUI::Monitoring::Hosts;
+
 
 # global variables
 my $session_cache	= 3600;	# 1 hour
@@ -46,7 +53,7 @@ my $config;
 
 
 # HTML code
-print "Content-type: text/html\n\n";
+print "Content-type: text/html\n\n" unless defined param;
 
 # CGI sessions
 my $post	= CGI->new;
@@ -58,89 +65,74 @@ my $cookie	= $post->cookie(CGISESSID => $session->id);
 #print $post->header( -cookie=>$cookie );
 
 # open config files if not cached
-my $conf	= oVirtUI::Config->new;
+my $conf	= oVirtUI::Config->new();
+
 if (! $session->param('config')){
-  $config	= $conf->read_dir( $cfg_path );
-  exit 1 unless ( $conf->validate($config) == 0);
+
+  # open config file directory and push configs into hash
+  $config	= $conf->read_dir( 'dir' => $cfg_path );
+  # validate config
+  exit 1 unless ( $conf->validate( 'config' => $config ) == 0);
+  # cache config
   $session->param('config', $config);
+  
 }else{
+	
   $config	= $session->param('config');
+  
 }
 
 
+# process URL
+if (defined param){
 
-# Process URL
-if (! defined param){
+  if (defined param("results")){	
+  	
+    print "Content-type: text/html\n\n";
 
-  print "Parameter needed!";
-  exit 1;
+    # display web page
+    my $page = oVirtUI::Web->new(
+ 		data_dir	=> $config->{ 'ui-plugin' }{ 'data_dir' },
+ 		site_url	=> $config->{ 'ui-plugin' }{ 'site_url' },
+ 		template	=> $config->{ 'ui-plugin' }{ 'template' },
+	);
+   $page->display_page(
+    	page	=> "results",
+    	content	=> param("host"),		# get name of vm/host
+    	refresh	=> $config->{ 'refresh' }{ 'interval' },
+	);
 
-}else{
+  }elsif (defined param("host")){
+  	
+  	# JSON Header
+    print "Content-type: application/json charset=iso-8859-1\n\n";
+    my $json = undef;
+  	
+  	# get services for specified host
+    my $services = oVirtUI::Data->new(
+    	 provider	=> $config->{ 'provider' }{ 'source' },
+    	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
+       );	
+    $json = $services->get_services( 'host'	=> param("host") );
+    print $json;
+    exit 0;
+  	
 
-  # global variables
-  my $tt_template = undef;
-  my $tt_vars     = undef;
-
-  # Search host and service statistics
-  if (defined param("subtab")){
-
-    my $subtab = param("subtab");
-    my $name = param("name");
-    # rename subtab
-    chop $subtab;
-    $subtab = ucfirst $subtab;
-
-    $tt_vars = {
-      'name'  => $name,
-      'hosts' => get_results($name)
-    };
-
-    my %tt_vars_hash = %{ $tt_vars };
-
-    # Host not found
-    if (keys( %{ $tt_vars_hash{'hosts'} } ) == 0){
-      $tt_vars = {
-        'name' => $name,
-        'host' => $subtab
-      };
-      $tt_template = "../src/mon_results_notfound.tt";
-    }else{
-      $tt_template = "../src/mon_results_details.tt";
-    }
-
-  # Acknowledge service problem
-  }elsif (defined param("ack")){
-
-    my $host = param("host");
-    my $service = param("service");
-    my $user = param("user");
-
-    $tt_vars = {
-	'host'    => $host,
-	'service' => $service,
-	'user'    => $user
-    };
-
-    $tt_template = "../src/mon_results_ack.tt";
-
-  # Comment service problem
-  }elsif (defined param("comm")){
-
+  }else{
+  	
+  	die "Unknown parameter: " . param;
+  	
   }
-
-  # create new template
-  my $template = Template->new({
-    RELATIVE => 1,
-    # where to find template files
-    # TODO: Config file!!!
-    INCLUDE_PATH => ['/data/www/ovirt-monitoring/src'],
-    # pre-process lib/config to define any extra values
-    PRE_PROCESS  => 'config',
-  });
-
-  # display page with template
-  $template->process($tt_template, $tt_vars) || die "Template process failed: " . $template->error() . "\n";
-
+	
+  
+}else{
+	
+  die "Parameter needed!";
+	
 }
 
-exit 0
+
+
+
+exit 0;
+
