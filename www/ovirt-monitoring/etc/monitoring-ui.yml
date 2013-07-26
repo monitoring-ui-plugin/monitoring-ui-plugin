@@ -15,15 +15,15 @@ ui-plugin:
 ############################################################
 
 provider:
-  source: mk-livestatus
+  source: ido
 
 ido:
   host: localhost
-  port: 3306
-  type: mysql
+  port: 5432
+  type: pgsql
   database: icinga
-  username: user
-  password: password
+  username: icinga
+  password: icinga
   prefix: icinga_
   
 mk-livestatus:
