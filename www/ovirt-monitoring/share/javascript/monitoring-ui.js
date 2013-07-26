@@ -28,8 +28,31 @@ $(document).ready(function() {
 
 // get service stati for selected host/vm
 function getResults(){
+	
   // get hostname
   var hostName = $("div[id='service-details']").attr("host");
+  $.getJSON( "?host=" + hostName, function(data){
+	  
+	var jsonData = "";
+	$.each(data, function(service, serviceVal){
+		
+      // service data
+	  jsonData += "<div>" + serviceVal.state + "</div>";
+  	  jsonData += "<div>" + serviceVal.service + "</div>";
+  	  jsonData += "<div>" + serviceVal.output + "</div>";
+  	    
+	// display error message on empty returns
+//	if (jsonData == ""){
+		// do something!
+//	}
+	  
+    // update details
+	$('#service-details').empty();
+	$('#service-details').append(jsonData);
+	  
+	})
+	  
+  })
   
 }
 

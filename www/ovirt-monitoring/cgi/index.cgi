@@ -40,6 +40,7 @@ BEGIN {
 use lib "$lib_path";
 use oVirtUI::Config;
 use oVirtUI::Web;
+use oVirtUI::Data;
 #use oVirtUI::Monitoring::Hosts;
 
 
@@ -100,6 +101,22 @@ if (defined param){
     	content	=> param("host"),		# get name of vm/host
     	refresh	=> $config->{ 'refresh' }{ 'interval' },
 	);
+
+  }elsif (defined param("host")){
+  	
+  	# JSON Header
+    print "Content-type: application/json charset=iso-8859-1\n\n";
+    my $json = undef;
+  	
+  	# get services for specified host
+    my $services = oVirtUI::Data->new(
+    	 provider	=> $config->{ 'provider' }{ 'source' },
+    	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
+       );	
+    $json = $services->get_services( 'host'	=> param("host") );
+    print $json;
+    exit 0;
+  	
 
   }else{
   	
