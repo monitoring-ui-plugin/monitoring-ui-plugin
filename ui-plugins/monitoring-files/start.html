@@ -13,24 +13,24 @@ api.register({
 //        api.addMainTab(conf.icingaDashboardLabel, 'ovirt-monitoring', 'https://www.icinga.org');
 
 	// Host Sub Tab
-	api.addSubTab('Host', conf.monitoringDetailsLabel, 'hosts-monitoring', conf.url + '?subtab=hosts');
+	api.addSubTab('Host', conf.monitoringDetailsLabel, 'hosts-monitoring', conf.url + '?results=hosts');
 
 	// VirtualMachine Sub Tab
-	api.addSubTab('VirtualMachine', conf.monitoringDetailsLabel, 'vms-monitoring', conf.url + '?subtab=vms');
+	api.addSubTab('VirtualMachine', conf.monitoringDetailsLabel, 'vms-monitoring', conf.url + '?results=vms');
     },
     // When the VM selection is changed, we need the new VM name
     HostSelectionChange: function() {
       if (arguments.length == 1) {
         var hostName = arguments[0].name;
 	// Reload Host Sub Tab
-	api.setTabContentUrl('hosts-monitoring', conf.url + '?subtab=hosts&name=' + encodeURIComponent(hostName));
+	api.setTabContentUrl('hosts-monitoring', conf.url + '?results=hosts&host=' + encodeURIComponent(hostName));
       }
     },
     VirtualMachineSelectionChange: function() {
       if (arguments.length == 1) {
 	var vmName = arguments[0].name;
 	// Reload VM Sub Tab
-	api.setTabContentUrl('vms-monitoring', conf.url + '?subtab=vms&name=' + encodeURIComponent(vmName));
+	api.setTabContentUrl('vms-monitoring', conf.url + '?results=vms&host=' + encodeURIComponent(vmName));
       }
     }
 });
