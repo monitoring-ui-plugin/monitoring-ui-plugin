@@ -19,7 +19,7 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.100'; # Don't forget to set version and release
+    $VERSION = '0.200'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -30,7 +30,7 @@ use File::Spec;
 use JSON::PP;
 
 # for debugging only
-#use Data::Dumper;
+use Data::Dumper;
 
 
 =head1 NAME
@@ -114,8 +114,6 @@ sub new {
   # parameter validation
   # TODO!
   
-  chomp $self->{ 'bp' } if defined $self->{ 'bp' };
-  
   bless $self, $class;
   return $self;
 }
@@ -172,7 +170,11 @@ sub get_services {
     }
     
   }elsif ($self->{'provider'} eq "mk-livestatus"){
-  	# TODO: later!
+  	
+  	# construct query
+  	my $query = $self->_query_livestatus( $self->{ 'host' } );
+  	# get results
+  	$result = $self->_get_livestatus( $query );
   	
   }else{
   	carp ("Unsupported provider: $self->{'provider'}!");
@@ -205,6 +207,25 @@ sub _query_ido {
     $sql .= "WHERE object_id = service_object_id AND is_active = 1 AND name1 = '$hostname';";
   
   return $sql;
+  
+}
+
+
+#----------------------------------------------------------------
+
+# construct livetstatus query
+sub _query_livestatus {
+	
+  my $self		= shift;
+  my $hostname	= shift or croak ("Missing hostname!");
+  chomp $hostname;
+  
+  # construct livestatus query
+  my $query = "GET services\n
+Columns: display_name state plugin_output\n
+Filter: host_name =~ $hostname";
+  
+  return $query;
   
 }
 
@@ -255,6 +276,47 @@ sub _get_ido {
   
 }
 
+
+#----------------------------------------------------------------
+
+# get service status from mk-livestatus
+sub _get_livestatus {
+	
+  my $self	= shift;
+  my $query	= shift or croak ("Missing livestatus query!");
+  
+  my $result;
+  my $ml;
+  
+  use Monitoring::Livestatus;
+  
+  # use socket or hostname:port?
+  if ($self->{'provdata'}{'socket'}){
+    $ml = Monitoring::Livestatus->new( 'socket' => $self->{'provdata'}{'socket'} );
+  }else{
+    $ml = Monitoring::Livestatus->new( 'server' => $self->{'provdata'}{'server'} . ':' . $self->{'provdata'}{'port'} );
+  }
+  
+  $ml->errors_are_fatal(0);
+  $result = $ml->selectall_hashref($query, "display_name");
+  
+  if($Monitoring::Livestatus::ErrorCode) {
+    croak "Getting Monitoring checkresults failed: $Monitoring::Livestatus::ErrorMessage";
+  }
+  
+  foreach my $key (keys %{ $result }){
+  	
+    # rename columns
+    $result->{ $key }{ 'service' } = delete $result->{ $key }{ 'display_name' };
+    $result->{ $key }{ 'output' } = delete $result->{ $key }{ 'plugin_output' };
+    
+  }
+  
+  return $result;
+  
+}
+
+
 1;
 
 
@@ -281,7 +343,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.100  (July 26 2013))
+Version 0.200  (July 29 2013))
 
 =head1 COPYRIGHT AND LICENSE
 
