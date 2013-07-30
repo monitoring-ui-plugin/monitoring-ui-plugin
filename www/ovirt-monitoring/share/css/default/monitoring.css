@@ -90,14 +90,6 @@ body {
     width: 100%;
 }
 
-.mon-res-body-tr {
-    background-color: #FFFFFF;
-}
-
-.mon-res-body-tr2 {
-    background-color: #F3F7FB;
-}
-
 .mon-res-body-tr:hover, .mon-res-body-tr2:hover {
     cursor: pointer;
 }
@@ -319,4 +311,13 @@ select {
     position: fixed !important;
     right: 0px;
     top: 57px;
+}
+
+/* zebra stripped background */
+.mon-res-head-tbl tbody tr:nth-child(2n) td {
+    background: #F3F7FB;
+}
+
+.mon-res-head-tbl tbody tr:nth-child(2n+1) td {
+    background: #FFFFFF;
 }
