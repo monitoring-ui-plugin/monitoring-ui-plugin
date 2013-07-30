@@ -21,8 +21,14 @@
 
 [%# service status is displayed in this div container #%]
 <div class="td-mon-res-details-scroll" id="service-details" host="[% content %]">
+
+  <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl-services" cellspacing="0">
+    <tbody style="">
     
-    [%# Here's the main content (Service details) - this is defined in js template results.html #%]
+    [%# Here's the main content (Service details) - this is defined in js template service_details.html #%]
+
+    </tbody>
+  </table>
 
 </div>
 

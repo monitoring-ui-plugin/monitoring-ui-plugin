@@ -1,5 +1,5 @@
 <div class="mon-res-head-top mon-res-subtab" id="graphs" style="padding: 0em 0em;">
-  <table class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
+  <table class="mon-res-head-tbl" id="mon-res-tbl-graph" cellspacing="0">
     <thead>
       <tr>
         <th class="mon-res-head-th">PNP Performance Graphs</th>
@@ -8,7 +8,7 @@
   </table>
 
   <div class="td-mon-res-subdetails-scroll">
-  <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
+  <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl-graph" cellspacing="0">
     <tbody style="" id="mon-res-details-sub-graph">
 
       <tr class="mon-res-body-tr">

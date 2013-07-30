@@ -180,10 +180,18 @@ sub get_services {
   	carp ("Unsupported provider: $self->{'provider'}!");
   }
   
+  # change hash into array of hashes for JS template processing
+  my $tmp;
+  foreach my $key (keys %{ $result }){
+  	
+  	$result->{ $key }{ 'state' } = "../share/images/icons/arrow-" . $result->{ $key }{ 'state' } . ".png";
+  	push @{ $tmp }, $result->{ $key };
+  	
+  }
   
   # produce json output
   my $json = JSON::PP->new->pretty;
-  $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode($result);
+  $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
   
   return $json;
   
