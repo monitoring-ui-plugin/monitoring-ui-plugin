@@ -20,8 +20,7 @@ $(document).ready(function() {
 
   // get JSON data
   getResults();
-  //setInterval("getResults()", refreshInterval);
-  setInterval("getResults()", 30000);
+  setInterval("getResults()", refreshInterval);
   
   
   // show tabs
@@ -34,6 +33,13 @@ $(document).ready(function() {
 		});
 	  }
 	});
+  });
+  
+  
+  // clickable rows
+  $('#mon-res-tbl tr').click(
+    function() {
+	alert("clicked row!");    	  
   });
   
   

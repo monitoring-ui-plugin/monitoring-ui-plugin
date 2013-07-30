@@ -18,6 +18,11 @@
 
 	<!-- oVirt Monitoring -->
 	<script src="[% site_url %]/share/javascript/monitoring-ui.js"></script>
+	
+	[%# set default timeout %]
+    <script type="text/javascript">
+      var refreshInterval = [% refresh_interval %];
+    </script>
 
   </head>
   <body>
