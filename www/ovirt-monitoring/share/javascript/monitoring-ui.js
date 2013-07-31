@@ -45,6 +45,8 @@ $(document).on('click', 'tr#mon-res-body-tr', function(){
   var serviceName = $(this).find('#mon-res-body-service').text();
   var hostName = $("div[id='service-details']").attr("host");
   
+  getDetails(hostName, serviceName);
+  
 });
 
 
@@ -58,10 +60,26 @@ function getResults(){
 	  
     jsonData = data;
     // TODO: remove overwriteCache in production!!!
-	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=true);
+	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=true);
 	  
   })
   
+}
+
+
+
+// get detailed information for service check
+function getDetails(hostName, serviceName){
+	
+  // get hostname
+  $.getJSON( "?host=" + hostName + "&service=" + serviceName, function(data){
+		  
+    jsonData = data;
+    // TODO: remove overwriteCache in production!!!
+	$('#mon-res-tbl-details tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=true);
+	  
+  })
+	  
 }
 
 

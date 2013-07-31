@@ -19,7 +19,7 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.200'; # Don't forget to set version and release
+    $VERSION = '0.300'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -99,6 +99,7 @@ sub new {
     
   my $self 		= {
   	"host"		=> undef,	# name of host to query data for
+  	"service"	=> undef,	# name of service to query data for
   	"provider"	=> "ido",	# provider (ido | mk-livestatus)
   	"provdata"	=> undef,	# provider details like hostname, username,... 
   };
@@ -200,6 +201,94 @@ sub get_services {
 
 #----------------------------------------------------------------
 
+=head1 METHODS	
+
+=head2 get_services
+
+ get_status ( 'host' => $host )
+
+Connects to backend and queries details of given host.
+Returns JSON data.
+
+  my $json = $get_services( 'host' => $host );
+  
+$VAR1 = {
+   "Current Load" : {
+      "output" : "OK - load average: 0.00, 0.00, 0.00",
+      "service" : "Current Load",
+      "state" : 0
+   },
+ }                               	
+
+=cut
+
+sub get_details {
+	
+  my $self		= shift;
+  my %options 	= @_;
+  
+  for my $key (keys %options){
+  	if (exists $self->{ $key }){
+  	  $self->{ $key } = $options{ $key };
+  	}else{
+  	  croak "Unknown option: $key";
+  	}
+  }
+  
+  my $result = undef;
+  # fetch data from Icinga/Nagios
+  if ($self->{'provider'} eq "ido"){
+  	
+  	# construct SQL query
+  	my $sql = $self->_query_ido( $self->{ 'host' }, $self->{ 'service' } );
+  	# get results
+  	$result = $self->_get_ido( $sql );
+  	
+    if ($self->{'errors'}){
+      # TODO!!!
+      return 1;
+    }
+    
+  }elsif ($self->{'provider'} eq "mk-livestatus"){
+  	
+  	# construct query
+  	my $query = $self->_query_livestatus( $self->{ 'host' }, $self->{ 'service' } );
+  	# get results
+  	$result = $self->_get_livestatus( $query );
+  	
+  }else{
+  	carp ("Unsupported provider: $self->{'provider'}!");
+  }
+  
+  # change hash into array of hashes for JS template processing
+  # TODO: bring in format:
+  # [
+  #    { name: key,
+  #      value: key
+  #    },
+  #    { ... }
+  # ]
+  my $tmp;
+  foreach my $key (keys %{ $result->{ $self->{ 'service' } } }){
+  	
+  	my $x;
+  	$x->{ 'name' } = $key;
+  	$x->{ 'value' } = $result->{ $self->{ 'service' } }{ $key };
+  	push @{ $tmp }, $x;
+  	
+  }
+  
+  # produce json output
+  my $json = JSON::PP->new->pretty;
+  $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
+  
+  return $json;
+  
+}
+
+
+#----------------------------------------------------------------
+
 # internal methods
 ##################
 
@@ -208,11 +297,29 @@ sub _query_ido {
 	
   my $self		= shift;
   my $hostname	= shift or croak ("Missing hostname!");
-  chomp $hostname;
+  my $service	= shift;
   
-  # construct SQL query
-  my $sql = "SELECT name2 AS service, current_state AS state, output FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
+  chomp $hostname;
+  my $sql = undef;
+  
+  # if service is given get service details otherwise get services
+  if ($service){
+  	
+  	# construct SQL query
+  	$sql  = "SELECT name2, current_state, last_check, last_state_change, output, long_output, perfdata, last_notification, last_state_change, ";
+  	$sql .= "latency, next_check, notifications_enabled, problem_has_been_acknowledged, comment_data, is_flapping ";
+  	$sql .= "FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "icinga_comments, ";
+  	$sql .= $self->{'provdata'}{'prefix'} . "servicestatus WHERE " . $self->{'provdata'}{'prefix'} . "objects.object_id = service_object_id ";
+  	$sql .= "AND " . $self->{'provdata'}{'prefix'} . "objects.object_id = " . $self->{'provdata'}{'prefix'} . "comments.object_id ";
+  	$sql .= "AND is_active = 1 AND name1 = '$hostname' AND name2 = '$service'";
+  	
+  }else{
+  
+    # construct SQL query
+    $sql  = "SELECT name2 AS service, current_state AS state, output FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
     $sql .= "WHERE object_id = service_object_id AND is_active = 1 AND name1 = '$hostname';";
+    
+  }
   
   return $sql;
   
@@ -226,12 +333,28 @@ sub _query_livestatus {
 	
   my $self		= shift;
   my $hostname	= shift or croak ("Missing hostname!");
-  chomp $hostname;
+  my $service   = shift;
   
-  # construct livestatus query
-  my $query = "GET services\n
+  chomp $hostname;
+  my $query = undef;
+  
+  # if service is given get service details otherwise get services
+  if ($service){
+  	
+  	# construct livestatus query
+  	$query = "GET services\n
+Columns: display_name state last_check last_state_change plugin_output long_plugin_output perf_data last_notification last_state_change latency next_check notifications_enabled acknowledged comments is_flapping\n
+Filter: host_name =~ $hostname\n
+Filter: display_name =~ $service\n";
+  	
+  }else{
+  
+    # construct livestatus query
+    $query = "GET services\n
 Columns: display_name state plugin_output\n
 Filter: host_name =~ $hostname";
+
+  }
   
   return $query;
   
@@ -351,7 +474,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.200  (July 29 2013))
+Version 0.300  (July 31 2013))
 
 =head1 COPYRIGHT AND LICENSE
 

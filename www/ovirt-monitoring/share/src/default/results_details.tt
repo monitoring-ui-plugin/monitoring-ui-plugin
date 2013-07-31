@@ -9,19 +9,11 @@
   </table>
 
   <div class="td-mon-res-subdetails-scroll">
-  <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
-    <tbody style="" id="mon-res-details-sub-tbody">
-
-      <tr class="mon-res-body-tr">
-        <td class="mon-res-body-td" width="150">
-          <div style="outline:none;">
-          </div>
-        </td>
-        <td class="mon-res-body-td">
-          <div style="outline:none;">
-          </div>
-        </td>
-      </tr>
+  
+  <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl-details" cellspacing="0">
+    <tbody style="">
+    
+    [%# Here's the main content (Service details) - this is defined in js template service_details.html #%]
 
     </tbody>
   </table>

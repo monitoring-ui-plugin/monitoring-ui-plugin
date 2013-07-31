@@ -26,7 +26,7 @@ use CGI::Session;
 use CGI::Carp qw(fatalsToBrowser);
 
 # for debugging only
-#use Data::Dumper;
+use Data::Dumper;
 
 # define default paths required to read config files
 my ($lib_path, $cfg_path);
@@ -113,7 +113,21 @@ if (defined param){
     	 provider	=> $config->{ 'provider' }{ 'source' },
     	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
        );	
-    $json = $services->get_services( 'host'	=> param("host") );
+    
+    # is service given, too then get details for service
+    # else get all services for this host
+    if (defined param("service")){
+    	
+      $json = $services->get_details( 	'host'		=> param("host"),
+      									'service'	=> param("service")
+      								);
+    	
+    }else{
+    	
+      $json = $services->get_services( 'host'	=> param("host") );
+    
+    }
+    
     print $json;
     exit 0;
   	
