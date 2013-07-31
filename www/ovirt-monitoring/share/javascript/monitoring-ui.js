@@ -35,15 +35,18 @@ $(document).ready(function() {
 	});
   });
   
-  
-  // clickable rows
-  $('#mon-res-tbl tr').click(
-    function() {
-	alert("clicked row!");    	  
-  });
-  
+});
+
+
+
+// clickable rows
+$(document).on('click', 'tr#mon-res-body-tr', function(){
+
+  var serviceName = $(this).find('#mon-res-body-service').text();
+  var hostName = $("div[id='service-details']").attr("host");
   
 });
+
 
 
 // get service stati for selected host/vm
@@ -54,7 +57,8 @@ function getResults(){
   $.getJSON( "?host=" + hostName, function(data){
 	  
     jsonData = data;
-	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_details.html", jsonData);
+    // TODO: remove overwriteCache in production!!!
+	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=true);
 	  
   })
   
