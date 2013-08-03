@@ -1,5 +1,5 @@
-<div class="mon-res-head-top mon-res-subtab" id="graphs" style="padding: 0em 0em;">
-  <table class="mon-res-head-tbl" id="mon-res-tbl-graph" cellspacing="0">
+<div class="mon-res-subtab mon-res-head-top" id="graphs" style="padding: 0em 0em;">
+  <table class="mon-res-head-tbl" cellspacing="0">
     <thead>
       <tr>
         <th class="mon-res-head-th">PNP Performance Graphs</th>
@@ -8,15 +8,12 @@
   </table>
 
   <div class="td-mon-res-subdetails-scroll">
+  
   <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl-graph" cellspacing="0">
-    <tbody style="" id="mon-res-details-sub-graph">
-
-      <tr class="mon-res-body-tr">
-        <td class="mon-res-graph">
-          <div style="outline:none;">
-          </div>
-        </td>
-      </tr>
+    <tbody style="">
+    
+      <tr><td>No performance graphs found!</td></tr>
+    [%# Here's the main content (Service graphs) - this is defined in js template service_graphs.html #%]
 
     </tbody>
   </table>

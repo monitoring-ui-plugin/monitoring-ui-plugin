@@ -45,7 +45,11 @@ $(document).on('click', 'tr#mon-res-body-tr', function(){
   var serviceName = $(this).find('#mon-res-body-service').text();
   var hostName = $("div[id='service-details']").attr("host");
   
+  // get details for selected service and update details-div
   getDetails(hostName, serviceName);
+  
+  // get pnp images and update pnp-div
+  getPnp(hostName, serviceName);
   
 });
 
@@ -80,6 +84,19 @@ function getDetails(hostName, serviceName){
 	  
   })
 	  
+}
+
+
+// get pnp images for service check
+function getPnp(hostName, serviceName){
+	
+  $.getJSON( "?graph=" + hostName + "&service=" + serviceName, function(data){
+		
+    jsonData = data;
+    $('#mon-res-tbl-graph tbody').loadTemplate("../share/js-templates/service_graphs.html", jsonData, overwriteCache=true);
+
+  })
+    
 }
 
 

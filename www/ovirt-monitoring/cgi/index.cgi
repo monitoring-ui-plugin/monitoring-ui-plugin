@@ -130,6 +130,25 @@ if (defined param){
     
     print $json;
     exit 0;
+    
+    
+  }elsif (defined param("graph")){
+  	
+  	# JSON Header
+    print "Content-type: application/json charset=iso-8859-1\n\n";
+    my $json = undef;  
+    
+    # get graphs for specified service
+    my $graphs = oVirtUI::Data->new(
+    	 provider	=> $config->{ 'graphs' }{ 'source' },
+    	 provdata	=> $config->{ $config->{ 'graphs' }{ 'source' } },
+       );
+       
+    $json = $graphs->get_graphs( 	'host'		=> param("graph"),
+    								'service'	=> param("service") );
+    
+    print $json;
+    exit 0;
   	
 
   }else{

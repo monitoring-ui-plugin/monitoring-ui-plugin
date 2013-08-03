@@ -90,10 +90,6 @@ body {
     width: 100%;
 }
 
-.mon-res-body-tr:hover, .mon-res-body-tr2:hover {
-    cursor: pointer;
-}
-
 .mon-res-body-tr-hover {
     background-color: #EEEEEE;
 }
@@ -110,7 +106,7 @@ body {
     border-color: -moz-use-text-color -moz-use-text-color #EDEEF0;
     border-style: none none solid;
     border-width: 0 0 1px;
-/*    cursor: pointer; */
+    cursor: pointer;
     height: 26px !important;
     padding: 0 3px;
     white-space: nowrap;

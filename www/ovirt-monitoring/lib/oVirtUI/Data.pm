@@ -281,6 +281,61 @@ sub get_details {
 
 #----------------------------------------------------------------
 
+=head1 METHODS	
+
+=head2 get_details
+
+ get_details ( 'host' => $host, service => $service )
+
+Connects to backend and queries details of given host and service.
+Returns JSON data.
+
+  my $json = $get_details ( 'host' => $host, service => $service );
+  
+=cut
+
+sub get_graphs {
+	
+  my $self		= shift;
+  my %options 	= @_;
+  
+  for my $key (keys %options){
+  	if (exists $self->{ $key }){
+  	  $self->{ $key } = $options{ $key };
+  	}else{
+  	  croak "Unknown option: $key";
+  	}
+  }
+  
+  my $result = undef;
+  # PNP4Nagios graphs
+  if ($self->{'provider'} eq "pnp"){
+  	
+  	$result->{ '4hours' }	= $self->{ 'provdata' }{ 'url' } . "/image?host=" . $self->{ 'host' } ."&srv=" . $self->{ 'service' } . "&view=0";
+    $result->{ '25hours' }	= $self->{ 'provdata' }{ 'url' } . "/image?host=" . $self->{ 'host' } ."&srv=" . $self->{ 'service' } . "&view=1";
+    $result->{ '1week' }	= $self->{ 'provdata' }{ 'url' } . "/image?host=" . $self->{ 'host' } ."&srv=" . $self->{ 'service' } . "&view=2";
+    $result->{ '1month' }	= $self->{ 'provdata' }{ 'url' } . "/image?host=" . $self->{ 'host' } ."&srv=" . $self->{ 'service' } . "&view=3";
+    $result->{ '1year' }	= $self->{ 'provdata' }{ 'url' } . "/image?host=" . $self->{ 'host' } ."&srv=" . $self->{ 'service' } . "&view=4";
+    
+  }else{
+  	carp ("Unsupported provider: $self->{'provider'}!");
+  }
+  
+  # change hash into array of hashes for JS template processing
+  my $tmp;
+  push @{ $tmp }, $result;
+  
+  # produce json output
+  my $json = JSON::PP->new->pretty;
+  $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
+  
+  return $json;
+  
+}
+
+
+#----------------------------------------------------------------
+
 # internal methods
 ##################
 
