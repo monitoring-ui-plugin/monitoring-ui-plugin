@@ -19,7 +19,7 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.300'; # Don't forget to set version and release
+    $VERSION = '0.301'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -203,23 +203,15 @@ sub get_services {
 
 =head1 METHODS	
 
-=head2 get_services
+=head2 get_details
 
- get_status ( 'host' => $host )
+ get_details ( 'host' => $host, service => $service )
 
-Connects to backend and queries details of given host.
+Connects to backend and queries details of given host and service.
 Returns JSON data.
 
-  my $json = $get_services( 'host' => $host );
+  my $json = $get_details ( 'host' => $host, service => $service );
   
-$VAR1 = {
-   "Current Load" : {
-      "output" : "OK - load average: 0.00, 0.00, 0.00",
-      "service" : "Current Load",
-      "state" : 0
-   },
- }                               	
-
 =cut
 
 sub get_details {
@@ -261,7 +253,7 @@ sub get_details {
   }
   
   # change hash into array of hashes for JS template processing
-  # TODO: bring in format:
+  # bring in format:
   # [
   #    { name: key,
   #      value: key
@@ -306,12 +298,12 @@ sub _query_ido {
   if ($service){
   	
   	# construct SQL query
-  	$sql  = "SELECT name2, current_state, last_check, last_state_change, output, long_output, perfdata, last_notification, last_state_change, ";
+  	$sql  = "SELECT name2 AS service, current_state, last_check, last_state_change, output, long_output, perfdata, last_notification, last_state_change, ";
   	$sql .= "latency, next_check, notifications_enabled, problem_has_been_acknowledged, comment_data, is_flapping ";
-  	$sql .= "FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "icinga_comments, ";
-  	$sql .= $self->{'provdata'}{'prefix'} . "servicestatus WHERE " . $self->{'provdata'}{'prefix'} . "objects.object_id = service_object_id ";
-  	$sql .= "AND " . $self->{'provdata'}{'prefix'} . "objects.object_id = " . $self->{'provdata'}{'prefix'} . "comments.object_id ";
-  	$sql .= "AND is_active = 1 AND name1 = '$hostname' AND name2 = '$service'";
+  	$sql .= "FROM " . $self->{'provdata'}{'prefix'} . "objects INNER JOIN " . $self->{'provdata'}{'prefix'} . "servicestatus ";
+  	$sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = service_object_id LEFT OUTER JOIN " . $self->{'provdata'}{'prefix'} . "comments ";
+  	$sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = " . $self->{'provdata'}{'prefix'} . "comments.object_id ";
+  	$sql .= "WHERE is_active = 1 AND name1 = '$hostname' AND name2 = '$service'";
   	
   }else{
   
@@ -474,7 +466,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.300  (July 31 2013))
+Version 0.301  (Aug 03 2013))
 
 =head1 COPYRIGHT AND LICENSE
 
