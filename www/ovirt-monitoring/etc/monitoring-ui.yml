@@ -1,11 +1,19 @@
 refresh:
-  interval: 5
+  interval: 60
 
 ui-plugin:
   data_dir: /data/www/ovirt-monitoring/share
   lib_dir: /data/www/ovirt-monitoring/lib
   site_url: /ovirt-monitoring
   template: default
+  
+graphs:
+  source: pnp
+  
+pnp:
+  url: http://localhost/pnp4nagios
+#  username: icinga
+#  password: icinga
   
   
 ############################################################
