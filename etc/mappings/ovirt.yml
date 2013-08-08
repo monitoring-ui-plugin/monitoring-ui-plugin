@@ -1,0 +1,30 @@
+# Map various oVirt checks
+
+ovirt:
+  datacenter:
+    ovido-local:
+      host: localhost
+      services: 
+        - RHEV DC Status Check
+        - RHEV DC Storagedomain Check - ovido-local
+        - RHEV DC Storagedomain Usage - ovido-local
+        
+  cluster:
+    ovido-local:
+      host: localhost
+      services:
+        - RHEV Cluster Check
+
+  storagedomains:
+    centos-hyp01-lab-ovido-at-Local
+      host: localhost
+      services:
+        - RHEV Storage local
+        - RHEV Storage ovido-exports
+        - RHEV Storage ovido-isos
+    
+  pools:
+    test-pool:
+      host: localhost
+      services:
+        - RHEV Pool Check - test-pool

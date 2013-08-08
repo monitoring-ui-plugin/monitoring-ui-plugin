@@ -15,6 +15,21 @@ pnp:
   url: http://localhost/pnp4nagios
 #  username: icinga
 #  password: icinga
+
+# settings for Icinga/Nagios
+# Note: these settings are only for instances installed on oVirt
+#       engine / RHEV Manager, not for remote instances!
+monitoring:
+  add: true
+  nagios_etc: /usr/local/icinga/etc
+  nagios_bin: /usr/local/icinga/bin/icinga
+  cmk_bin: /usr/bin/cmk
+  cmk_main: /etc/check_mk/main.mk
+  check_rhev3: /usr/lib64/nagios/plugins/check_rhev3
+  ovirt_hostname: localhost
+  ovirt_port: 443
+  ovirt_auth: admin@internal:password
+  #ovirt_ca_file: ca.crt
   
   
 ############################################################
