@@ -63,8 +63,7 @@ function getResults(){
   $.getJSON( "?host=" + hostName, function(data){
 	  
     jsonData = data;
-    // TODO: remove overwriteCache in production!!!
-	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=true);
+	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=templateCache);
 	  
   })
   
