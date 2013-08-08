@@ -12,27 +12,58 @@ api.register({
 //        // Dashboard Main Tab
 //        api.addMainTab(conf.icingaDashboardLabel, 'ovirt-monitoring', 'https://www.icinga.org');
 
-	// Host Sub Tab
+	// Sub Tabs
+	api.addSubTab('DataCenter', conf.monitoringDetailsLabel, 'datacenters-monitoring', conf.url + '?results=datacenters');
+	api.addSubTab('Cluster', conf.monitoringDetailsLabel, 'clusters-monitoring', conf.url + '?results=clusters');
 	api.addSubTab('Host', conf.monitoringDetailsLabel, 'hosts-monitoring', conf.url + '?results=hosts');
-
-	// VirtualMachine Sub Tab
+	api.addSubTab('Storage', conf.monitoringDetailsLabel, 'storage-monitoring', conf.url + '?results=storage');
 	api.addSubTab('VirtualMachine', conf.monitoringDetailsLabel, 'vms-monitoring', conf.url + '?results=vms');
+	api.addSubTab('Pools', conf.monitoringDetailsLabel, 'pools-monitoring', conf.url + '?results=pools');
     },
-    // When the VM selection is changed, we need the new VM name
+    
+    // Get name for changed selections
+    DataCenterSelectionChange: function() {
+      if (arguments.length == 1) {
+        var dataCenterName = arguments[0].name;
+            api.setTabContentUrl('datacenters-monitoring', conf.url + '?results=datacenters&host=' + encodeURIComponent(dataCenterName));
+      }
+    },
+
+    ClusterSelectionChange: function() {
+      if (arguments.length == 1) {
+        var clusterName = arguments[0].name;
+            api.setTabContentUrl('clusters-monitoring', conf.url + '?results=clusters&host=' + encodeURIComponent(clusterName));
+      }
+    },
+    
     HostSelectionChange: function() {
       if (arguments.length == 1) {
         var hostName = arguments[0].name;
-	// Reload Host Sub Tab
-	api.setTabContentUrl('hosts-monitoring', conf.url + '?results=hosts&host=' + encodeURIComponent(hostName));
+	    api.setTabContentUrl('hosts-monitoring', conf.url + '?results=hosts&host=' + encodeURIComponent(hostName));
       }
     },
+
+    StorageSelectionChange: function() {
+      if (arguments.length == 1) {
+        var storageName = arguments[0].name;
+            api.setTabContentUrl('storage-monitoring', conf.url + '?results=storage&host=' + encodeURIComponent(storageName));
+      }
+    },
+    
     VirtualMachineSelectionChange: function() {
       if (arguments.length == 1) {
-	var vmName = arguments[0].name;
-	// Reload VM Sub Tab
-	api.setTabContentUrl('vms-monitoring', conf.url + '?results=vms&host=' + encodeURIComponent(vmName));
+	    var vmName = arguments[0].name;
+	    api.setTabContentUrl('vms-monitoring', conf.url + '?results=vms&host=' + encodeURIComponent(vmName));
+      }
+    },
+
+    PoolSelectionChange: function() {
+      if (arguments.length == 1) {
+        var poolName = arguments[0].name;
+            api.setTabContentUrl('pools-monitoring', conf.url + '?results=pools&host=' + encodeURIComponent(poolName));
       }
     }
+    
 });
 
 // Calling api.ready - the plugin is now ready to be initialized
@@ -43,4 +74,3 @@ api.ready();
 <body>
 </body>
 </html>
-
