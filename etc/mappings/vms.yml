@@ -1,0 +1,9 @@
+# Map vm names in oVirt/RHEV to host names in Icinga/Nagios statically
+#
+# Note: Use this only if hostnames differ in both systems!
+#
+
+# oVirt name: Nagios name
+# e.g. vm01: rhel001
+"openstack-master": "debian7"
+

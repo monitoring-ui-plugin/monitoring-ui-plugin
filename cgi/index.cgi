@@ -51,6 +51,10 @@ my $config	= $conf->read_dir( 'dir' => $cfg_path );
 # validate config
 exit 1 unless ( $conf->validate( 'config' => $config ) == 0);
 
+# read static mappings config
+my $mappings = $conf->read_dir( 'dir' => $cfg_path . "/mappings" );
+# Todo: validate mappings!
+
 
 # loop for FastCGI
 while ( my $q = new CGI::Fast ){
@@ -61,7 +65,7 @@ while ( my $q = new CGI::Fast ){
     if (defined param("results")){	
   	
       print "Content-type: text/html\n\n";
-
+      
       # display web page
       my $page = oVirtUI::Web->new(
  		data_dir	=> $config->{ 'ui-plugin' }{ 'data_dir' },
@@ -86,17 +90,26 @@ while ( my $q = new CGI::Fast ){
     	 provider	=> $config->{ 'provider' }{ 'source' },
     	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
       );	
+      
+      # do hostname differ in oVirt and Nagios?
+      my $host = param("host");
+      chomp $host;
+      foreach my $map (keys %{ $mappings }){
+      	if ($host eq $map){
+      	  $host = $mappings->{ $map };
+      	}
+      }
     
       # is service given, too then get details for service
       # else get all services for this host
       if (defined param("service")){
     	
-        $json = $services->get_details(	'host'		=> param("host"),
+        $json = $services->get_details(	'host'		=> $host,
       									'service'	=> param("service")
       								);
     	
       }else{
-        $json = $services->get_services( 'host'	=> param("host") );
+        $json = $services->get_services( 'host'	=> $host );
       }
     
       print $json;
