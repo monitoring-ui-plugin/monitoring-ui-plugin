@@ -19,7 +19,7 @@
 package oVirtUI::Web;
 
 BEGIN {
-    $VERSION = '0.100'; # Don't forget to set version and release
+    $VERSION = '0.110'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -85,6 +85,10 @@ additional content which shall be passed to TT
 
 refresh interval of webpage (default: 15000) [ms]
 
+=item template_cache
+
+use JS cache to cache templates (default: false)
+
 =cut
 
 
@@ -101,6 +105,7 @@ sub new {
   	"page"				=> "results",		# page to display
   	"content"			=> undef,			# various content to pass to template toolkit (like dashboards)
   	"refresh"			=> 15000,			# refresh interval
+  	"template_cache"	=> "false",			# cache templates
   };
   
   for my $key (keys %options){
@@ -151,22 +156,26 @@ sub display_page {
   	  croak "Unknown option: $key";
   	}
   }
-	
+  
+  # bring template_cache into right format
+  if ($self->{ 'template_cache' } == 1){
+  	$self->{ 'template_cache' } = "true";
+  }elsif ($self->{ 'template_cache' } == 0){
+  	$self->{ 'template_cache' } = "false";
+  }
+  
   # page to display ( e.g. results )
   my $tt_template	= $self->{ 'data_dir' } . "/src/" . $self->{ 'template' } . "/" . $self->{ 'page' } . ".tt";
   my $tt_vars		= { 
   	'templ' 		=> $self->{ 'template' },
   	'data_dir'		=> $self->{ 'data_dir' },
   	'site_url'		=> $self->{ 'site_url' }, 
+  	'template_cache' 	=> $self->{ 'template_cache' },
+  	'refresh_interval' 	=> $self->{ 'refresh' } * 1000,		# set refresh interval in ms
   };
   
   if (defined $self->{ 'content' }){
   	$tt_vars->{ 'content' } = $self->{ 'content' };
-  }
-  
-  if (defined $self->{ 'refresh' }){
-  	# set refresh interval in ms
-  	$tt_vars->{ 'refresh_interval' } = $self->{ 'refresh' } * 1000;
   }
   
   # create new template
@@ -231,7 +240,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.100  (July 23 2013))
+Version 0.110  (August 08 2013))
 
 =head1 COPYRIGHT AND LICENSE
 

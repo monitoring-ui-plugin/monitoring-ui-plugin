@@ -22,6 +22,7 @@
 	[%# set default timeout %]
     <script type="text/javascript">
       var refreshInterval = [% refresh_interval %];
+      var templateCache = [% template_cache %];
     </script>
 
   </head>

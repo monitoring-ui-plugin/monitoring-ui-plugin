@@ -72,6 +72,7 @@ while ( my $q = new CGI::Fast ){
     	page	=> "results",
     	content	=> param("host"),		# get name of vm/host
     	refresh	=> $config->{ 'refresh' }{ 'interval' },
+    	template_cache	=> $config->{ 'ui-plugin' }{ 'template_cache' }
 	  );
 
     }elsif (defined param("host")){

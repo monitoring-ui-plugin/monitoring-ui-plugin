@@ -6,6 +6,7 @@ ui-plugin:
   lib_dir: /data/www/monitoring-ui/lib
   site_url: /monitoring-ui
   template: default
+  template_cache: true
   
 graphs:
   source: pnp

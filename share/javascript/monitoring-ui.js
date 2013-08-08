@@ -79,8 +79,7 @@ function getDetails(hostName, serviceName){
   $.getJSON( "?host=" + hostName + "&service=" + serviceName, function(data){
 		  
     jsonData = data;
-    // TODO: remove overwriteCache in production!!!
-	$('#mon-res-tbl-details tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=true);
+	$('#mon-res-tbl-details tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=templateCache);
 	  
   })
 	  
@@ -93,7 +92,7 @@ function getPnp(hostName, serviceName){
   $.getJSON( "?graph=" + hostName + "&service=" + serviceName, function(data){
 		
     jsonData = data;
-    $('#mon-res-tbl-graph tbody').loadTemplate("../share/js-templates/service_graphs.html", jsonData, overwriteCache=true);
+    $('#mon-res-tbl-graph tbody').loadTemplate("../share/js-templates/service_graphs.html", jsonData, overwriteCache=templateCache);
 
   })
     
