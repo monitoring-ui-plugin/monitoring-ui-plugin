@@ -19,7 +19,7 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.301'; # Don't forget to set version and release
+    $VERSION = '0.302'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -30,7 +30,7 @@ use File::Spec;
 use JSON::PP;
 
 # for debugging only
-use Data::Dumper;
+#use Data::Dumper;
 
 
 =head1 NAME
@@ -431,7 +431,7 @@ sub _get_ido {
   }
   
   # connect to database
-  my $dbh   = DBI->connect($dsn, $self->{'provdata'}{'username'}, $self->{'provdata'}{'password'});
+  my $dbh   = DBI->connect_cached($dsn, $self->{'provdata'}{'username'}, $self->{'provdata'}{'password'});
   if ($DBI::errstr){
   	push @{ $self->{'errors'} }, "Can't connect to database: $DBI::errstr";
   	return 1;
@@ -470,9 +470,11 @@ sub _get_livestatus {
   
   # use socket or hostname:port?
   if ($self->{'provdata'}{'socket'}){
-    $ml = Monitoring::Livestatus->new( 'socket' => $self->{'provdata'}{'socket'} );
+    $ml = Monitoring::Livestatus->new( 	'socket' 	=> $self->{'provdata'}{'socket'},
+    									'keepalive' => 1 );
   }else{
-    $ml = Monitoring::Livestatus->new( 'server' => $self->{'provdata'}{'server'} . ':' . $self->{'provdata'}{'port'} );
+    $ml = Monitoring::Livestatus->new( 	'server' 	=> $self->{'provdata'}{'server'} . ':' . $self->{'provdata'}{'port'},
+    									'keepalive'	=> 1 );
   }
   
   $ml->errors_are_fatal(0);
@@ -521,7 +523,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.301  (Aug 03 2013))
+Version 0.302  (Aug 08 2013))
 
 =head1 COPYRIGHT AND LICENSE
 
