@@ -119,6 +119,15 @@ while ( my $q = new CGI::Fast ){
   	  # JSON Header
       print "Content-type: application/json charset=iso-8859-1\n\n";
       my $json = undef;  
+      
+      # do hostname differ in oVirt and Nagios?
+      my $host = param("graph");
+      chomp $host;
+      foreach my $map (keys %{ $mappings }){
+      	if ($host eq $map){
+      	  $host = $mappings->{ $map };
+      	}
+      }
     
       # get graphs for specified service
       my $graphs = oVirtUI::Data->new(
@@ -126,7 +135,7 @@ while ( my $q = new CGI::Fast ){
     	 provdata	=> $config->{ $config->{ 'graphs' }{ 'source' } }
       );
        
-      $json = $graphs->get_graphs( 	'host'		=> param("graph"),
+      $json = $graphs->get_graphs( 	'host'		=> $host,
     								'service'	=> param("service") );
     
       print $json;
