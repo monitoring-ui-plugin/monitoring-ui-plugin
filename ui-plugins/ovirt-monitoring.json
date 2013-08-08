@@ -5,7 +5,7 @@
 
   // Default configuration object associated with the plugin
   "config": {
-	"url": "/ovirt-monitoring/cgi/index.cgi",
+	"url": "/monitoring-ui/cgi/index.cgi",
         "monitoringDetailsLabel" : "Monitoring Details",
         "monitoringDashboardLabel" : "Monitoring Dashboard"
    },

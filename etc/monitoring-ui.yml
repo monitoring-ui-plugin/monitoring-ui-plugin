@@ -2,9 +2,9 @@ refresh:
   interval: 60
 
 ui-plugin:
-  data_dir: /data/www/ovirt-monitoring/share
-  lib_dir: /data/www/ovirt-monitoring/lib
-  site_url: /ovirt-monitoring
+  data_dir: /data/www/monitoring-ui/share
+  lib_dir: /data/www/monitoring-ui/lib
+  site_url: /monitoring-ui
   template: default
   
 graphs:
