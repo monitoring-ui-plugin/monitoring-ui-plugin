@@ -22,11 +22,11 @@ use warnings;
 
 use Template;
 use CGI qw(param);
-use CGI::Session;
 use CGI::Carp qw(fatalsToBrowser);
+use CGI::Fast;
 
 # for debugging only
-use Data::Dumper;
+#use Data::Dumper;
 
 # define default paths required to read config files
 my ($lib_path, $cfg_path);
@@ -35,136 +35,93 @@ BEGIN {
   $cfg_path = "../etc";		# path to BPView etc directory
 }
 
-
 # load custom Perl modules
 use lib "$lib_path";
 use oVirtUI::Config;
 use oVirtUI::Web;
 use oVirtUI::Data;
-#use oVirtUI::Monitoring::Hosts;
-
-
-# global variables
-my $session_cache	= 3600;	# 1 hour
-my $config;
 
 
 ### The main script starts here
 
-
-# HTML code
-print "Content-type: text/html\n\n" unless defined param;
-
-# CGI sessions
-my $post	= CGI->new;
-my $sid		= $post->cookie("CGISESSID") || undef;
-my $session	= new CGI::Session(undef, $sid, {Directory=>File::Spec->tmpdir});
-   $session->expire('config', $session_cache);
-my $cookie	= $post->cookie(CGISESSID => $session->id);
-# for debugging only
-#print $post->header( -cookie=>$cookie );
-
-# open config files if not cached
+# open config files
 my $conf	= oVirtUI::Config->new();
-
-if (! $session->param('config')){
-
-  # open config file directory and push configs into hash
-  $config	= $conf->read_dir( 'dir' => $cfg_path );
-  # validate config
-  exit 1 unless ( $conf->validate( 'config' => $config ) == 0);
-  # cache config
-  $session->param('config', $config);
-  
-}else{
-	
-  $config	= $session->param('config');
-  
-}
+# open config file directory and push configs into hash
+my $config	= $conf->read_dir( 'dir' => $cfg_path );
+# validate config
+exit 1 unless ( $conf->validate( 'config' => $config ) == 0);
 
 
-# process URL
-if (defined param){
+# loop for FastCGI
+while ( my $q = new CGI::Fast ){
 
-  if (defined param("results")){	
+  # process URL
+  if (defined param){
+
+    if (defined param("results")){	
   	
-    print "Content-type: text/html\n\n";
+      print "Content-type: text/html\n\n";
 
-    # display web page
-    my $page = oVirtUI::Web->new(
+      # display web page
+      my $page = oVirtUI::Web->new(
  		data_dir	=> $config->{ 'ui-plugin' }{ 'data_dir' },
  		site_url	=> $config->{ 'ui-plugin' }{ 'site_url' },
  		template	=> $config->{ 'ui-plugin' }{ 'template' },
-	);
-   $page->display_page(
+	  );
+      $page->display_page(
     	page	=> "results",
     	content	=> param("host"),		# get name of vm/host
     	refresh	=> $config->{ 'refresh' }{ 'interval' },
-	);
+	  );
 
-  }elsif (defined param("host")){
+    }elsif (defined param("host")){
   	
-  	# JSON Header
-    print "Content-type: application/json charset=iso-8859-1\n\n";
-    my $json = undef;
+  	  # JSON Header
+      print "Content-type: application/json charset=iso-8859-1\n\n";
+      my $json = undef;
   	
-  	# get services for specified host
-    my $services = oVirtUI::Data->new(
+  	  # get services for specified host
+      my $services = oVirtUI::Data->new(
     	 provider	=> $config->{ 'provider' }{ 'source' },
     	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
-       );	
+      );	
     
-    # is service given, too then get details for service
-    # else get all services for this host
-    if (defined param("service")){
+      # is service given, too then get details for service
+      # else get all services for this host
+      if (defined param("service")){
     	
-      $json = $services->get_details( 	'host'		=> param("host"),
+        $json = $services->get_details(	'host'		=> param("host"),
       									'service'	=> param("service")
       								);
     	
-    }else{
-    	
-      $json = $services->get_services( 'host'	=> param("host") );
+      }else{
+        $json = $services->get_services( 'host'	=> param("host") );
+      }
     
-    }
+      print $json;
     
-    print $json;
-    exit 0;
-    
-    
-  }elsif (defined param("graph")){
+    }elsif (defined param("graph")){
   	
-  	# JSON Header
-    print "Content-type: application/json charset=iso-8859-1\n\n";
-    my $json = undef;  
+  	  # JSON Header
+      print "Content-type: application/json charset=iso-8859-1\n\n";
+      my $json = undef;  
     
-    # get graphs for specified service
-    my $graphs = oVirtUI::Data->new(
+      # get graphs for specified service
+      my $graphs = oVirtUI::Data->new(
     	 provider	=> $config->{ 'graphs' }{ 'source' },
-    	 provdata	=> $config->{ $config->{ 'graphs' }{ 'source' } },
-       );
+    	 provdata	=> $config->{ $config->{ 'graphs' }{ 'source' } }
+      );
        
-    $json = $graphs->get_graphs( 	'host'		=> param("graph"),
+      $json = $graphs->get_graphs( 	'host'		=> param("graph"),
     								'service'	=> param("service") );
     
-    print $json;
-    exit 0;
-  	
+      print $json;
 
-  }else{
-  	
-  	die "Unknown parameter: " . param;
-  	
+    }
+	
   }
-	
-  
-}else{
-	
-  die "Parameter needed!";
-	
+
 }
-
-
 
 
 exit 0;
