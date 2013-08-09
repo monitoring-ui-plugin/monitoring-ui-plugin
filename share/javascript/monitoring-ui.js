@@ -60,7 +60,8 @@ function getResults(){
 	
   // get hostname
   var hostName = $("div[id='service-details']").attr("host");
-  $.getJSON( "?host=" + hostName, function(data){
+  var compName = $("div[id='service-details']").attr("component");
+  $.getJSON( "?host=" + hostName + "&comp=" + compName, function(data){
 	  
     jsonData = data;
 	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=templateCache);

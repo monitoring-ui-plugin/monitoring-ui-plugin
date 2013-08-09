@@ -19,7 +19,7 @@
 package oVirtUI::Web;
 
 BEGIN {
-    $VERSION = '0.110'; # Don't forget to set version and release
+    $VERSION = '0.120'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -81,6 +81,11 @@ name of TT template for displaying webpage
 
 additional content which shall be passed to TT 
 
+=item component
+
+pass name of component to webpage
+(datacenter, cluster, storage, pool name)
+
 =item refresh
 
 refresh interval of webpage (default: 15000) [ms]
@@ -103,7 +108,8 @@ sub new {
   	"site_url"			=> "/ovirt-monitoring",	# site url
   	"template"			=> "default",		# template to use
   	"page"				=> "results",		# page to display
-  	"content"			=> undef,			# various content to pass to template toolkit (like dashboards)
+  	"content"			=> undef,			# various content to pass to template toolkit
+  	"component"			=> undef,			# name of component for display_page
   	"refresh"			=> 15000,			# refresh interval
   	"template_cache"	=> "false",			# cache templates
   };
@@ -174,9 +180,8 @@ sub display_page {
   	'refresh_interval' 	=> $self->{ 'refresh' } * 1000,		# set refresh interval in ms
   };
   
-  if (defined $self->{ 'content' }){
-  	$tt_vars->{ 'content' } = $self->{ 'content' };
-  }
+  $tt_vars->{ 'content' } = $self->{ 'content' } if defined $self->{ 'content' };
+  $tt_vars->{ 'comp' } = $self->{ 'component' } if defined $self->{ 'component' };
   
   # create new template
   my $template = Template->new({
@@ -240,7 +245,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.110  (August 08 2013))
+Version 0.120  (August 09 2013))
 
 =head1 COPYRIGHT AND LICENSE
 

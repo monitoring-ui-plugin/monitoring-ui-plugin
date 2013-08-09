@@ -161,7 +161,15 @@ sub get_services {
   if ($self->{'provider'} eq "ido"){
   	
   	# construct SQL query
-  	my $sql = $self->_query_ido( $self->{ 'host' } );
+  	my $sql;
+    # Is service defined?
+    # Service must be given for components like datacenters, clusters, storage and pools
+  
+  	if (defined $self->{ 'service' }){
+  	  $sql = $self->_query_ido( $self->{ 'host' }, $self->{ 'service' } );
+  	}else{
+  	  $sql = $self->_query_ido( $self->{ 'host' } );
+  	}
   	# get results
   	$result = $self->_get_ido( $sql );
   	
@@ -173,7 +181,16 @@ sub get_services {
   }elsif ($self->{'provider'} eq "mk-livestatus"){
   	
   	# construct query
-  	my $query = $self->_query_livestatus( $self->{ 'host' } );
+  	my $query;
+  	# Is service defined?
+    # Service must be given for components like datacenters, clusters, storage and pools
+    
+    if (defined $self->{ 'service' }){
+      $query = $self->_query_livestatus( $self->{ 'host' }, $self->{ 'service' });
+    }else{	
+  	  $query = $self->_query_livestatus( $self->{ 'host' } );
+    }
+    
   	# get results
   	$result = $self->_get_livestatus( $query );
   	
@@ -352,13 +369,35 @@ sub _query_ido {
   # if service is given get service details otherwise get services
   if ($service){
   	
-  	# construct SQL query
-  	$sql  = "SELECT name2 AS service, current_state, last_check, last_state_change, output, long_output, perfdata, last_notification, last_state_change, ";
-  	$sql .= "latency, next_check, notifications_enabled, problem_has_been_acknowledged, comment_data, is_flapping ";
-  	$sql .= "FROM " . $self->{'provdata'}{'prefix'} . "objects INNER JOIN " . $self->{'provdata'}{'prefix'} . "servicestatus ";
-  	$sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = service_object_id LEFT OUTER JOIN " . $self->{'provdata'}{'prefix'} . "comments ";
-  	$sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = " . $self->{'provdata'}{'prefix'} . "comments.object_id ";
-  	$sql .= "WHERE is_active = 1 AND name1 = '$hostname' AND name2 = '$service'";
+  	if (ref $service eq "ARRAY"){
+  		
+  	  # get service status for given host and services
+  	  # construct SQL query
+      $sql  = "SELECT name2 AS service, current_state AS state, output FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
+      $sql .= "WHERE object_id = service_object_id AND is_active = 1 AND name1 = '$hostname' AND name2 IN (";
+  
+      # go through service array
+  	  for (my $i=0;$i< scalar @{ $service };$i++){
+  	  	$sql .= "'" . $service->[$i] . "', ";
+  	  }
+  	  
+  	  # remove trailing ', '
+      chop $sql;
+      chop $sql; 
+      $sql .= ") ORDER BY name1";
+  
+  	}else{
+  	
+  	  # get service details	
+  	  # construct SQL query
+  	  $sql  = "SELECT name2 AS service, current_state, last_check, last_state_change, output, long_output, perfdata, last_notification, last_state_change, ";
+  	  $sql .= "latency, next_check, notifications_enabled, problem_has_been_acknowledged, comment_data, is_flapping ";
+  	  $sql .= "FROM " . $self->{'provdata'}{'prefix'} . "objects INNER JOIN " . $self->{'provdata'}{'prefix'} . "servicestatus ";
+  	  $sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = service_object_id LEFT OUTER JOIN " . $self->{'provdata'}{'prefix'} . "comments ";
+  	  $sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = " . $self->{'provdata'}{'prefix'} . "comments.object_id ";
+  	  $sql .= "WHERE is_active = 1 AND name1 = '$hostname' AND name2 = '$service'";
+  	  
+  	}
   	
   }else{
   
@@ -388,11 +427,32 @@ sub _query_livestatus {
   # if service is given get service details otherwise get services
   if ($service){
   	
-  	# construct livestatus query
-  	$query = "GET services\n
+  	if (ref $service eq "ARRAY"){
+  		
+  	  # get service status for given host and services
+  	  # construct livestatus query
+  	  $query = "GET services\n
+Columns: display_name state plugin_output\n";
+  
+      # go through service array
+  	  for (my $i=0;$i< scalar @{ $service };$i++){
+  	  	$query .= "Filter: display_name = " . $service->[$i] . "\n";
+  	  }
+  	  
+      $query .= "Or: " . scalar @{ $service } . "\n" if scalar @{ $service } > 1;
+      $query .= "Filter: host_name =~ $hostname\n
+And: 2";
+  
+  	}else{
+  	
+  	  # get service details
+  	  # construct livestatus query
+  	  $query = "GET services\n
 Columns: display_name state last_check last_state_change plugin_output long_plugin_output perf_data last_notification last_state_change latency next_check notifications_enabled acknowledged comments is_flapping\n
 Filter: host_name =~ $hostname\n
 Filter: display_name =~ $service\n";
+
+  	}
   	
   }else{
   

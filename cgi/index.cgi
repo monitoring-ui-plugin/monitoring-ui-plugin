@@ -21,12 +21,12 @@ use strict;
 use warnings;
 
 use Template;
-use CGI qw(param);
+use CGI qw(param referer);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI::Fast;
 
 # for debugging only
-#use Data::Dumper;
+use Data::Dumper;
 
 # define default paths required to read config files
 my ($lib_path, $cfg_path);
@@ -73,14 +73,15 @@ while ( my $q = new CGI::Fast ){
  		template	=> $config->{ 'ui-plugin' }{ 'template' },
 	  );
       $page->display_page(
-    	page	=> "results",
-    	content	=> param("host"),		# get name of vm/host
-    	refresh	=> $config->{ 'refresh' }{ 'interval' },
+    	page		=> "results",
+    	content		=> param("host"),		# get name of vm/host
+    	component	=> param("results"),
+    	refresh		=> $config->{ 'refresh' }{ 'interval' },
     	template_cache	=> $config->{ 'ui-plugin' }{ 'template_cache' }
 	  );
 
     }elsif (defined param("host")){
-  	
+    	
   	  # JSON Header
       print "Content-type: application/json charset=iso-8859-1\n\n";
       my $json = undef;
@@ -91,13 +92,25 @@ while ( my $q = new CGI::Fast ){
     	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
       );	
       
-      # do hostname differ in oVirt and Nagios?
+      # does hostname differ in oVirt and Nagios?
       my $host = param("host");
-      chomp $host;
-      foreach my $map (keys %{ $mappings }){
-      	if ($host eq $map){
-      	  $host = $mappings->{ $map };
-      	}
+      my $checks = undef;
+
+      # datacenters, clusters, storage and pools are mapped differently as the hostname
+      # and services names for these checks have to be given in mappings file  
+      if (param("comp") eq "vms" || param("comp") eq "hosts"){
+      
+        chomp $host;
+        foreach my $map (keys %{ $mappings }){
+      	  $host = $mappings->{ $map } if $host eq $map;
+        }
+        
+      }else{
+      	
+      	# process datacenters, clusters, storage and pools
+      	$host = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'host' };
+      	$checks = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'services' };
+      	
       }
     
       # is service given, too then get details for service
@@ -109,7 +122,9 @@ while ( my $q = new CGI::Fast ){
       								);
     	
       }else{
-        $json = $services->get_services( 'host'	=> $host );
+        $json = $services->get_services( 'host'		=> $host,
+        								 'service'	=> $checks
+        							);
       }
     
       print $json;

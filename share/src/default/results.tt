@@ -20,7 +20,7 @@
 [% INCLUDE results_header.tt %]
 
 [%# service status is displayed in this div container #%]
-<div class="td-mon-res-details-scroll" id="service-details" host="[% content %]">
+<div class="td-mon-res-details-scroll" id="service-details" host="[% content %]" component="[% comp %]">
 
   <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl-services" cellspacing="0">
     <tbody style="">
