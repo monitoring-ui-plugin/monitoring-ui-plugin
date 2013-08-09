@@ -209,7 +209,10 @@ sub get_services {
   
   # produce json output
   my $json = JSON::PP->new->pretty;
-  $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
+  # if host/service is not found $tmp is a simple scalar
+  if (ref $tmp eq "ARRAY"){
+    $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
+  }
   
   return $json;
   
