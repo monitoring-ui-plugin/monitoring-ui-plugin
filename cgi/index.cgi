@@ -116,7 +116,7 @@ while ( my $q = new CGI::Fast ){
       # is service given, too then get details for service
       # else get all services for this host
       if (defined param("service")){
-    	
+      	
         $json = $services->get_details(	'host'		=> $host,
       									'service'	=> param("service")
       								);

@@ -44,12 +44,13 @@ $(document).on('click', 'tr#mon-res-body-tr', function(){
 
   var serviceName = $(this).find('#mon-res-body-service').text();
   var hostName = $("div[id='service-details']").attr("host");
+  var compName = $("div[id='service-details']").attr("component");
   
   // get details for selected service and update details-div
-  getDetails(hostName, serviceName);
+  getDetails(hostName, serviceName, compName);
   
   // get pnp images and update pnp-div
-  getPnp(hostName, serviceName);
+  getPnp(hostName, serviceName, compName);
   
 });
 
@@ -73,10 +74,10 @@ function getResults(){
 
 
 // get detailed information for service check
-function getDetails(hostName, serviceName){
+function getDetails(hostName, serviceName, compName){
 	
   // get hostname
-  $.getJSON( "?host=" + hostName + "&service=" + serviceName, function(data){
+  $.getJSON( "?host=" + hostName + "&service=" + serviceName + "&comp=" + compName, function(data){
 		  
     jsonData = data;
 	$('#mon-res-tbl-details tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=templateCache);
@@ -87,9 +88,9 @@ function getDetails(hostName, serviceName){
 
 
 // get pnp images for service check
-function getPnp(hostName, serviceName){
+function getPnp(hostName, serviceName, compName){
 	
-  $.getJSON( "?graph=" + hostName + "&service=" + serviceName, function(data){
+  $.getJSON( "?graph=" + hostName + "&service=" + serviceName + "&comp=" + compName, function(data){
 		
     jsonData = data;
     $('#mon-res-tbl-graph tbody').loadTemplate("../share/js-templates/service_graphs.html", jsonData, overwriteCache=templateCache);
