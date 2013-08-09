@@ -68,6 +68,12 @@ function getResults(){
 	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=templateCache);
 	  
   })
+  .fail(function() { 
+    
+	// did not receive (correct) data from backend
+	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_error.html", overwriteCache=templateCache);  
+	
+  })
   
 }
 

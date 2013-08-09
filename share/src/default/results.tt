@@ -26,6 +26,9 @@
     <tbody style="">
     
     [%# Here's the main content (Service stati) - this is defined in js template service_status.html #%]
+    <tr>
+      <td colspan="3">Getting service status for [% content %]...</td>
+    </tr>
 
     </tbody>
   </table>
