@@ -200,7 +200,7 @@ sub get_services {
   
   # change hash into array of hashes for JS template processing
   my $tmp;
-  foreach my $key (keys %{ $result }){
+  foreach my $key (sort keys %{ $result }){
   	
   	$result->{ $key }{ 'state' } = "../share/images/icons/arrow-" . $result->{ $key }{ 'state' } . ".png";
   	push @{ $tmp }, $result->{ $key };
@@ -211,7 +211,7 @@ sub get_services {
   my $json = JSON::PP->new->pretty;
   # if host/service is not found $tmp is a simple scalar
   if (ref $tmp eq "ARRAY"){
-    $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
+    $json = $json->encode( $tmp );
   }
   
   return $json;
@@ -281,7 +281,7 @@ sub get_details {
   #    { ... }
   # ]
   my $tmp;
-  foreach my $key (keys %{ $result->{ $self->{ 'service' } } }){
+  foreach my $key (sort keys %{ $result->{ $self->{ 'service' } } }){
   	
   	my $x;
   	$x->{ 'name' } = $key;
@@ -387,7 +387,7 @@ sub _query_ido {
   	  # remove trailing ', '
       chop $sql;
       chop $sql; 
-      $sql .= ") ORDER BY name1";
+      $sql .= ")";
   
   	}else{
   	
