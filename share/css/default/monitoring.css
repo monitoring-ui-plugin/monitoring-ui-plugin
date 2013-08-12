@@ -90,10 +90,6 @@ body {
     width: 100%;
 }
 
-.mon-res-body-tr-hover {
-    background-color: #EEEEEE;
-}
-
 .mon-res-body-tr-selected {
     background-color: #C3D0E0;
 }
@@ -317,3 +313,16 @@ select {
 .mon-res-head-tbl tbody tr:nth-child(2n+1) td {
     background: #FFFFFF;
 }
+
+.mon-res-tbl:hover td {
+    background-color: #EEE !important;
+}
+
+.mon-res-tbl:active td {
+    background-color: #C3D0E0 !important;
+}
+
+.mon-res-body-tr:hover td {
+    background-color: #EEE !important;
+}
+
