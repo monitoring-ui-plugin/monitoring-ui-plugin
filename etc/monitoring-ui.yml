@@ -1,20 +1,348 @@
-refresh:
-  interval: 60
+#
+# This is the main Monitoring UI configuration file. It contains the
+# configuration directives that give the webtool its instructions.
+#
+
+
+#
+# This is the main Monitoring UI config block which controls the 
+# basic behaviour of Monitoring UI plugin. The configuration format 
+# is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# ui-plugin:
+#   data_dir: <data_dir>
+#   lib_dir: <lib_dir>
+#   site_url: <site_url>
+#   template: <template>
+#   template_cache: <true|false>
+#
 
 ui-plugin:
+
+ #
+# data_dir: path to the data directory.
+# This directory contains static data required for generating
+# Monitoring UI webpage including javascript code, CSS style 
+# sheets and images.
+#
+# You can override CSS style sheets with your custom ones by
+# defining a new template name and copying the files to be
+# modified from global folder to your template name folder.
+#
+# To change images also copy them into a folder named same as
+# the template specified in this configuration file.
+#
+
   data_dir: /data/www/monitoring-ui/share
+
+#
+# lib_dir: path to perl modules of Monitoring UI plugin
+# This directory contains all Perl modules for this UI plugin.
+#
+
   lib_dir: /data/www/monitoring-ui/lib
-  site_url: /monitoring-ui
-  template: default
-  template_cache: true
+
+#
+# site_url: site URL of Monitoring UI webpage 
+# (default: /monitoring-ui)
+# This URL is required to be able to find images, style sheets
+# and javascript files.
+#
+# You can change this to whatever URL you want. Just make sure
+# to configure your webserver accordingly.
+# See sample-config folder for an example Apache configuration
+# for site_url /monitoring-ui.
+#
+#
   
+  site_url: /monitoring-ui
+  
+#
+# template: name of the template to use (default: default)
+# This configuration options lets you create own CSS style sheets,
+# Template Toolkit templates and custom images.
+#
+# When changing the template name make sure to have a folder named
+# same as the template in:
+# * data_dir/css
+# * data_dir/images
+# * data_dir/src
+#
+  
+  template: default
+  
+#
+# template_cache: Cache JavaScript templates and provide cached webpage
+# if output of monitoring system didn't change. 
+# Possible values are true and false.
+#
+  
+  template_cache: true
+
+
+# ---
+
+#
+# This is the Monitoring UI refresh interval config block.
+# The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# refresh:
+#   interval: <interval>
+#
+
+refresh:
+
+#
+# interval: refresh interval of service status page in seconds
+# (default: 60)
+#
+
+  interval: 60
+
+
+# ---
+
+#
+# This is the Monitoring UI graphs config block.
+# The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# graphs:
+#   source: <provider>
+#
+
 graphs:
+
+#
+# source: name of the provider.
+# This requires a configuration block with the same name later
+# in this configuration file.
+#
+# Supported values are:
+# * pnp
+#
+
   source: pnp
+
+
+# ---
+
+
+# This is the pnp provider configuration block which defines
+# connections to PNP4Nagios. The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# pnp:
+#   url: <url>
+#   username: <username>
+#   password: <password>
+#
+# For further details on how to integrate PNP4Nagios in your
+# monitoring system visit: http://www.pnp4nagios.org/
+#
   
 pnp:
+
+#
+# url: URL to PNP4Nagios installation
+#
+
   url: http://localhost/pnp4nagios
+
+#
+# username: Username if pnp4nagios is protected with auth_basic
+#   Apache module.
+#
+
 #  username: icinga
+  
+#
+# password: Password if pnp4nagios is protected with auth_basic
+#   Apache module.
+#
+
 #  password: icinga
+
+  
+# ---
+
+#
+# This config block controlls the data backend provider to be used.
+# The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# provider:
+#   source: <source>
+#
+
+provider:
+
+#
+# source: name of the provider.
+# This requires a configuration block with the same name later
+# in this configuration file.
+#
+# Supported values are:
+# * ido
+# * mk-livestatus
+#
+
+  source: ido
+
+
+# ---
+  
+#
+# This is the ido provider configuration block which defines
+# connections to IDOutils. The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# ido:
+#   host: <host>
+#   port: <port>
+#   type: <type>
+#   database: <database>
+#   username: <username>
+#   password: <password>
+#   prefix: <prefix>
+#   timeout: <timeout>
+#
+# For further details on how to integrate IDOutils in your
+# monitoring system visit: http://docs.icinga.org/latest/en/
+#
+
+ido:
+
+#
+# host: Hostname of the IDOutils database server.
+#
+
+  host: localhost
+  
+#
+# port: Port of the database server.
+# Most likely the following ports are in use:
+#   * 3306 (MySQL)
+#   * 5432 (PostgreSQL)
+#
+  
+  port: 5432
+  
+#
+# type: Database type.
+# The following databases are supported:
+#   * mysql (MySQL)
+#   * pgsql (PostgreSQL)
+#
+  
+  type: pgsql
+  
+#
+# name: Name of IDOutils database.
+#
+  
+  database: icinga
+  
+#
+# username: Username to connect to the database.
+#
+
+  username: icinga
+  
+#
+# password: Password for this user.
+#
+  
+  password: icinga
+  
+#
+# prefix: Prefix of IDOutils tables.
+#
+  
+  prefix: icinga_
+
+
+ # ---
+  
+#
+# This is the mk-livestatus provider configuration block which
+# defines connections to mk-livestatus. The configuration format
+# is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# mk-livestatus:
+#   socket: <socket>
+#   server: <server>
+#   port: <port>
+#
+# For further details on how to integrate mk-livestatus in your
+# monitoring system visit: http://mathias-kettner.de/checkmk_livestatus.html
+#
+
+mk-livestatus:
+
+#
+# socket: Path to mk-livetstatus socket if connection shall be
+# established using sockets instead of TCP connection.
+#
+# Note that you can't use socket and server/port the same time.
+# You have to choose which method to use!
+#
+# When using a socket make sure your webserver user can write
+# to it!
+#
+
+#  socket: /var/spool/icinga/rw/live
+
+#
+# server: IP-address or hostname of server providing access to
+# mk-livestatus via xinetd. server also requires port!
+#
+# Note that you can't use socket and server/port the same time.
+# You have to choose which method to use!
+#
+
+  server: 127.0.0.1
+
+#
+# port: port of server providing access to mk-livestatus via
+# xinetd. port requires also server!
+#
+# Note that you can't use socket and server/port the same time.
+# You have to choose which method to use!
+# 
+
+  port: 6557  
+  
+
+# ---
+
+#
+# Configuration options for future release features.
+# These options aren't used yet!
 
 # settings for Icinga/Nagios
 # Note: these settings are only for instances installed on oVirt
@@ -30,28 +358,4 @@ monitoring:
   ovirt_port: 443
   ovirt_auth: admin@internal:password
   #ovirt_ca_file: ca.crt
-  
-  
-############################################################
-# Provider
-# Source: Connect via IDO or mk_livestatus or custom module
-# type: Database backend (DBD connection)
-############################################################
-
-provider:
-  source: ido
-
-ido:
-  host: localhost
-  port: 5432
-  type: pgsql
-  database: icinga
-  username: icinga
-  password: icinga
-  prefix: icinga_
-  
-mk-livestatus:
-#  socket: /var/spool/icinga/rw/live
-  server: 127.0.0.1
-  port: 6557  
-  
+ 
