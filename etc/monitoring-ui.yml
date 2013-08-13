@@ -150,6 +150,9 @@ graphs:
 #   url: <url>
 #   username: <username>
 #   password: <password>
+#   fetch: true|false
+#   width: <graph_width>
+#   height: <graph_height>
 #
 # For further details on how to integrate PNP4Nagios in your
 # monitoring system visit: http://www.pnp4nagios.org/
@@ -177,7 +180,28 @@ pnp:
 
 #  password: icinga
 
+#
+# fetch: Download graphs with LWP::UserAgent instead of linking to
+#   the image. This can be useful if graphs are password protected
+#   and users should not get a username/password prompt or don't
+#   have direct access to pnp4nagios.
+#   Possible values: true | false
+
+fetch: false
+
+#
+# width: Graph width
+#
+
+width: 500
+
+#
+# height: Graph height
+#
+
+height: 100
   
+
 # ---
 
 #
