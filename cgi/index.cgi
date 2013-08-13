@@ -135,21 +135,31 @@ while ( my $q = new CGI::Fast ){
       print "Content-type: application/json charset=iso-8859-1\n\n";
       my $json = undef;  
       
-      # do hostname differ in oVirt and Nagios?
+      # does hostname differ in oVirt and Nagios?
       my $host = param("graph");
-      chomp $host;
-      foreach my $map (keys %{ $mappings }){
-      	if ($host eq $map){
-      	  $host = $mappings->{ $map };
-      	}
+
+      # datacenters, clusters, storage and pools are mapped differently as the hostname
+      # and services names for these checks have to be given in mappings file  
+      if (param("comp") eq "vms" || param("comp") eq "hosts"){
+      
+        chomp $host;
+        foreach my $map (keys %{ $mappings }){
+      	  $host = $mappings->{ $map } if $host eq $map;
+        }
+        
+      }else{
+      	
+      	# process datacenters, clusters, storage and pools
+      	$host = $mappings->{ 'ovirt' }{ param("comp") }{ param("graph") }{ 'host' };
+      	
       }
-    
+      
       # get graphs for specified service
       my $graphs = oVirtUI::Data->new(
     	 provider	=> $config->{ 'graphs' }{ 'source' },
     	 provdata	=> $config->{ $config->{ 'graphs' }{ 'source' } }
       );
-       
+      
       $json = $graphs->get_graphs( 	'host'		=> $host,
     								'service'	=> param("service") );
     

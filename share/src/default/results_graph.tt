@@ -12,7 +12,6 @@
   <table width="100%" class="mon-res-head-tbl" id="mon-res-tbl-graph" cellspacing="0">
     <tbody style="">
     
-      <tr><td>No performance graphs found!</td></tr>
     [%# Here's the main content (Service graphs) - this is defined in js template service_graphs.html #%]
 
     </tbody>
