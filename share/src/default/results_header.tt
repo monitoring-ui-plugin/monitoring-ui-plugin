@@ -53,6 +53,9 @@
     <div class="mon-res-action-tbl" id="mon-res-action-tbl-down" tabindex="0" role="button" title="Downtime">Downtime</div>
     <div class="mon-res-action-tbl" id="mon-res-action-tbl-not" tabindex="0" role="button" title="Notifications">Notifications</div>
     <div class="mon-res-action-tbl" id="mon-res-action-tbl-sched" tabindex="0" role="button" title="Schedule">Schedule</div>
+    <div class="mon-res-action-tbl" style="float:right;">
+      <div id="refreshButton" role="button" style="width:13px"><img src="../share/images/reload.png" alt="Refresh" width="11" height="11" style="float:left;"></div>
+    </div>
   </div>
 </div>
 <div></div>

@@ -35,6 +35,11 @@ $(document).ready(function() {
 	});
   });
   
+  // refresh page
+  $("#refreshButton").click(function(){
+	getResults();
+  });
+  
 });
 
 

@@ -326,3 +326,6 @@ select {
     background-color: #EEE !important;
 }
 
+#refreshButton {
+	cursor: pointer;
+}
