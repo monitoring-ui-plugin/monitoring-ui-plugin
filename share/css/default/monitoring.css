@@ -108,6 +108,7 @@ body {
     white-space: nowrap;
     font-size: 75%;
     font-family: Verdana,Arial,sans-serif;
+    min-width: 25px;
 }
 
 div.icinga-status-ok, div.servicechart-0 {

@@ -53,6 +53,12 @@ $(document).ready(function() {
     $('.td-mon-res-subdetails-scroll').width($('#right').width());
   });
   
+  // resizeable service status
+  $('#mon-res-service').resizable({ handles: 'e' });
+  $('#mon-res-service').bind("resize", function (event, ui) {
+	$('#mon-res-body-service').width($('#mon-res-service').width());
+  });
+ 
   // fix size when browser resizes
   $(window).resize(function() {
 	// don't allow to resize this div over the details div
@@ -60,12 +66,12 @@ $(document).ready(function() {
 	// This is still a bit buggy!
 	if ( ($(document).width() - $('#left').width() - 8) < 300){
 	  $('#left').width($(document).width() - 308);
-      $('#service-details').width($('#left').width());
 	}
+    $('#service-details').width($('#left').width());
 	$('#right').width($(document).width() - $('#left').width() - 8);
     $('.td-mon-res-subdetails-scroll').width($('#right').width());
   });
- 
+
 });
 
 
