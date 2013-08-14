@@ -303,6 +303,7 @@ select {
     position: fixed !important;
     right: 0px;
     top: 57px;
+    min-width: 300px;	// make sure this is the same value as #right
 }
 
 /* zebra stripped background */
@@ -328,4 +329,16 @@ select {
 
 #refreshButton {
 	cursor: pointer;
+}
+
+#left {
+    min-width: 300px;
+}
+
+#right {
+    min-width: 300px;
+}
+
+#service-details {
+    min-width: 300px;  // make sure this is the same value as #left
 }

@@ -40,13 +40,32 @@ $(document).ready(function() {
 	getResults();
   });
   
-  
   // resizable divs
   $("#left").resizable({ handles: 'e' });
   $("#left").bind("resize", function (event, ui) {
     $('#right').width($(document).width() - ui.size.width - 8);
+    // don't allow to resize this div over the details div
+    // TODO: fix this to a better solution!
+    if ( ($(document).width() - $('#left').width() - 8) < 300){
+      $('#left').width($(document).width() - $('#right').width() - 8);
+    }
+    $('#service-details').width($('#left').width());
+    $('.td-mon-res-subdetails-scroll').width($('#right').width());
   });
   
+  // fix size when browser resizes
+  $(window).resize(function() {
+	// don't allow to resize this div over the details div
+	// TODO: fix this to a better solution!
+	// This is still a bit buggy!
+	if ( ($(document).width() - $('#left').width() - 8) < 300){
+	  $('#left').width($(document).width() - 308);
+      $('#service-details').width($('#left').width());
+	}
+	$('#right').width($(document).width() - $('#left').width() - 8);
+    $('.td-mon-res-subdetails-scroll').width($('#right').width());
+  });
+ 
 });
 
 
