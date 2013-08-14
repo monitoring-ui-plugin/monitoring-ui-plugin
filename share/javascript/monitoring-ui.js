@@ -103,6 +103,7 @@ function getResults(){
 	  
     jsonData = data;
 	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=templateCache);
+    $('#mon-res-tbody-service').width($('#mon-res-service').width());
 	  
   })
   .fail(function() { 
