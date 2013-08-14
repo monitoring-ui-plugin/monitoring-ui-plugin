@@ -72,7 +72,6 @@ body {
 .mon-res-head-th {
     background-color: #F0F2FF;
     border-bottom: 1px solid #E3EDF6;
-    border-left: 1px solid #D7D7E1;
     border-top: 1px solid #E3EDF6;
     color: #111111;
     font-family: Arial,sans-serif;
@@ -80,7 +79,13 @@ body {
     height: 28px;
     padding: 0 0 0 3px;
     text-align: left;
+    vertical-align: bottom;
     white-space: nowrap;
+}
+
+.mon-res-service-th {
+    border-left: 1px solid #D7D7E1;
+    border-right: 1px solid #D7D7E1;
 }
 
 .mon-res-head-tbl {

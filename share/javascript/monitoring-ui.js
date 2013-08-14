@@ -57,6 +57,7 @@ $(document).ready(function() {
   $('#mon-res-service').resizable({ handles: 'e' });
   $('#mon-res-service').bind("resize", function (event, ui) {
 	$('#mon-res-tbody-service').width($('#mon-res-service').width());
+	$('#mon-res-service-th').width($('#mon-res-service').width());
   });
  
   // fix size when browser resizes
@@ -103,6 +104,7 @@ function getResults(){
 	  
     jsonData = data;
 	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=templateCache);
+	// change size of td's to previous value as JS template overwrites it
     $('#mon-res-tbody-service').width($('#mon-res-service').width());
 	  
   })

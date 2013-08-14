@@ -62,9 +62,9 @@
   <table class="mon-res-head-tbl" id="mon-res-tbl" cellspacing="0">
     <thead>
       <tr>
-        <th class="mon-res-head-th mon-res-head-small" colspan="1" width="25"></th>
-        <th id="mon-res-service" class="mon-res-head-th" colspan="1" width="170">Service</th>
-        <th id="mon-res-output" class="mon-res-head-th" colspan="1">Output</th>
+        <th style="width: 25px;"><div class="mon-res-head-th mon-res-head-small" colspan="1"></div></th>
+        <th style="width: 170px;" id="mon-res-service-th"><div id="mon-res-service" class="mon-res-head-th mon-res-service-th" colspan="1">Service</div></th>
+        <th id="mon-res-output-th"><div id="mon-res-output" class="mon-res-head-th" colspan="1">Output</div></th>
       </tr>
     </thead>
   </table>
