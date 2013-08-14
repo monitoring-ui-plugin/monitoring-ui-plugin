@@ -56,7 +56,7 @@ $(document).ready(function() {
   // resizeable service status
   $('#mon-res-service').resizable({ handles: 'e' });
   $('#mon-res-service').bind("resize", function (event, ui) {
-	$('#mon-res-body-service').width($('#mon-res-service').width());
+	$('#mon-res-tbody-service').width($('#mon-res-service').width());
   });
  
   // fix size when browser resizes
