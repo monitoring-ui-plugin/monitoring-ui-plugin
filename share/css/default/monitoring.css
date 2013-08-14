@@ -161,7 +161,6 @@ select {
     min-width: 300px;	// make sure this is the same value as #right
 }
 
-// zebra stripped background
 .mon-res-head-tbl tbody tr:nth-child(2n) td {
     background: #F3F7FB;
 }
