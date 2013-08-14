@@ -1,0 +1,36 @@
+Developer Nodes for JavaScript
+------------------------------
+
+Monitoring UI Plugin uses jQuery and jQuery-UI.
+
+Upgrading jQuery:
+Stay on Version 1.x and use min version.
+Copy jquery-1.x.x.min.js into folder share/javascript and delete the old
+file. Change name in header.tt template.
+
+Upgrading jQuery UI:
+Create a custom version with the following components (add additional
+components if required and update these notes):
+
+* UI Core:
+  - Core
+  - Widget
+  - Mouse
+
+* Interactions:
+  - Resizable
+
+* Widgets:
+  - Tabs
+  
+* Theme:
+  - Smoothness
+
+Copy jquery-ui-1.x.x.custom.min.css to share/css and delete the old file.
+Copy jquery-ui-1.x.x.custom.min.js to share/javascript and delete the old file.
+Copy images to share/images/jquery and overwrite old files.
+Change name of css and js files in header.tt template.
+
+Adapt path to images in jquery-ui-1.x.x.custom.min.css with this command:
+sed -i 's!images/!../images/jquery/!g' jquery-ui-1.x.x.custom.min.css
+
