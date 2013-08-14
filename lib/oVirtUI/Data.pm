@@ -19,7 +19,7 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.302'; # Don't forget to set version and release
+    $VERSION = '0.310'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -286,6 +286,39 @@ sub get_details {
   	my $x;
   	$x->{ 'name' } = $key;
   	$x->{ 'value' } = $result->{ $self->{ 'service' } }{ $key };
+  	
+  	# bring values into more understandable format
+  	if ($key eq "state"){
+  		
+  	  $x->{ 'name' } = "State";
+  		
+  	  # display states
+  	  if ($result->{ $self->{ 'service' } }{ $key } == 0){
+  	  	$x->{ 'value' } = "OK";
+  	  }elsif ($result->{ $self->{ 'service' } }{ $key } == 1){
+  	  	$x->{ 'value' } = "WARNING";
+  	  }elsif ($result->{ $self->{ 'service' } }{ $key } == 2){
+  	  	$x->{ 'value' } = "CRITICAL";
+  	  }else{
+  	  	$x->{ 'value' } = "UNKNOWN";
+  	  }
+  		
+  	}else{
+  		
+  	  if (defined $result->{ $self->{ 'service' } }{ $key } && $result->{ $self->{ 'service' } }{ $key } eq "0"){
+  	    $x->{ 'value' } = "no";
+   	  }elsif (defined $result->{ $self->{ 'service' } }{ $key } && $result->{ $self->{ 'service' } }{ $key } eq "1"){
+  	    $x->{ 'value' } = "yes";
+  	  }
+  	 
+  	 # rename colums
+  	 $x->{ 'name' } = ucfirst( $x->{ 'name' } );
+  	 $x->{ 'name' } =~  s/_/ /g;
+  	 $x->{ 'name' } = "Service name" if $x->{ 'name' } eq "Display name" || $x->{ 'name' } eq "Service";
+  	 $x->{ 'name' } = "Performance data" if $x->{'name' } eq "Perf data";
+  	  
+  	}
+  	
   	push @{ $tmp }, $x;
   	
   }
@@ -395,9 +428,10 @@ sub _query_ido {
   	}else{
   	
   	  # get service details	
-  	  # construct SQL query
-  	  $sql  = "SELECT name2 AS service, current_state, last_check, last_state_change, output, long_output, perfdata, last_notification, last_state_change, ";
-  	  $sql .= "latency, next_check, notifications_enabled, problem_has_been_acknowledged, comment_data, is_flapping ";
+  	  # construct SQL query and name colums same as for mk-livestatus
+  	  # this is required for easier renaming
+  	  $sql  = "SELECT name2 AS service, current_state AS state, last_check, last_state_change, output AS plugin_output, long_output AS long_plugin_output, perfdata AS perf_data, last_notification, last_state_change, ";
+  	  $sql .= "latency, next_check, notifications_enabled, problem_has_been_acknowledged AS acknowledged, comment_data AS comments, is_flapping ";
   	  $sql .= "FROM " . $self->{'provdata'}{'prefix'} . "objects INNER JOIN " . $self->{'provdata'}{'prefix'} . "servicestatus ";
   	  $sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = service_object_id LEFT OUTER JOIN " . $self->{'provdata'}{'prefix'} . "comments ";
   	  $sql .= "ON " . $self->{'provdata'}{'prefix'} . "objects.object_id = " . $self->{'provdata'}{'prefix'} . "comments.object_id ";
@@ -589,7 +623,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.302  (Aug 08 2013))
+Version 0.310  (Aug 14 2013))
 
 =head1 COPYRIGHT AND LICENSE
 
