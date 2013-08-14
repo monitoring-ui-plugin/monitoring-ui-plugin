@@ -40,6 +40,13 @@ $(document).ready(function() {
 	getResults();
   });
   
+  
+  // resizable divs
+  $("#left").resizable({ handles: 'e' });
+  $("#left").bind("resize", function (event, ui) {
+    $('#right').width($(document).width() - ui.size.width - 8);
+  });
+  
 });
 
 

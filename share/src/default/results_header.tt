@@ -21,7 +21,7 @@
 
 [%# Split tab into 2 subtabs %]
 [%# right subtab with details and graphs %]
-<div style="position: absolute; overflow: hidden; top: 0px; right: 0px; bottom: 0px; width: 610px;"> 
+<div style="position: absolute; overflow: hidden; top: 0px; right: 0px; bottom: 0px; width: 610px;" id="right"> 
 [%# <div style="position: absolute; overflow: hidden; top: 0px; right: 0px; bottom: 0px; width: 600px;"> %]
   <div id="tabs" class="mon-res-details-tabs" style="border-bottom-right-radius: 1px; border-bottom-left-radius: 1px; border-top-right-radius: 1px; border-top-left-radius: 1px; border: 0px; background: none repeat scroll 0 0 #CCCCCC; margin: 0px; padding: 0px; padding-left: 5px;">
     <ul style="background: none repeat scroll 0 0 #CCCCCC; border: 0px; margin: 0px; padding: 0px;">
@@ -36,13 +36,8 @@
 
 </div>
 
-[%# subtab deliminator %]
-<div style="position: absolute; overflow: hidden; top: 0px; right: 610px; bottom: 0px; width: 8px;">
-  <div class="subtab-del" style="width: 8px; position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px;"></div>
-</div>
-
 [%# left subtab with monitoring results %]
-<div style="position: absolute; overflow: hidden; left: 0px; top: 0px; right: 618px; bottom: 0px;">
+<div class="subtab-del" style="position: absolute; overflow: hidden; left: 0px; top: 0px; right: 610px; bottom: 0px;" id="left">
 
 [%# Table header for vm and host check commands %]
 

@@ -259,8 +259,8 @@ select {
 }
 
 .subtab-del {
-    background-color: #888888;
-    cursor: col-resize;
+    border-right: 8px solid #888;
+/*    cursor: col-resize; */
 }
 
 .mon-res-details-tabs li {
