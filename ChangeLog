@@ -1,8 +1,51 @@
 #*********************************************************#
 #                                                         #
-#         Changelog of oVirt Monitoring UI-Plugin         #
+#            Changelog of Monitoring UI-Plugin            #
 #                                                         #
 #*********************************************************#
+
+* 0.1 - Sun Aug 18 2013
+- Major improvements
+
+New Features:
+  * Rewrite of Backend-Code
+  * Configuration files for Monitoring UI-Plugin
+  * Mapping of hosts/vms when names differ in oVirt/RHEV and Nagios/Icinga
+  * New data backend provider infrastructure supporting
+    - NDOUtils (MySQL-Database)
+    - IDOUtils (MySQL-Database)
+    - IDOUtils (PostgreSQL-Database)
+    - mk-livestatus (Unix-socket)
+    - mk-livestatus (TCP-connection)
+  * New graph backend provider infrastructure supporting
+    - PNP4Nagios
+  * Service check results, details and graphs for
+    - Data Centers
+    - Clusters
+    - Storage Domains
+    - Pools
+  * Refresh and automatic refresh of service check results
+  * Resizable Tables
+  * Logging to logfile
+  * Installation with autotools support
+  * Perl pod documentation
+  * FastCGI support
+  * Cached database connections
+  * JavaScript templates
+  * jQuery and jQueryUI upgrades
+  * Supported virtualization platforms
+    - RHEV 3.2
+    - oVirt 3.2
+    - oVirt 3.3
+
+Bugs fixed:
+  * CSS issues in Internet Explorer and Google Chrome
+
+Infrastructure:
+  * Renamed to Monitoring UI-Plugin as it supports RHEV now, too
+  * Moved project to github
+  * Project URL: https://github.com/ovido/monitoring-ui-plugin
+  * Project Wiki: https://github.com/ovido/monitoring-ui-plugin/wiki
 
 * 0.0.1 - Tue Feb 19 2013
 - This is the first public alpha release of new oVirt Monitoring

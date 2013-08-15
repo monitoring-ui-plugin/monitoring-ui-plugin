@@ -1,19 +1,22 @@
 #*********************************************************#
 #                                                         #
-#         README for oVirt Monitoring UI-Plugin           #
+#            README for Monitoring UI-Plugin              #
 #                                                         #
 #*********************************************************#
 
-What is oVirt Monitoring UI-Plugin?
-===================================
+What is Monitoring UI-Plugin?
+=============================
 
-This UI-Plugin for oVirt integrates a existing Nagios or Icinga monitoring
-solution into oVirt and displays detailed service status information for
-hosts and virtual machines including performance graphs.
+This UI-Plugin for oVirt and RHEV integrates a existing Nagios or Icinga 
+monitoring solution into oVirt and RHEV and displays detailed service status
+information for data centers, clusters, hosts, storage domains, virtual 
+machines and pools including performance graphs.
 
 
 Contributions / Help
 ====================
+
+Read documentation in the wiki: https://github.com/ovido/monitoring-ui-plugin/wiki
 
 Send email to r.koch@ovido.at if you have questions regarding use
 of this software. Please include the following information in your email:
@@ -21,8 +24,7 @@ of this software. Please include the following information in your email:
 * Browser type and version
 * Perl version
 * Nagios or Icinga version
-* mk-livestatus version
-* oVirt version
+* oVirt or RHEV version
 
 To submit patches of suggest improvements, send email to r.koch@ovido.at.
 
@@ -34,55 +36,118 @@ Installation
 * Perl
 * Perl-Modules:
     CGI
+    CGI::Carp
+    CGI::Fast
+    Log::Log4perl
     Template
-    Data::Dumper
-    JSON::XS
-    JSON::PP
-    Digest::MD5
+    YAML::Syck
+    File::Spec
     Carp
+    JSON::PP
+    DBI			# for MySQL and PostgreSQL support
+    DBD::Pg     # for IDOutils PostgreSQL support
+    # only required for mk-livestatus support:
+    Digest::MD5
     Encode
+    JSON::XS
     IO::Socket::INET
     IO::Socket::UNIX
+    Socket
+    Config
     Time::HiRes
     Scalar::Util
-* Icinga or Nagios
-* mk-livestatus
+* Icinga or Nagios or other clone which supports IDO/NDOUtils or mk-livestatus
+* IDO/NDOutils or mk-livestatus added to your monitoring system
 * PNP4Nagios (optional)
-* oVirt 3.2
+* oVirt >= 3.2 or RHEV >= 3.2
 
 
-1. Install Perl Modules on Fedora 18:
-# yum install perl perl-CGI perl-Template-Toolkit perl-Data-Dumper perl-JSON-XS \
-              perl-JSON-PP perl-Digest-MD5 perl-Carp perl-Scalar-List-Utils
+1. Install required Perl modules (you can skip this if you install the Monitoring
+UI-Plugin RPM with yum as dependencies are resolved automatically):
 
-2. Install Icinga/Nagios
+1.1. Basic modules
+# yum install perl perl-CGI perl-Log-Log4perl perl-Template-Toolkit perl-JSON-PP \
+              perl-YAML-Syck perl-PathTools perl-Carp
+
+1.2. For MySQL backend support
+# yum install perl-DBI
+
+1.3. For PostgreSQL backend support
+# yum install perl-DBD-Pg
+
+1.4. For mk-livestatus backend support
+# yum install perl-JSON-XS perl-Digest-MD5 perl-Scalar-List-Utils
+
+1.5. For FastCGI support
+# yum install mod_fcgid
+
+
+2. Install Icinga/Nagios (if not already available)
 See Icinga documentation: http://docs.icinga.org/latest/en/
 See Nagios documentation: http://nagios.sourceforge.net/docs/nagioscore/3/en/toc.html
 
-3. Define Hosts and Services
+
+3. Define Hosts and Services (if not already done)
 As described in Nagios and/or Icinga documentation
 
-4. Install mk-livestatus and integrate it into Nagios/Icinga
+
+4. Make monitoring results accessible via one of the following providers:
+
+4.1. mk-livestatus for Icinga/Nagios
 See mk-livestatus documentation: http://mathias-kettner.de/checkmk_livestatus.html
 
-5. Configure xinetd for use with mk-livestatus
-See mk-livestatus documentation: http://mathias-kettner.de/checkmk_livestatus.html#H1:Remote%20access%20to%20Livestatus%20via%20SSH%20or%20xinetd
+4.2. NDOUtils for Nagios
+See http://nagios.sourceforge.net/docs/ndoutils/NDOUtils.pdf
 
-6. Install oVirt Monitoring UI-Plugin
-# cp -r ui-plugins/* /usr/share/ovirt-engine/ui-plugins/
-# cp -r httpd.conf/* /etc/httpd/conf.d/
-# mkdir -p /data/www
-# cp -r www/* to /data/www/
+4.3. IDOUtils for Icinga
+See http://docs.icinga.org/1.9/en/quickstart-idoutils.html
 
-7. Edit /etc/httpd/conf.d/ovirt-engine.conf
 
-ProxyPass /ovirt-monitoring !
-ProxyPass /pnp4nagios !
-ProxyPass / ajp://localhost:8702/ retry=5 timeout=3600
+5. Install Monitoring UI-Plugin
+Build RPM from Spec-File or from Sources:
 
-8. Adapt URL of Nagios/Icinga Host with mk-livestatus if not running on ovirt-engine
-# vi /data/www/ovirt-monitoring/lib/oVirtUI/Monitoring/Livestatus.pm
-  my $ml = Monitoring::Livestatus->new( server => '127.0.0.1:6557' );
+5.1. RPM Build
+# rpmbuild -ba monitoring-ui-plugin.spec
+# yum localinstall monitoring-ui-plugin*.rpm
+
+5.2. Install from Sources
+$ tar xfzv monitoring-ui-plugin-*.tgz
+$ cd monitoring-ui-plugin-*
+$ ./configure
+$ make
+# make install
+
+6. Configure Monitoring UI-Plugin
+The configurations files are located (unless changed in ./configure call):
+* /etc/monitoring-ui-plugin (when installed from RPM)
+* /usr/local/monitoring-ui-plugin/etc (when installed from sources)
+
+The main configuration file is monitoring-ui.yml and is well documented.
+Have a look at this file.
+
+For a quickstart:
+- check that data_dir, lib_dir and site_url are set correct / detected
+correct from the configure script.
+- set the url to pnp4nagios if you want graphs
+- configure the provider
+
+
+7. Configure your webserver
+The configuration depends on how you installed oVirt/RHEV.
+
+If oVirt/RHEV 3.2 is listening on ports 80/443 you have to exclude monitoring-ui
+url from ProxyPass.
+To do this edit /etc/httpd/conf.d/ovirt-engine.conf
+
+  ProxyPass /monitoring-ui !
+  ProxyPass / ajp://localhost:8702/ retry=5 timeout=3600
+
+If oVirt/RHEV 3.2 is listening on other ports you properly have to start httpd as
+it's most likely not running.
+
+For oVirt 3.3 no ProxyPass excludes are required anymore.
+
+Make sure monitoring-ui.conf matches the paths you configured in monitoring-ui.yml!
 
 
 Documentation
@@ -91,12 +156,13 @@ Documentation
 Short documentation on how to use this plugin.
 
 Detailed documentation can be found on the project website
-https://labs.ovido.at/monitoring/wiki/ovirt-monitoring-ui-plugin
+https://github.com/ovido/monitoring-ui-plugin/wiki
 
-Log into oVirt Webadmin Portal and select a host or virtual machine.
+Log into oVirt Webadmin Portal and select a data center, cluster, host 
+storage domain, virtual machine or pool.
 A new subtab labeled "Monitoring Details" appears. In this new subtab 
-you can see all service checks for this virtual machine or host with 
-service output and status information.
+you can see all service checks for this item with service output and 
+status information.
 
 On the right side detailed information and performance graphs (if PNP4nagios
 is installed) are provided.
