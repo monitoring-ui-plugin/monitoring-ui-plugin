@@ -19,13 +19,13 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.310'; # Don't forget to set version and release
+    $VERSION = '0.320'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
 use warnings;
 use YAML::Syck;
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 use File::Spec;
 use JSON::PP;
 
@@ -171,13 +171,8 @@ sub get_services {
   	  $sql = $self->_query_ido( $self->{ 'host' } );
   	}
   	# get results
-  	$result = $self->_get_ido( $sql );
+  	$result = eval { $self->_get_ido( $sql ) };
   	
-    if ($self->{'errors'}){
-      # TODO!!!
-      return 1;
-    }
-    
   }elsif ($self->{'provider'} eq "mk-livestatus"){
   	
   	# construct query
@@ -192,10 +187,10 @@ sub get_services {
     }
     
   	# get results
-  	$result = $self->_get_livestatus( $query );
+  	$result = eval { $self->_get_livestatus( $query ) };
   	
   }else{
-  	carp ("Unsupported provider: $self->{'provider'}!");
+  	croak ("Unsupported provider: $self->{'provider'}!");
   }
   
   # change hash into array of hashes for JS template processing
@@ -254,22 +249,17 @@ sub get_details {
   	# construct SQL query
   	my $sql = $self->_query_ido( $self->{ 'host' }, $self->{ 'service' } );
   	# get results
-  	$result = $self->_get_ido( $sql );
+  	$result = eval { $self->_get_ido( $sql ) };
   	
-    if ($self->{'errors'}){
-      # TODO!!!
-      return 1;
-    }
-    
   }elsif ($self->{'provider'} eq "mk-livestatus"){
   	
   	# construct query
   	my $query = $self->_query_livestatus( $self->{ 'host' }, $self->{ 'service' } );
   	# get results
-  	$result = $self->_get_livestatus( $query );
+  	$result = eval { $self->_get_livestatus( $query ) };
   	
   }else{
-  	carp ("Unsupported provider: $self->{'provider'}!");
+  	croak ("Unsupported provider: $self->{'provider'}!");
   }
   
   # change hash into array of hashes for JS template processing
@@ -339,9 +329,9 @@ sub get_details {
 
 =head1 METHODS	
 
-=head2 get_details
+=head2 get_graphs
 
- get_details ( 'host' => $host, service => $service )
+ get_graphs ( 'host' => $host, service => $service )
 
 Connects to backend and queries details of given host and service.
 Returns JSON data.
@@ -374,7 +364,7 @@ sub get_graphs {
     $result->{ '1year' }	= $self->{ 'provdata' }{ 'url' } . "/image?host=" . $self->{ 'host' } ."&srv=" . $self->{ 'service' } . "&view=4";
     
   }else{
-  	carp ("Unsupported provider: $self->{'provider'}!");
+  	croak ("Unsupported provider: $self->{'provider'}!");
   }
   
   # change hash into array of hashes for JS template processing
@@ -383,7 +373,7 @@ sub get_graphs {
   
   # produce json output
   my $json = JSON::PP->new->pretty;
-  $json = $json->sort_by(sub { $JSON::PP::a cmp $JSON::PP::b })->encode( $tmp );
+  $json = $json->encode( $tmp );
   
   return $json;
   
@@ -531,24 +521,22 @@ sub _get_ido {
   }
   
   # connect to database
-  my $dbh   = DBI->connect_cached($dsn, $self->{'provdata'}{'username'}, $self->{'provdata'}{'password'});
+  my $dbh   = eval { DBI->connect_cached($dsn, $self->{'provdata'}{'username'}, $self->{'provdata'}{'password'}) };
   if ($DBI::errstr){
-  	push @{ $self->{'errors'} }, "Can't connect to database: $DBI::errstr";
-  	return 1;
+  	croak "Can't connect to database: $DBI::errstr: $@";
   }
   my $query = $dbh->prepare( $sql );
-  $query->execute;
+  eval { $query->execute };
   if ($DBI::errstr){
-  	push @{ $self->{'errors'} }, "Can't execute query: $DBI::errstr";
-    $dbh->disconnect;
-  	return 1;
+  	croak "Can't execute query: $DBI::errstr: $@";
+    #$dbh->disconnect;
   }
   
   # prepare return
   $result = $query->fetchall_hashref('service');
   
   # disconnect from database
-  $dbh->disconnect;
+  #$dbh->disconnect;
   
   return $result;
   
@@ -623,7 +611,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.310  (Aug 14 2013))
+Version 0.320  (Aug 15 2013))
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -19,14 +19,14 @@
 package oVirtUI::Config;
 
 BEGIN {
-    $VERSION = '0.101'; # Don't forget to set version and release
+    $VERSION = '0.110'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
 use warnings;
 use YAML::Syck;
 use File::Spec;
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 
 # for debugging only
 #use Data::Dumper;
@@ -154,7 +154,7 @@ sub read_config {
   
   # read and parse YAML config file
   $YAML::Syck::ImplicitTyping = 1;
-  my $yaml = LoadFile( $self->{ 'file' } );
+  my $yaml = eval{ LoadFile( $self->{ 'file' } ) };
   
   return $yaml;
   
@@ -171,7 +171,7 @@ Searches for files with ending ".yml" in specified directories and calls read_co
 reads its content into Hash.
 Returns Hash.
 
-  my $directory = '/etc/ovirtui-monitoring';
+  my $directory = '/etc/monitoring-ui';
   my $config = $conf->read_dir( 'dir' => $directory);
 
 $VAR1 = {
@@ -240,8 +240,7 @@ sub read_dir {
 
 Validates a specified config hashref if required parameters for oVirtUI monitoring
 plugin are present.
-Errors are printed out.
-Returns 0 or 1 (Config failure).
+Croaks on errors.
 
   my $config = $conf->validate( 'config' => $config);
 
@@ -266,10 +265,10 @@ sub validate {
   # go through config values
   my $config = $self->{ 'config' };
   # parameters given?
-  push @{ $self->{'errors'} }, "lib_dir missing!"  unless $config->{'ui-plugin'}{'lib_dir'};
-  push @{ $self->{'errors'} }, "data_dir missing!" unless $config->{'ui-plugin'}{'data_dir'};
-  push @{ $self->{'errors'} }, "site_url missing!" unless $config->{'ui-plugin'}{'site_url'};
-  push @{ $self->{'errors'} }, "provider missing!" unless $config->{'provider'}{'source'};
+  croak "lib_dir missing!"  unless $config->{'ui-plugin'}{'lib_dir'};
+  croak "data_dir missing!" unless $config->{'ui-plugin'}{'data_dir'};
+  croak "site_url missing!" unless $config->{'ui-plugin'}{'site_url'};
+  croak "provider missing!" unless $config->{'provider'}{'source'};
   
   # check if directories exist
   $self->_check_dir( "lib_dir", $config->{'ui-plugin'}{'lib_dir'} );
@@ -278,23 +277,6 @@ sub validate {
   
   # check data backend provider
   $self->_check_provider( "provider", $config->{'provider'}{'source'}, $config->{ $config->{'provider'}{'source'} } );
-  
-  # print errors to webpage
-  if ($self->{'errors'}){
-  	
-   print "<p>";
-   print "Configuration validation failed: <br />";
-   
-   for (my $x=0;$x< scalar @{ $self->{'errors'} };$x++){
-     print $self->{'errors'}->[$x] . "<br />";
-   }
-   
-   print "</p>";
-   return 1;
-   
-  }
-  
-  return 0;
   
 }
 
@@ -311,9 +293,7 @@ sub _check_dir {
   my $conf	= shift;
   my $dir	= shift or croak ("_check_dir: Missing directory!");
   
-  if (! -d $dir){
-   push @{ $self->{'errors'} }, "$conf: $dir - No such directory!";
-  }
+  croak "$conf: $dir - No such directory!" if ! $dir;
   
 }
 
@@ -331,13 +311,13 @@ sub _check_provider {
   # IDOutils
   if ($provider eq "ido"){
     	
-    push @{ $self->{'errors'} }, "ido: Missing host!" unless $config->{'host'};
-    push @{ $self->{'errors'} }, "ido: Missing database!" unless $config->{'database'};
-    push @{ $self->{'errors'} }, "ido: Missing username!" unless $config->{'username'};
-    push @{ $self->{'errors'} }, "ido: Missing password!" unless $config->{'password'};
-    push @{ $self->{'errors'} }, "ido: Missing prefix!" unless $config->{'prefix'};
+    croak "ido: Missing host!" unless $config->{'host'};
+    croak "ido: Missing database!" unless $config->{'database'};
+    croak "ido: Missing username!" unless $config->{'username'};
+    croak "ido: Missing password!" unless $config->{'password'};
+    croak "ido: Missing prefix!" unless $config->{'prefix'};
       
-    push @{ $self->{'errors'} }, "ido: Unsupported database type: $config->{'type'}!" unless ( $config->{'type'} eq "mysql" || $config->{'type'} eq "pgsql" );
+    croak "ido: Unsupported database type: $config->{'type'}!" unless ( $config->{'type'} eq "mysql" || $config->{'type'} eq "pgsql" );
      
   }elsif ($provider eq "mk-livestatus"){
    	 
@@ -345,12 +325,12 @@ sub _check_provider {
     # requires socket or server
     if (! $config->{ $provider }{'socket'} && ! $config->{'server'}){
      	
-      push @{ $self->{'errors'} }, "mk-livestatus: Missing server or socket!";
+      croak "mk-livestatus: Missing server or socket!";
        
     }else{
      	
       if ($config->{'server'}){
-        push @{ $self->{'errors'} }, "mk-livestatus: Missing port!" unless $config->{'port'};
+        croak "mk-livestatus: Missing port!" unless $config->{'port'};
       }
        
     }
@@ -358,7 +338,7 @@ sub _check_provider {
   }else{
    	
   	# unsupported provider
-    push @{ $self->{'errors'} }, "$conf: $provider not supported!";
+    croak "$conf: $provider not supported!";
    	
   }
    
@@ -372,7 +352,7 @@ sub _check_provider {
 Read all config files from a given directory and validate its parameters.
 
   use oVirtUI::Config;
-  my $directory = '/etc/ovirtui-monitoring';
+  my $directory = '/etc/monitoring-ui';
   
   my $conf = oVirtUI::Config->new( 'directory' => $directory ));
   my $config = $conf->read_dir();
@@ -387,7 +367,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.100  (July 23 2013))
+Version 0.110  (Aug 15 2013))
 
 =head1 COPYRIGHT AND LICENSE
 

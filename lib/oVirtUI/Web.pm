@@ -19,13 +19,13 @@
 package oVirtUI::Web;
 
 BEGIN {
-    $VERSION = '0.120'; # Don't forget to set version and release
+    $VERSION = '0.130'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
 use warnings;
 use Template;
-use CGI::Carp qw(fatalsToBrowser);
+use Carp;
 
 # for debugging only
 #use Data::Dumper;
@@ -207,9 +207,7 @@ sub _check_dir {
   my $self	= shift;
   my $dir	= shift or croak ("Missing directory!");
   
-  if (! -d $dir){
-   push @{ $self->{'errors'} }, "$dir - No such directory!";
-  }
+  croak "$dir - No such directory!" if ! $dir;
   
 }
 
@@ -245,7 +243,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.120  (August 09 2013))
+Version 0.130  (August 15 2013))
 
 =head1 COPYRIGHT AND LICENSE
 

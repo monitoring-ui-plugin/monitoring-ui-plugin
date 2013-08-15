@@ -24,9 +24,10 @@ use Template;
 use CGI qw(param referer);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI::Fast;
+use Log::Log4perl;
 
 # for debugging only
-use Data::Dumper;
+#use Data::Dumper;
 
 # define default paths required to read config files
 my ($lib_path, $cfg_path);
@@ -47,12 +48,28 @@ use oVirtUI::Data;
 # open config files
 my $conf	= oVirtUI::Config->new();
 # open config file directory and push configs into hash
-my $config	= $conf->read_dir( 'dir' => $cfg_path );
+my $config	= eval{ $conf->read_dir( 'dir' => $cfg_path ) };
+die "Reading configuration files failed.\nReason: $@" if $@;
+
+# initialize Log4perl
+my $logconf = "
+    log4perl.category.oVirtUI.Log		= WARN, Logfile
+    log4perl.appender.Logfile			= Log::Log4perl::Appender::File
+	log4perl.appender.Logfile.filename	= $config->{ 'logging' }{ 'logfile' }
+    log4perl.appender.Logfile.layout	= Log::Log4perl::Layout::PatternLayout
+    log4perl.appender.Logfile.layout.ConversionPattern = %d %F: [%p] %m%n
+";
+Log::Log4perl::init( \$logconf );
+my $log = Log::Log4perl::get_logger("oVirtUI::Log");
+
+
 # validate config
-exit 1 unless ( $conf->validate( 'config' => $config ) == 0);
+eval { $conf->validate( 'config' => $config ) };
+$log->error_die($@) if $@;
 
 # read static mappings config
-my $mappings = $conf->read_dir( 'dir' => $cfg_path . "/mappings" );
+my $mappings = eval { $conf->read_dir( 'dir' => $cfg_path . "/mappings" ) };
+$log->error_die($@) if $@;
 # Todo: validate mappings!
 
 
@@ -72,13 +89,14 @@ while ( my $q = new CGI::Fast ){
  		site_url	=> $config->{ 'ui-plugin' }{ 'site_url' },
  		template	=> $config->{ 'ui-plugin' }{ 'template' },
 	  );
-      $page->display_page(
+      eval { $page->display_page(
     	page		=> "results",
     	content		=> param("host"),		# get name of vm/host
     	component	=> param("results"),
     	refresh		=> $config->{ 'refresh' }{ 'interval' },
     	template_cache	=> $config->{ 'ui-plugin' }{ 'template_cache' }
-	  );
+	  ) };
+	  $log->error($@) if $@;
 
     }elsif (defined param("host")){
     	
@@ -117,14 +135,16 @@ while ( my $q = new CGI::Fast ){
       # else get all services for this host
       if (defined param("service")){
       	
-        $json = $services->get_details(	'host'		=> $host,
+        $json = eval { $services->get_details(	'host'		=> $host,
       									'service'	=> param("service")
-      								);
+      								) };
+	    $log->error($@) if $@;
     	
       }else{
-        $json = $services->get_services( 'host'		=> $host,
+        $json = eval { $services->get_services( 'host'		=> $host,
         								 'service'	=> $checks
-        							);
+        							) };
+	    $log->error($@) if $@;
       }
     
       print $json;
@@ -160,8 +180,9 @@ while ( my $q = new CGI::Fast ){
     	 provdata	=> $config->{ $config->{ 'graphs' }{ 'source' } }
       );
       
-      $json = $graphs->get_graphs( 	'host'		=> $host,
-    								'service'	=> param("service") );
+      $json = eval { $graphs->get_graphs( 	'host'		=> $host,
+    								'service'	=> param("service") ) };
+	  $log->error($@) if $@;
     
       print $json;
 

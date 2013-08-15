@@ -111,6 +111,31 @@ refresh:
 # ---
 
 #
+# This is the Monitoring UI logging config block.
+# The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# logging:
+#   logfile: <logfile>
+#
+
+logging:
+
+#
+# logfile: log error messages into this file.
+# Make sure this file is writable for your apache user!
+#
+
+  logfile: /data/www/monitoring-ui/log/monitoring-ui.log
+
+
+
+# ---
+
+#
 # This is the Monitoring UI graphs config block.
 # The configuration format is YAML.
 #
