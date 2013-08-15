@@ -126,11 +126,11 @@ while ( my $q = new CGI::Fast ){
       }else{
       	
       	# process datacenters, clusters, storage and pools
-      	$host = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'host' };
-      	$checks = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'services' };
+      	$host = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'host' } if defined $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'host' };
+      	$checks = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'services' } if defined $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'services' };
       	
       }
-    
+      
       # is service given, too then get details for service
       # else get all services for this host
       if (defined param("service")){
@@ -147,7 +147,11 @@ while ( my $q = new CGI::Fast ){
 	    $log->error($@) if $@;
       }
     
-      print $json;
+      if (defined $json){
+        print $json;
+      }else{
+      	$log->warn("No service information found for host $host.");
+      }
     
     }elsif (defined param("graph")){
   	
@@ -182,9 +186,13 @@ while ( my $q = new CGI::Fast ){
       
       $json = eval { $graphs->get_graphs( 	'host'		=> $host,
     								'service'	=> param("service") ) };
-	  $log->error($@) if $@;
+	   $log->error($@) if $@;
     
-      print $json;
+      if (defined $json){
+        print $json;
+      }else{
+      	$log->warn("No graphs found for host $host.");
+      }
 
     }
 	
