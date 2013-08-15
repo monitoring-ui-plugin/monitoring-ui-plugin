@@ -58,6 +58,15 @@ $(document).ready(function() {
   $('#mon-res-service').bind("resize", function (event, ui) {
 	$('#mon-res-tbody-service').width($('#mon-res-service').width());
 	$('#mon-res-service-th').width($('#mon-res-service').width());
+	$('#mon-res-output').css("margin-left", "5px");
+  });
+  
+  // resizeable service details
+  $('#mon-res-name').resizable({ handles: 'e' });
+  $('#mon-res-name').bind("resize", function (event, ui) {
+	$('#mon-res-tbody-name').width($('#mon-res-name').width());
+	$('#mon-res-name-th').width($('#mon-res-name').width());
+	$('#mon-res-value').css("margin-left", "5px");
   });
  
   // fix size when browser resizes
@@ -131,6 +140,8 @@ function getDetails(hostName, serviceName, compName){
 		  
     jsonData = data;
 	$('#mon-res-tbl-details tbody').loadTemplate("../share/js-templates/service_details.html", jsonData, overwriteCache=templateCache);
+	// size of details tabs
+	$('#mon-res-tbody-name').width($('#mon-res-name').width());
 	  
   })
 	  

@@ -82,6 +82,11 @@ body {
     border-right: 1px solid #D7D7E1;
 }
 
+.mon-res-text {
+    margin-top: 7px;
+    margin-left: 2px;
+}
+
 .mon-res-head-tbl {
     left: 0;
     position: relative;
@@ -194,4 +199,8 @@ select {
 
 #service-details {
     min-width: 300px;  // make sure this is the same value as #left
+}
+
+.ui-resizable-e {
+    cursor: col-resize;
 }
