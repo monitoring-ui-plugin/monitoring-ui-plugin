@@ -155,6 +155,7 @@ sub read_config {
   # read and parse YAML config file
   $YAML::Syck::ImplicitTyping = 1;
   my $yaml = eval{ LoadFile( $self->{ 'file' } ) };
+  croak "Can't open/parse config file: $self->{ 'file' }: $@" if $@;
   
   return $yaml;
   

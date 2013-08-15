@@ -4,9 +4,9 @@
 <head>
 	<title>&lt;pre&gt;  oVirtUI::Data</title>
 	<meta name="description" content="Pod documentation for &lt;pre&gt;  oVirtUI::Data" />
-	<meta name="inputfile" content="../www/ovirt-monitoring/lib/oVirtUI/Data.pm" />
+	<meta name="inputfile" content="../lib/oVirtUI/Data.pm" />
 	<meta name="outputfile" content="../docs/modules/Data.html" />
-	<meta name="created" content="Fri Jul 26 20:41:14 2013" />
+	<meta name="created" content="Thu Aug 15 17:08:01 2013" />
 	<meta name="generator" content="Pod::Xhtml 1.61" />
 </head>
 <body>
@@ -23,6 +23,14 @@
 </li>
 <li><a href="#METHODS">METHODS	</a>
 <ul><li><a href="#get_services">get_services</a></li>
+</ul>
+</li>
+<li><a href="#METHODS-2">METHODS	</a>
+<ul><li><a href="#get_details">get_details</a></li>
+</ul>
+</li>
+<li><a href="#METHODS-3">METHODS	</a>
+<ul><li><a href="#get_graphs">get_graphs</a></li>
 </ul>
 </li>
 <li><a href="#EXAMPLES">EXAMPLES</a></li>
@@ -102,21 +110,46 @@ required for oVirtUI::Data-&gt;get_services()</p>
 </div>
 <h2 id="get_services">get_services</h2>
 <div id="get_services_CONTENT">
-<pre> get_status ( 'host' =&gt; $host )
+<pre> get_services ( 'host' =&gt; $host )
 
 </pre>
-		<p>Connects to backend and queries details of given host.
+		<p>Connects to backend and queries service status of given host.
 Returns JSON data.</p>
-<pre>  my $json = $get_services( 'host' =&gt; $host );
+<pre>  my $json = $details-&gt;get_services( 'host' =&gt; $host );                              	
 
 </pre>
-		<p>$VAR1 = {
-   &quot;Current Load&quot; : {
-      &quot;output&quot; : &quot;OK - load average: 0.00, 0.00, 0.00&quot;,
-      &quot;service&quot; : &quot;Current Load&quot;,
-      &quot;state&quot; : 0
-   },
- }                               	</p>
+
+</div>
+<h1 id="METHODS-2">METHODS	</h1><p><a href="#TOP" class="toplink">Top</a></p>
+<div id="METHODS_CONTENT-2">
+
+</div>
+<h2 id="get_details">get_details</h2>
+<div id="get_details_CONTENT">
+<pre> get_details ( 'host' =&gt; $host, service =&gt; $service )
+
+</pre>
+		<p>Connects to backend and queries details of given host and service.
+Returns JSON data.</p>
+<pre>  my $json = $details-&gt;get_details ( 'host' =&gt; $host, service =&gt; $service );
+
+</pre>
+
+</div>
+<h1 id="METHODS-3">METHODS	</h1><p><a href="#TOP" class="toplink">Top</a></p>
+<div id="METHODS_CONTENT-3">
+
+</div>
+<h2 id="get_graphs">get_graphs</h2>
+<div id="get_graphs_CONTENT">
+<pre> get_graphs ( 'host' =&gt; $host, service =&gt; $service )
+
+</pre>
+		<p>Connects to backend and prepares pnp4nagios graph urls.
+Returns JSON data.</p>
+<pre>  my $json = $graphs-&gt;get_graphs ( 'host' =&gt; $host, service =&gt; $service );
+
+</pre>
 
 </div>
 <h1 id="EXAMPLES">EXAMPLES</h1><p><a href="#TOP" class="toplink">Top</a></p>
@@ -148,7 +181,7 @@ Returns JSON data.</p>
 </div>
 <h1 id="VERSION">VERSION</h1><p><a href="#TOP" class="toplink">Top</a></p>
 <div id="VERSION_CONTENT">
-		<p>Version 0.100  (July 26 2013))</p>
+		<p>Version 0.320  (Aug 15 2013))</p>
 
 </div>
 <h1 id="COPYRIGHT_AND_LICENSE">COPYRIGHT AND LICENSE</h1><p><a href="#TOP" class="toplink">Top</a></p>

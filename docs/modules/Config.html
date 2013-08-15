@@ -4,9 +4,9 @@
 <head>
 	<title>&lt;pre&gt;  oVirtUI::Config</title>
 	<meta name="description" content="Pod documentation for &lt;pre&gt;  oVirtUI::Config" />
-	<meta name="inputfile" content="../www/ovirt-monitoring/lib/oVirtUI/Config.pm" />
+	<meta name="inputfile" content="../lib/oVirtUI/Config.pm" />
 	<meta name="outputfile" content="../docs/modules/Config.html" />
-	<meta name="created" content="Fri Jul 26 20:41:14 2013" />
+	<meta name="created" content="Thu Aug 15 17:08:01 2013" />
 	<meta name="generator" content="Pod::Xhtml 1.61" />
 </head>
 <body>
@@ -126,7 +126,7 @@ Returns Hashref.</p>
 		<p>Searches for files with ending &quot;.yml&quot; in specified directories and calls read_config to
 reads its content into Hash.
 Returns Hash.</p>
-<pre>  my $directory = '/etc/ovirtui-monitoring';
+<pre>  my $directory = '/etc/monitoring-ui';
   my $config = $conf-&gt;read_dir( 'dir' =&gt; $directory);
 
 </pre>
@@ -144,8 +144,7 @@ Returns Hash.</p>
 </pre>
 		<p>Validates a specified config hashref if required parameters for oVirtUI monitoring
 plugin are present.
-Errors are printed out.
-Returns 0 or 1 (Config failure).</p>
+Croaks on errors.</p>
 <pre>  my $config = $conf-&gt;validate( 'config' =&gt; $config);
 
 </pre>
@@ -155,7 +154,7 @@ Returns 0 or 1 (Config failure).</p>
 <div id="EXAMPLES_CONTENT">
 		<p>Read all config files from a given directory and validate its parameters.</p>
 <pre>  use oVirtUI::Config;
-  my $directory = '/etc/ovirtui-monitoring';
+  my $directory = '/etc/monitoring-ui';
 
   my $conf = oVirtUI::Config-&gt;new( 'directory' =&gt; $directory ));
   my $config = $conf-&gt;read_dir();
@@ -178,7 +177,7 @@ Returns 0 or 1 (Config failure).</p>
 </div>
 <h1 id="VERSION">VERSION</h1><p><a href="#TOP" class="toplink">Top</a></p>
 <div id="VERSION_CONTENT">
-		<p>Version 0.100  (July 23 2013))</p>
+		<p>Version 0.110  (Aug 15 2013))</p>
 
 </div>
 <h1 id="COPYRIGHT_AND_LICENSE">COPYRIGHT AND LICENSE</h1><p><a href="#TOP" class="toplink">Top</a></p>

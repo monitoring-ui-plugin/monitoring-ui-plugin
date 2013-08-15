@@ -126,20 +126,12 @@ sub new {
 
 =head2 get_services
 
- get_status ( 'host' => $host )
+ get_services ( 'host' => $host )
 
-Connects to backend and queries details of given host.
+Connects to backend and queries service status of given host.
 Returns JSON data.
 
-  my $json = $get_services( 'host' => $host );
-  
-$VAR1 = {
-   "Current Load" : {
-      "output" : "OK - load average: 0.00, 0.00, 0.00",
-      "service" : "Current Load",
-      "state" : 0
-   },
- }                               	
+  my $json = $details->get_services( 'host' => $host );                              	
 
 =cut
 
@@ -225,7 +217,7 @@ sub get_services {
 Connects to backend and queries details of given host and service.
 Returns JSON data.
 
-  my $json = $get_details ( 'host' => $host, service => $service );
+  my $json = $details->get_details ( 'host' => $host, service => $service );
   
 =cut
 
@@ -333,10 +325,10 @@ sub get_details {
 
  get_graphs ( 'host' => $host, service => $service )
 
-Connects to backend and queries details of given host and service.
+Connects to backend and prepares pnp4nagios graph urls.
 Returns JSON data.
 
-  my $json = $get_details ( 'host' => $host, service => $service );
+  my $json = $graphs->get_graphs ( 'host' => $host, service => $service );
   
 =cut
 

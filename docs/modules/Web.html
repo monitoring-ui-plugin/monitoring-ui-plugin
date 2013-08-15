@@ -4,9 +4,9 @@
 <head>
 	<title>&lt;pre&gt;  oVirtUI::Web</title>
 	<meta name="description" content="Pod documentation for &lt;pre&gt;  oVirtUI::Web" />
-	<meta name="inputfile" content="../www/ovirt-monitoring/lib/oVirtUI/Web.pm" />
+	<meta name="inputfile" content="../lib/oVirtUI/Web.pm" />
 	<meta name="outputfile" content="../docs/modules/Web.html" />
-	<meta name="created" content="Fri Jul 26 20:41:14 2013" />
+	<meta name="created" content="Thu Aug 15 17:08:01 2013" />
 	<meta name="generator" content="Pod::Xhtml 1.61" />
 </head>
 <body>
@@ -91,9 +91,18 @@ Make sure to create a folder with this name in:
 	<dd>
 		<p>additional content which shall be passed to TT </p>
 	</dd>
+	<dt>component</dt>
+	<dd>
+		<p>pass name of component to webpage
+(datacenter, cluster, storage, pool name)</p>
+	</dd>
 	<dt>refresh</dt>
 	<dd>
 		<p>refresh interval of webpage (default: 15000) [ms]</p>
+	</dd>
+	<dt>template_cache</dt>
+	<dd>
+		<p>use JS cache to cache templates (default: false)</p>
 
 </div>
 <h1 id="METHODS">METHODS	</h1><p><a href="#TOP" class="toplink">Top</a></p>
@@ -146,7 +155,7 @@ Make sure to create a folder with this name in:
 </div>
 <h1 id="VERSION">VERSION</h1><p><a href="#TOP" class="toplink">Top</a></p>
 <div id="VERSION_CONTENT">
-		<p>Version 0.100  (July 23 2013))</p>
+		<p>Version 0.130  (August 15 2013))</p>
 
 </div>
 <h1 id="COPYRIGHT_AND_LICENSE">COPYRIGHT AND LICENSE</h1><p><a href="#TOP" class="toplink">Top</a></p>
