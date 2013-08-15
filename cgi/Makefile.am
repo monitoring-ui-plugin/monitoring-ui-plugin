@@ -17,7 +17,7 @@ LIBDIR=@libdir@
 SYSCONFDIR=@sysconfdir@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
-SCRIPT=index
+SCRIPT=monitoring-ui
 
 # compile
 all:
