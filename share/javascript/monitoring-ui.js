@@ -84,6 +84,10 @@ $(document).on('click', 'tr#mon-res-body-tr', function(){
   var hostName = $("div[id='service-details']").attr("host");
   var compName = $("div[id='service-details']").attr("component");
   
+  // TODO: make this reload safe!
+  $('td').removeClass('mon-res-body-tr-selected');
+  $('td', this).toggleClass('mon-res-body-tr-selected');
+  
   // get details for selected service and update details-div
   getDetails(hostName, serviceName, compName);
   

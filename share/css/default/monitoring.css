@@ -89,9 +89,8 @@ body {
     width: 100%;
 }
 
-// is this still needed?
 .mon-res-body-tr-selected {
-    background-color: #C3D0E0;
+    background-color: #C3D0E0 !important;
 }
 
 .mon-res-body-td {
