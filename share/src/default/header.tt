@@ -13,7 +13,7 @@
 	<script src="[% site_url %]/share/javascript/jquery.loadTemplate-0.5.4.js"></script>
 
 	<!-- oVirt Monitoring -->
-	<link rel="stylesheet" type="text/css" href="[% site_url %]/share/css/[% templ %]/monitoring.css">
+	<link rel="stylesheet" type="text/css" href="[% site_url %]/share/css/[% templ %]/monitoring-ui.css">
 	<script src="[% site_url %]/share/javascript/monitoring-ui.js"></script>
 	
 	[%# set default timeout %]

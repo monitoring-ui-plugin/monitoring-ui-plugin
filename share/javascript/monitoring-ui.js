@@ -119,6 +119,11 @@ function getResults(){
 	$('#mon-res-tbl-services tbody').loadTemplate("../share/js-templates/service_status.html", jsonData, overwriteCache=templateCache);
 	// change size of td's to previous value as JS template overwrites it
     $('#mon-res-tbody-service').width($('#mon-res-service').width());
+    
+    if ($('#mon-res-tbl-details tbody').attr('service')){
+      // why is this not working?
+      $(this).find('#mon-res-body-td').text( $('#mon-res-tbl-details tbody').attr('service') ).toggleClass('mon-res-body-tr-selected');
+    }
 	  
   })
   .fail(function() { 
@@ -135,6 +140,9 @@ function getResults(){
 // get detailed information for service check
 function getDetails(hostName, serviceName, compName){
 	
+  // save service name in case service status page gets reloaded
+  $('#mon-res-tbl-details tbody').attr("service", serviceName);
+
   // get hostname
   $.getJSON( "?host=" + hostName + "&service=" + serviceName + "&comp=" + compName, function(data){
 		  

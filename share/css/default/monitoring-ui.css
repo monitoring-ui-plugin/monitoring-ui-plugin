@@ -94,10 +94,6 @@ body {
     width: 100%;
 }
 
-.mon-res-body-tr-selected {
-    background-color: #C3D0E0 !important;
-}
-
 .mon-res-body-td {
     border-color: -moz-use-text-color -moz-use-text-color #EDEEF0;
     border-style: none none solid;
@@ -177,12 +173,12 @@ select {
     background-color: #EEE !important;
 }
 
-.mon-res-tbl:active td {
-    background-color: #C3D0E0 !important;
-}
-
 .mon-res-body-tr:hover td {
     background-color: #EEE !important;
+}
+
+.mon-res-body-tr-selected {
+    background-color: #C3D0E0 !important;
 }
 
 #refreshButton {
