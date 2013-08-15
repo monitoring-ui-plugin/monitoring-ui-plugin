@@ -20,7 +20,6 @@
 use strict;
 use warnings;
 
-use Template;
 use CGI qw(param referer);
 use CGI::Carp qw(fatalsToBrowser);
 use CGI::Fast;
