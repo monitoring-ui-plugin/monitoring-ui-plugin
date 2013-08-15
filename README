@@ -29,6 +29,18 @@ of this software. Please include the following information in your email:
 To submit patches of suggest improvements, send email to r.koch@ovido.at.
 
 
+Updating
+========
+
+* Version 0.0.1 -> 0.1
+Delete the old installation and install new version (see below).
+
+# rm -rf /data/www/ovirt-monitoring
+# rm -rf /etc/httpd/conf.d/ovirt-monitoring.conf
+# rm -rf /usr/share/ovirt-engine/ui-plugins/monitoring-files
+# rm -rf /usr/share/ovirt-engine/ui-plugins/ovirt-monitoring.json
+
+
 Installation
 ============
 
