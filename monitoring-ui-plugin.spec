@@ -13,29 +13,21 @@ BuildRequires: perl
 BuildRequires: perl-CGI
 BuildRequires: perl-Log-Log4perl
 BuildRequires: perl-Template-Toolkit
-BuildRequires: perl-JSON-PP
+BuildRequires: perl-JSON
 BuildRequires: perl-YAML-Syck
-BuildRequires: perl-PathTools
-BuildRequires: perl-Carp
 BuildRequires: perl-DBI
 BuildRequires: perl-DBD-Pg
 BuildRequires: perl-JSON-XS
-BuildRequires: perl-Digest-MD5
-BuildRequires: perl-Scalar-List-Utils
 
 Requires: perl
 Requires: perl-CGI
 Requires: perl-Log-Log4perl
 Requires: perl-Template-Toolkit
-Requires: perl-JSON-PP
+Requires: perl-JSON
 Requires: perl-YAML-Syck
-Requires: perl-PathTools
-Requires: perl-Carp
 Requires: perl-DBI
 Requires: perl-DBD-Pg
 Requires: perl-JSON-XS
-Requires: perl-Digest-MD5
-Requires: perl-Scalar-List-Utils
 Requires: httpd
 
 %define apacheuser apache

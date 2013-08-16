@@ -78,8 +78,7 @@ Installation
 UI-Plugin RPM with yum as dependencies are resolved automatically):
 
 1.1. Basic modules
-# yum install perl perl-CGI perl-Log-Log4perl perl-Template-Toolkit perl-JSON-PP \
-              perl-YAML-Syck perl-PathTools perl-Carp
+# yum install perl perl-CGI perl-Log-Log4perl perl-Template-Toolkit perl-JSON perl-YAML-Syck
 
 1.2. For MySQL backend support
 # yum install perl-DBI
@@ -88,7 +87,7 @@ UI-Plugin RPM with yum as dependencies are resolved automatically):
 # yum install perl-DBD-Pg
 
 1.4. For mk-livestatus backend support
-# yum install perl-JSON-XS perl-Digest-MD5 perl-Scalar-List-Utils
+# yum install perl-JSON-XS 
 
 1.5. For FastCGI support
 # yum install mod_fcgid
@@ -155,7 +154,11 @@ To do this edit /etc/httpd/conf.d/ovirt-engine.conf
   ProxyPass / ajp://localhost:8702/ retry=5 timeout=3600
 
 If oVirt/RHEV 3.2 is listening on other ports you properly have to start httpd as
-it's most likely not running.
+it's most likely not running and change url in monitoring-ui.json to point to port
+80/443 of your webserver:
+Edit /usr/share/ovirt-engine/ui-plugins/monitoring-ui.json
+
+ "url": "https://engine.example.com:443/monitoring-ui/cgi/monitoring-ui.cgi",
 
 For oVirt 3.3 no ProxyPass excludes are required anymore.
 

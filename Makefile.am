@@ -22,6 +22,7 @@ DOCDIR=@docdir@
 WEBCONF=@web_conf@
 CONF=httpd
 CGIDIR=@sbindir@
+DATAROOTDIR=@datarootdir@
 
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
@@ -46,7 +47,7 @@ all:
 	
 	cp sample-config/$(CONF).conf.in sample-config/$(CONF).tmp
 	sed -i 's!/data/www/monitoring-ui/cgi!$(CGIDIR)!' sample-config/$(CONF).tmp
-	sed -i 's!/data/www/monitoring-ui!$(prefix)!' sample-config/$(CONF).tmp
+	sed -i 's!/data/www/monitoring-ui/share!$(DATAROOTDIR)!' sample-config/$(CONF).tmp
 	cp sample-config/$(CONF).tmp sample-config/$(CONF).conf
 	rm -f sample-config/$(CONF).tmp
 
