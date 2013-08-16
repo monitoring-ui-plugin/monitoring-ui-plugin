@@ -123,7 +123,7 @@ Build RPM from Spec-File or from Sources:
 # yum localinstall monitoring-ui-plugin*.rpm
 
 5.2. Install from Sources
-$ tar xfzv monitoring-ui-plugin-*.tgz
+$ tar xfzv monitoring-ui-plugin-*.tar.gz
 $ cd monitoring-ui-plugin-*
 $ ./configure
 $ make

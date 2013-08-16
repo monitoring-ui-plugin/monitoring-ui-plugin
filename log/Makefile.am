@@ -14,7 +14,7 @@
 # compiler settings
 LOCALSTATEDIR=@localstatedir@
 INSTALL=@INSTALL@
-INSTALL_OPTS=@INSTALL_OPTS@
+INSTALL_OPTS_WEB=@INSTALL_OPTS_WEB@
 WEB_USER=@web_user@
 WEB_GROUP=@web_group@
 
@@ -24,7 +24,7 @@ all:
 # install
 install:
 	for file in *.log; do \
-	  $(INSTALL) -D -m 664 $(INSTALL_OPTS) -o $(WEB_USER) -g $(WEB_GROUP) $$file $(DESTDIR)$(LOCALSTATEDIR)/log/$$file; \
+	  $(INSTALL) -D -m 664 $(INSTALL_OPTS_WEB) $$file $(DESTDIR)$(LOCALSTATEDIR)/log/$$file; \
 	done
 	
 # cleanup

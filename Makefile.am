@@ -22,13 +22,12 @@ DOCDIR=@docdir@
 WEBCONF=@web_conf@
 CONF=httpd
 CGIDIR=@sbindir@
-prefix=@prefix@
 
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 
 distdir=$(PACKAGE)-$(VERSION)
-DIST_COMMON=config.sub configure.ac configure NEWS INSTALL missing aclocal.m4 install-sh Makefile.am ChangeLog COPYING README AUTHORS Makefile.in config.guess autogen.sh
+DIST_COMMON=config.sub configure.ac configure NEWS INSTALL missing aclocal.m4 install-sh Makefile.am ChangeLog COPYING README AUTHORS Makefile.in config.guess autogen.sh monitoring-ui-plugin.spec
 DISTFILES=$(DIST_COMMON) $(CGI_DIR) $(ETC_DIR) $(LIB_DIR) $(LOG_DIR) $(SHARE_DIR) $(UI_PLUGINS_DIR) sample-config docs tools
 
 # compiler settings
