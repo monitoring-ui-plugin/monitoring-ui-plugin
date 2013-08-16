@@ -106,6 +106,7 @@ body {
     border-color: -moz-use-text-color -moz-use-text-color #EDEEF0;
     border-style: none none solid;
     border-width: 0 0 1px;
+    border-color: #EDEEF0;
     cursor: pointer;
     height: 26px !important;
     padding: 0 3px;
