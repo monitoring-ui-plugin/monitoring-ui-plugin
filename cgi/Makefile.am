@@ -22,8 +22,8 @@ SCRIPT=monitoring-ui
 # compile
 all:
 	cp $(SCRIPT).cgi.in $(SCRIPT).tmp
-	sed -i 's!$lib_path = "../lib";!$lib_path = "$(LIBDIR)";!' $(SCRIPT).tmp
-	sed -i 's!$cfg_path = "../etc";!$cfg_path = "$(SYSCONFDIR)";!' $(SCRIPT).tmp
+	sed -i -e 's!lib_path = .*!lib_path = "$(LIBDIR)";!' $(SCRIPT).tmp
+	sed -i -e 's!cfg_path = .*!cfg_path = "$(SYSCONFDIR)";!' $(SCRIPT).tmp
 	cp $(SCRIPT).tmp $(SCRIPT).cgi
 	rm -f $(SCRIPT).tmp
 

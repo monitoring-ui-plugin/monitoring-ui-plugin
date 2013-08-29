@@ -1,6 +1,6 @@
 Name: monitoring-ui-plugin
 Version: 0.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Nagios/Icinga Monitoring UI-Plugin for oVirt/RHEV
 
 Group: Applications/System
@@ -21,13 +21,17 @@ BuildRequires: perl-JSON-XS
 
 Requires: perl
 Requires: perl-CGI
+Requires: perl-FCGI
 Requires: perl-Log-Log4perl
 Requires: perl-Template-Toolkit
 Requires: perl-JSON
 Requires: perl-YAML-Syck
 Requires: perl-DBI
 Requires: perl-DBD-Pg
+Requires: perl-DBD-MySQL
 Requires: perl-JSON-XS
+Requires: perl-Time-HiRes
+Requires: mod_fcgid
 Requires: httpd
 
 %define apacheuser apache
@@ -79,5 +83,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Aug 29 2013 Rene Koch <r.koch@ovido.at> 0.1-2
+- added requirement for mod_fcgid and perl-FCGI, perl-DBD-MySQL and perl-Time-HiRes
+
 * Sun Aug 18 2013 Rene Koch <r.koch@ovido.at> 0.1-1
 - Initial build.

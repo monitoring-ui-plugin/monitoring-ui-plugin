@@ -23,9 +23,9 @@ CONF=monitoring-ui
 # compile
 all:
 	cp $(CONF).yml.in $(CONF).tmp
-	sed -i 's!data_dir: /data/www/monitoring-ui/share!data_dir: $(DATAROOTDIR)!' $(CONF).tmp
-	sed -i 's!lib_dir: /data/www/monitoring-ui/lib!lib_dir: $(LIBDIR)!' $(CONF).tmp
-	sed -i 's!logfile: /data/www/monitoring-ui/log/monitoring-ui.log!logfile: $(LOCALSTATEDIR)/log/monitoring-ui.log!' $(CONF).tmp
+	sed -i -e 's!^  data_dir:.*!  data_dir: $(DATAROOTDIR)!' $(CONF).tmp
+	sed -i -e 's!^  lib_dir:.*!  lib_dir: $(LIBDIR)/src!' $(CONF).tmp
+	sed -i -e 's!^  logfile:.*!  logfile: $(LOCALSTATEDIR)/log/monitoring-ui.log!' $(CONF).tmp
 	cp $(CONF).tmp $(CONF).yml
 	rm -f $(CONF).tmp
 
