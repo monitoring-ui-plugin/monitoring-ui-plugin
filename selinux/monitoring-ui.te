@@ -1,0 +1,21 @@
+policy_module(monitoring-ui, 0.1.0)
+
+require {
+	type postgresql_port_t;
+};
+
+type monitoring-ui_log_t;
+
+
+apache_content_template(monitoring-ui)
+
+# mod_fcgid
+allow httpd_monitoring-ui_script_t httpd_t:unix_stream_socket { shutdown accept getattr ioctl };
+allow httpd_monitoring-ui_script_t self:netlink_route_socket { bind create getattr nlmsg_read };
+allow httpd_monitoring-ui_script_t self:tcp_socket { getopt getattr };
+
+# PostgreSQL support
+allow httpd_monitoring-ui_script_t postgresql_port_t:tcp_socket name_connect;
+
+# write log file
+allow httpd_monitoring-ui_script_t monitoring-ui_log_t:file { getattr open ioctl append };
