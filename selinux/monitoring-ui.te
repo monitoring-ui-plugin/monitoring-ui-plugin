@@ -1,21 +1,48 @@
 policy_module(monitoring-ui, 0.1.0)
 
+########################################
+#
+# Declarations
+#
+
 require {
 	type postgresql_port_t;
+	type mysqld_port_t;
+	type cert_t;
 };
-
-type monitoring-ui_log_t;
-
 
 apache_content_template(monitoring-ui)
 
-# mod_fcgid
-allow httpd_monitoring-ui_script_t httpd_t:unix_stream_socket { shutdown accept getattr ioctl };
-allow httpd_monitoring-ui_script_t self:netlink_route_socket { bind create getattr nlmsg_read };
-allow httpd_monitoring-ui_script_t self:tcp_socket { getopt getattr };
 
-# PostgreSQL support
+# Type for the configuration files
+type monitoring-ui_config_t;
+files_config_file(monitoring-ui_config_t)
+
+allow httpd_monitoring-ui_script_t monitoring-ui_config_t:file { getattr read create_file_perms };
+allow httpd_monitoring-ui_script_t monitoring-ui_config_t:dir { create_dir_perms };
+
+
+# Type for log files
+type monitoring-ui_log_t;
+logging_log_file(monitoring-ui_log_t)
+
+allow httpd_monitoring-ui_script_t monitoring-ui_log_t:file {create read_file_perms append_file_perms };
+allow httpd_monitoring-ui_script_t monitoring-ui_log_t:dir {setattr rw_dir_perms};
+logging_log_filetrans(httpd_monitoring-ui_script_t,monitoring-ui_log_t,{file dir})
+
+
+# Provider connections
+# MySQL/PostgreSQL
+allow httpd_monitoring-ui_script_t mysqld_port_t:tcp_socket name_connect;
 allow httpd_monitoring-ui_script_t postgresql_port_t:tcp_socket name_connect;
+# BP-Addon API (https)
+allow httpd_monitoring-ui_script_t cert_t:dir search;
+allow httpd_monitoring-ui_script_t cert_t:file { read getattr open };
+allow httpd_monitoring-ui_script_t cert_t:lnk_file read;
 
-# write log file
-allow httpd_monitoring-ui_script_t monitoring-ui_log_t:file { getattr open ioctl append };
+
+# FastCGI
+allow httpd_monitoring-ui_script_t httpd_t:unix_stream_socket { ioctl accept getattr shutdown };
+# also requires:
+# setsebool -P allow_ypbind=on
+
