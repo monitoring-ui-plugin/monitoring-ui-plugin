@@ -21,7 +21,7 @@ AM_INIT_AUTOMAKE
 AC_PREFIX_DEFAULT(/usr/local/monitoring-ui-plugin)
 PKG_NAME="monitoring-ui-plugin"
 PKG_VERSION="0.1.0"
-PKG_REL_DATE="2013-08-15"
+PKG_REL_DATE="2013-09-23"
 
 # Figure out how to invoke "install" and what install options to use
 AC_PROG_INSTALL

@@ -4,7 +4,7 @@
 #                                                         #
 #*********************************************************#
 
-* 0.1 - Sun Aug 18 2013
+* 0.1 - Sun Aug 29 2013
 - Major improvements
 
 New Features:
@@ -37,6 +37,7 @@ New Features:
     - RHEV 3.2
     - oVirt 3.2
     - oVirt 3.3
+  * experimental SELinux support
 
 Bugs fixed:
   * CSS issues in Internet Explorer and Google Chrome
@@ -44,8 +45,13 @@ Bugs fixed:
 Infrastructure:
   * Renamed to Monitoring UI-Plugin as it supports RHEV now, too
   * Moved project to github
-  * Project URL: https://github.com/ovido/monitoring-ui-plugin
-  * Project Wiki: https://github.com/ovido/monitoring-ui-plugin/wiki
+  * Project URL: https://github.com/monitoring-ui-plugin/development
+  * Project Wiki: https://github.com/monitoring-ui-plugin/development/wiki
+  
+Open issues:
+  * Rows loose highlighting when refreshing check results (issue #3)
+  * Hover of rows overwrites CSS (issue #4)
+  * Optimize resizing of result columns (issue #5)
 
 * 0.0.1 - Tue Feb 19 2013
 - This is the first public alpha release of new oVirt Monitoring
