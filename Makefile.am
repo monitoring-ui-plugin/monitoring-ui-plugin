@@ -18,6 +18,7 @@ LIB_DIR=@srcdir@/lib
 LOG_DIR=@srcdir@/log
 SHARE_DIR=@srcdir@/share
 UI_PLUGINS_DIR=@srcdir@/ui-plugins
+SELINUX_DIR=@srcdir@/selinux
 DOCDIR=@docdir@
 WEBCONF=@web_conf@
 CONF=httpd
@@ -29,7 +30,7 @@ VERSION=@VERSION@
 
 distdir=$(PACKAGE)-$(VERSION)
 DIST_COMMON=config.sub configure.ac configure NEWS INSTALL missing aclocal.m4 install-sh Makefile.am ChangeLog COPYING README AUTHORS Makefile.in config.guess autogen.sh monitoring-ui-plugin.spec
-DISTFILES=$(DIST_COMMON) $(CGI_DIR) $(ETC_DIR) $(LIB_DIR) $(LOG_DIR) $(SHARE_DIR) $(UI_PLUGINS_DIR) sample-config docs tools
+DISTFILES=$(DIST_COMMON) $(CGI_DIR) $(ETC_DIR) $(LIB_DIR) $(LOG_DIR) $(SHARE_DIR) $(UI_PLUGINS_DIR) $(SELINUX_DIR) sample-config docs tools
 
 # compiler settings
 prefix=@prefix@
