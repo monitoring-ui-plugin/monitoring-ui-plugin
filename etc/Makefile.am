@@ -24,7 +24,7 @@ CONF=monitoring-ui
 all:
 	cp $(CONF).yml.in $(CONF).tmp
 	sed -i -e 's!^  data_dir:.*!  data_dir: $(DATAROOTDIR)!' $(CONF).tmp
-	sed -i -e 's!^  lib_dir:.*!  lib_dir: $(LIBDIR)/src!' $(CONF).tmp
+	sed -i -e 's!^  lib_dir:.*!  lib_dir: $(LIBDIR)!' $(CONF).tmp
 	sed -i -e 's!^  logfile:.*!  logfile: $(LOCALSTATEDIR)/log/monitoring-ui.log!' $(CONF).tmp
 	cp $(CONF).tmp $(CONF).yml
 	rm -f $(CONF).tmp
