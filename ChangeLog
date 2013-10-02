@@ -38,6 +38,7 @@ New Features:
     - oVirt 3.2
     - oVirt 3.3
   * experimental SELinux support
+  * RPMs for Red Hat Enterprise Linux 6 and CentOS 6
 
 Bugs fixed:
   * CSS issues in Internet Explorer and Google Chrome
