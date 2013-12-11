@@ -37,8 +37,8 @@ use Log::Log4perl;
 # define default paths required to read config files
 my ($lib_path, $cfg_path);
 BEGIN {
-  $lib_path = "../lib";		# path to BPView lib directory
-  $cfg_path = "../etc";		# path to BPView etc directory
+  $lib_path = "../lib";		# path to Monitoring UI-Plugin lib directory
+  $cfg_path = "../etc";		# path to Monitoring UI-Plugin etc directory
 }
 
 # load custom Perl modules
