@@ -26,7 +26,7 @@
 package oVirtUI::Data;
 
 BEGIN {
-    $VERSION = '0.320'; # Don't forget to set version and release
+    $VERSION = '0.330'; # Don't forget to set version and release
 }  						# date in POD below!
 
 use strict;
@@ -401,7 +401,7 @@ sub _query_ido {
   		
   	  # get service status for given host and services
   	  # construct SQL query
-      $sql  = "SELECT name2 AS service, current_state AS state, output FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
+      $sql  = "SELECT name2 AS service, current_state AS state, output, problem_has_been_acknowledged AS acknowledged, notifications_enabled, is_flapping FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
       $sql .= "WHERE object_id = service_object_id AND is_active = 1 AND name1 = '$hostname' AND name2 IN (";
   
       # go through service array
@@ -431,7 +431,7 @@ sub _query_ido {
   }else{
   
     # construct SQL query
-    $sql  = "SELECT name2 AS service, current_state AS state, output FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
+    $sql  = "SELECT name2 AS service, current_state AS state, output, problem_has_been_acknowledged AS acknowledged, notifications_enabled, is_flapping FROM " . $self->{'provdata'}{'prefix'} . "objects, " . $self->{'provdata'}{'prefix'} . "servicestatus ";
     $sql .= "WHERE object_id = service_object_id AND is_active = 1 AND name1 = '$hostname';";
     
   }
@@ -461,7 +461,7 @@ sub _query_livestatus {
   	  # get service status for given host and services
   	  # construct livestatus query
   	  $query = "GET services\n
-Columns: display_name state plugin_output\n";
+Columns: display_name state plugin_output acknowledged notifications_enabled is_flapping\n";
   
       # go through service array
   	  for (my $i=0;$i< scalar @{ $service };$i++){
@@ -487,7 +487,7 @@ Filter: display_name =~ $service\n";
   
     # construct livestatus query
     $query = "GET services\n
-Columns: display_name state plugin_output\n
+Columns: display_name state plugin_output acknowledged notifications_enabled is_flapping\n
 Filter: host_name =~ $hostname";
 
   }
@@ -610,7 +610,7 @@ Rene Koch, E<lt>r.koch@ovido.atE<gt>
 
 =head1 VERSION
 
-Version 0.320  (Aug 15 2013))
+Version 0.330  (Dec 11 2013))
 
 =head1 COPYRIGHT AND LICENSE
 
