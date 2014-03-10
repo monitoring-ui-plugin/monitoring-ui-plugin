@@ -1,30 +1,38 @@
 # Map various oVirt checks
 
-ovirt:
+__ovirt:
   datacenters:
-    "ovido-local":
-      host: "localhost"
+    "Default":
+      host: 
+        name: "localhost"
+        source: ido
       services: 
         - "RHEV DC Status Check"
-        - "RHEV DC Storagedomain Check - ovido-local"
-        - "RHEV DC Storagedomain Usage - ovido-local"
+        - "RHEV DC Storagedomain Check - Default"
+        - "RHEV DC Storagedomain Usage - Default"
         
   clusters:
-    "ovido-local":
-      host: "localhost"
+    "Default":
+      host: 
+        name: "localhost"
+        source: ido
       services:
         - "RHEV Cluster Check"
 
   storage:
-    "centos-hyp01-lab-ovido-at-Local":
-      host: "localhost"
+    "Default":
+      host: 
+        name: "localhost"
+        source: ido
       services:
-        - "RHEV Storage local"
-        - "RHEV Storage ovido-exports"
-        - "RHEV Storage ovido-isos"
+        - "RHEV Storage Default"
+        - "RHEV Storage exports"
+        - "RHEV Storage isos"
     
   pools:
     "test-pool":
-      host: "localhost"
+      host: 
+        name: "localhost"
+        source: ido
       services:
         - "RHEV Pool Check - test-pool"

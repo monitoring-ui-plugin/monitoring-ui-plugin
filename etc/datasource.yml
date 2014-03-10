@@ -1,0 +1,151 @@
+# This config block controlls the data backend provider to be used.
+# The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# provider:
+#   default: <source>
+#
+
+provider:
+
+#
+# default: uniq name of the provider.
+# This requires a configuration block with the same name later
+# in this configuration file.
+#
+
+  default: ido
+
+
+# ---
+  
+#
+# This is the ido provider configuration block which defines
+# connections to IDOutils. The configuration format is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# ido:
+#   host: <host>
+#   port: <port>
+#   type: <type>
+#   database: <database>
+#   username: <username>
+#   password: <password>
+#   prefix: <prefix>
+#   timeout: <timeout>
+#
+# For further details on how to integrate IDOutils in your
+# monitoring system visit: http://docs.icinga.org/latest/en/
+#
+
+ido:
+
+#
+# host: Hostname of the IDOutils database server.
+#
+
+  host: localhost
+  
+#
+# port: Port of the database server.
+# Most likely the following ports are in use:
+#   * 3306 (MySQL)
+#   * 5432 (PostgreSQL)
+#
+  
+  port: 5432
+  
+#
+# type: Database type.
+# The following databases are supported:
+#   * mysql (MySQL)
+#   * pgsql (PostgreSQL)
+#
+  
+  type: pgsql
+  
+#
+# name: Name of IDOutils database.
+#
+  
+  database: icinga
+  
+#
+# username: Username to connect to the database.
+#
+
+  username: icinga
+  
+#
+# password: Password for this user.
+#
+  
+  password: icinga
+  
+#
+# prefix: Prefix of IDOutils tables.
+#
+  
+  prefix: icinga_
+
+
+ # ---
+  
+#
+# This is the mk-livestatus provider configuration block which
+# defines connections to mk-livestatus. The configuration format
+# is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# mk-livestatus:
+#   socket: <socket>
+#   server: <server>
+#   port: <port>
+#
+# For further details on how to integrate mk-livestatus in your
+# monitoring system visit: http://mathias-kettner.de/checkmk_livestatus.html
+#
+
+mk-livestatus:
+
+#
+# socket: Path to mk-livetstatus socket if connection shall be
+# established using sockets instead of TCP connection.
+#
+# Note that you can't use socket and server/port the same time.
+# You have to choose which method to use!
+#
+# When using a socket make sure your webserver user can write
+# to it!
+#
+
+#  socket: /var/spool/icinga/rw/live
+
+#
+# server: IP-address or hostname of server providing access to
+# mk-livestatus via xinetd. server also requires port!
+#
+# Note that you can't use socket and server/port the same time.
+# You have to choose which method to use!
+#
+
+  server: 127.0.0.1
+
+#
+# port: port of server providing access to mk-livestatus via
+# xinetd. port requires also server!
+#
+# Note that you can't use socket and server/port the same time.
+# You have to choose which method to use!
+# 
+
+  port: 6557

@@ -3,7 +3,10 @@
 # Note: Use this only if hostnames differ in both systems!
 #
 
-# oVirt name: Nagios name
-# e.g. vm01: rhel001
-"openstack-master": "debian7"
+# oVirt name: 
+#   name: Nagios name
+#   source: Backend name
 
+"openstack-master": 
+  name: "debian7"
+  source: ido
