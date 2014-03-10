@@ -1,7 +1,7 @@
 {
   "name": "monitoring",
   // URL of plugin host page that invokes the plugin code (required)
-  "url": "/webadmin/webadmin/plugin/monitoring/start.html",
+  "url": "plugin/monitoring/start.html",
 
   // Default configuration object associated with the plugin
   "config": {
