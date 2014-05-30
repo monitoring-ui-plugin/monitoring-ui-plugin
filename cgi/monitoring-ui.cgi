@@ -2,8 +2,8 @@
 
 # COPYRIGHT:
 #
-# This software is Copyright (c) 2013 by René Koch
-#                             <r.koch@ovido.at>
+# This software is Copyright (c) 2013, 2014 by René Koch
+#                             <rkoch@rk-it.at>
 #
 # This file is part of Monitoring UI-Plugin.
 #
@@ -37,8 +37,8 @@ use Log::Log4perl;
 # define default paths required to read config files
 my ($lib_path, $cfg_path);
 BEGIN {
-  $lib_path = "../lib";		# path to Monitoring UI-Plugin lib directory
-  $cfg_path = "../etc";		# path to Monitoring UI-Plugin etc directory
+  $lib_path = "/usr/lib64/perl5/vendor_perl";		# path to Monitoring UI-Plugin lib directory
+  $cfg_path = "/etc/monitoring-ui-plugin";			# path to Monitoring UI-Plugin etc directory
 }
 
 # load custom Perl modules
@@ -109,15 +109,10 @@ while ( my $q = new CGI::Fast ){
       print "Content-type: application/json charset=iso-8859-1\n\n";
       my $json = undef;
   	
-  	  # get services for specified host
-      my $services = oVirtUI::Data->new(
-    	 provider	=> $config->{ 'provider' }{ 'source' },
-    	 provdata	=> $config->{ $config->{ 'provider' }{ 'source' } },
-      );	
-      
-      # does hostname differ in oVirt and Nagios?
+      # does hostname differ in oVirt and Nagios or should we use another data source?
       my $host = param("host");
       my $checks = undef;
+      my $provider = $config->{ 'provider' }{ 'default' };
 
       # datacenters, clusters, storage and pools are mapped differently as the hostname
       # and services names for these checks have to be given in mappings file  
@@ -125,7 +120,8 @@ while ( my $q = new CGI::Fast ){
       
         chomp $host;
         foreach my $map (keys %{ $mappings }){
-      	  $host = $mappings->{ $map } if $host eq $map;
+      	  $host = $mappings->{ $map }{ 'name' } if $host eq $map;
+      	  $provider = $mappings->{ $map }{ 'source' } if $host eq $map && defined $mappings->{ $map }{ 'source' };
         }
         
       }else{
@@ -135,6 +131,12 @@ while ( my $q = new CGI::Fast ){
       	$checks = $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'services' } if defined $mappings->{ 'ovirt' }{ param("comp") }{ param("host") }{ 'services' };
       	
       }
+ 
+  	  # get services for specified host
+      my $services = oVirtUI::Data->new(
+    	 provider	=> $provider,
+    	 provdata	=> $config->{ $provider },
+      );	
       
       # is service given, too then get details for service
       # else get all services for this host

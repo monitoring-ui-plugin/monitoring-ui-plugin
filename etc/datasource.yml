@@ -30,7 +30,8 @@ provider:
 # tabs instead of spaces!
 #
 # The structure and shifting has to be:
-# ido:
+# <unique_name>:
+#   provider: ido
 #   host: <host>
 #   port: <port>
 #   type: <type>
@@ -45,6 +46,16 @@ provider:
 #
 
 ido:
+
+#
+# provider: Datasource provider.
+# The following providers are supported:
+#   * ido
+#   * mk-livestatus
+#   * zabbix
+#
+
+  provider: ido
 
 #
 # host: Hostname of the IDOutils database server.
@@ -95,7 +106,7 @@ ido:
   prefix: icinga_
 
 
- # ---
+# ---
   
 #
 # This is the mk-livestatus provider configuration block which
@@ -106,7 +117,8 @@ ido:
 # tabs instead of spaces!
 #
 # The structure and shifting has to be:
-# mk-livestatus:
+# <unique_name>:
+#   provider: mk-livestatus
 #   socket: <socket>
 #   server: <server>
 #   port: <port>
@@ -116,6 +128,16 @@ ido:
 #
 
 mk-livestatus:
+
+#
+# provider: Datasource provider.
+# The following providers are supported:
+#   * ido
+#   * mk-livestatus
+#   * zabbix
+#
+
+  provider: mk-livestatus
 
 #
 # socket: Path to mk-livetstatus socket if connection shall be

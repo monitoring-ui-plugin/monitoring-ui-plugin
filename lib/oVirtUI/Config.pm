@@ -2,8 +2,8 @@
 
 # COPYRIGHT:
 #
-# This software is Copyright (c) 2013 by René Koch
-#                             <r.koch@ovido.at>
+# This software is Copyright (c) 2013-2014 by René Koch
+#                             <rkoch@rk-it.at>
 #
 # This file is part of Monitoring UI-Plugin.
 #
@@ -276,7 +276,7 @@ sub validate {
   croak "lib_dir missing!"  unless $config->{'ui-plugin'}{'lib_dir'};
   croak "data_dir missing!" unless $config->{'ui-plugin'}{'data_dir'};
   croak "site_url missing!" unless $config->{'ui-plugin'}{'site_url'};
-  croak "provider missing!" unless $config->{'provider'}{'source'};
+  croak "provider missing!" unless $config->{'provider'}{'default'};
   
   # check if directories exist
   $self->_check_dir( "lib_dir", $config->{'ui-plugin'}{'lib_dir'} );
@@ -284,7 +284,7 @@ sub validate {
   $self->_check_dir( "template", "$config->{'ui-plugin'}{'data_dir'}/src/$config->{'ui-plugin'}{'template'}" );
   
   # check data backend provider
-  $self->_check_provider( "provider", $config->{'provider'}{'source'}, $config->{ $config->{'provider'}{'source'} } );
+  $self->_check_provider( "provider", $config->{ $config->{ 'provider'}{'default'} }{ 'provider' }, $config->{ $config->{'provider'}{'default'} } );
   
 }
 
