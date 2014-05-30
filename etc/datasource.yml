@@ -171,3 +171,55 @@ mk-livestatus:
 # 
 
   port: 6557
+
+
+# ---
+  
+#
+# This is the Zabbix provider configuration block which
+# defines connections to Zabbix. The configuration format
+# is YAML.
+#
+# Make sure to use correct YAML syntax and especially don't use
+# tabs instead of spaces!
+#
+# The structure and shifting has to be:
+# <unique_name>:
+#   provider: zabbix
+#   url: <api_url>
+#   username: <username>
+#   password: <password>
+#
+
+zabbix:
+
+#
+# provider: Datasource provider.
+# The following providers are supported:
+#   * ido
+#   * mk-livestatus
+#   * zabbix
+#
+
+  provider: zabbix
+
+#
+# url: Full URL to your api_jsonrpc.php file.
+#
+
+  url: https://localhost/zabbix/api_jsonrpc.php
+
+#
+# username: Username to connect to the Zabbix API.
+#
+
+  username: admin
+
+#
+# password: Password for this user.
+#
+
+  password: zabbix
+
+# ---
+
