@@ -120,8 +120,10 @@ while ( my $q = new CGI::Fast ){
       
         chomp $host;
         foreach my $map (keys %{ $mappings }){
-      	  $host = $mappings->{ $map }{ 'name' } if $host eq $map;
-      	  $provider = $mappings->{ $map }{ 'source' } if $host eq $map && defined $mappings->{ $map }{ 'source' };
+          if ($host eq $map){
+      	    $host = $mappings->{ $map }{ 'name' };
+      	    $provider = $config->{ $mappings->{ $map }{ 'source' } } if defined $mappings->{ $map }{ 'source' };
+          }
         }
         
       }else{
@@ -134,10 +136,10 @@ while ( my $q = new CGI::Fast ){
  
   	  # get services for specified host
       my $services = oVirtUI::Data->new(
-    	 provider	=> $provider,
+    	 provider	=> $config->{ $provider }{ 'provider' },
     	 provdata	=> $config->{ $provider },
       );	
-      
+
       # is service given, too then get details for service
       # else get all services for this host
       if (defined param("service")){
